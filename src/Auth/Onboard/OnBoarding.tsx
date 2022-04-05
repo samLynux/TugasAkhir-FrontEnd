@@ -1,8 +1,8 @@
 import React, {  useRef } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import Animated, { interpolateColors, multiply } from 'react-native-reanimated';
+import Animated, { multiply } from 'react-native-reanimated';
 
-import { useValue, onScrollEvent } from  "react-native-redash";
+import { useValue, onScrollEvent, interpolateColor } from  "react-native-redash";
 import Slide, {SLIDE_HEIGHT} from './Slide';
 import Subslide from './Subslide';
                      
@@ -43,13 +43,13 @@ const Onboarding = () => {
 
     const x = useValue(0)
     const onScroll = onScrollEvent({x});
-    const backgroundColor = interpolateColors(x, {
-        inputRange: slides.map((_, i) => i * width),
-        outputColorRange: slides.map(slide => slide.color),
-    }) as any
+    // const backgroundColor = interpolateColor(x, {
+    //     inputRange: slides.map((_, i) => i * width),
+    //     outputRange: slides.map(slide => slide.color),
+    // }) as any
     return( 
     <View style={styles.container}>
-        <Animated.View style={[styles.slider, {backgroundColor}]}>
+        <Animated.View style={[styles.slider, ]}>
             <Animated.ScrollView 
                 //@ts-ignore
                 ref={scroll}
@@ -67,7 +67,7 @@ const Onboarding = () => {
         </Animated.View>
         <View style={styles.footer}>
             <Animated.View style={{...StyleSheet.absoluteFillObject,
-                backgroundColor}}/>
+                }}/>
             <Animated.View style={[styles.footerContent, 
                 {width: width * slides.length, flex:1,
                 transform: [{translateX: multiply(x, -1)}]}]}
