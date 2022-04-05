@@ -1,8 +1,10 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, {  useRef } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, { divide,  interpolateColors,  multiply } from 'react-native-reanimated';
 
 import {useScrollHandler } from  "react-native-redash";
+import { Routes } from '../../components/Navigation';
 import Dot from './Dot';
 import Slide, {SLIDE_HEIGHT, BORDER_RADIUS} from './Slide';
 import Subslide from './Subslide';
@@ -46,37 +48,53 @@ const slides = [
         subtitle: "Relaxed.Sub", 
         description: "Relaxed.Desc",  
         color: "#BFEAF5",
-        picture: require("../../../assets/1.png")
+        picture: {
+            src : require("../../../assets/1.png"),
+            width:200,
+            height: 300,
+        }
     },
     {
         title: "Playful", 
         subtitle: "Playful.Sub", 
         description: "Playful.Desc", 
         color: "#BEECC5",
-        picture: require("../../../assets/2.png")
+        picture: {
+            src : require("../../../assets/2.png"),
+            width:200,
+            height: 300,
+        }
     },
     {
         title: "Exentric", 
         subtitle: "Exentric.Sub", 
         description: "Exentric.Desc", 
         color: "#FFE4D9",
-        picture: require("../../../assets/3.png")
+        picture:{
+            src : require("../../../assets/3.png"),
+            width:200,
+            height: 300,
+        }
     },
     {
         title: "Funky", 
         subtitle: "Funky.Sub", 
         description: "Funky.Desc", 
         color: "#FFDDDD",
-        picture: require("../../../assets/4.png")
+        picture: {
+            src : require("../../../assets/4.png"),
+            width:200,
+            height: 300,
+        }
     },
 ]
-
-const Onboarding = () => {
+//@ts-ignore
+const Onboarding = ({navigation}: StackNavigationProp<Routes,"OnBoarding"> ) => {
     const scroll = useRef<Animated.ScrollView>();
 
     // const x = useValue(0)
     const {scrollHandler, x} = useScrollHandler();
-    // const onScroll = onScrollEvent({x});
+    //@ts-ignore
     const backgroundColor = interpolateColors(x, {
         inputRange: slides.map((_, i) => i * width),
         outputColorRange: slides.map(slide => slide.color),
@@ -117,22 +135,26 @@ const Onboarding = () => {
                     width: width * slides.length, flex:1,
                     transform: [{translateX: multiply(x, -1)}]}}
                 >
-                {slides.map(({subtitle, description}, index) => (
-                    <Subslide key={index} 
-                        onPress={() => {
-                            // console.log("xxx2")
-                            if(scroll.current){
-                                // console.log("yyyy");
-                                // console.log(scroll.current.getNode());
-                                //@ts-ignore
-                                scroll.current.scrollTo({
-                                    x:width * (index + 1), animated:true})
-                            }
-                        } }
-                        last={index === (slides.length - 1)}
-                        {...{subtitle, description}} 
-                    />
-                ))}
+                {slides.map(({subtitle, description}, index) => {
+                    const last = index === (slides.length - 1)
+                    return (
+                        <Subslide key={index} 
+                            onPress={() => {
+                                if(last){
+                                    navigation.navigate("Welcome")
+                                }
+                                if(scroll.current){
+                                    // console.log("yyyy");
+                                    // console.log(scroll.current.getNode());
+                                    //@ts-ignore
+                                    scroll.current?.scrollTo({
+                                        x:width * (index + 1), animated:true})
+                                }
+                            } }
+                            {...{subtitle, description, last}} 
+                        />
+                    )
+                })}
                 </Animated.View>
             </Animated.View>
         </View>

@@ -1,17 +1,17 @@
-import { BaseTheme, createText, createTheme } from '@shopify/restyle'
+import { BaseTheme, createBox, createText, createTheme } from '@shopify/restyle'
 
-const palette = {
-  purpleLight: '#8C6FF7',
-  purplePrimary: '#5A31F4',
-  purpleDark: '#3F22AB',
+// const palette = {
+//   purpleLight: '#8C6FF7',
+//   purplePrimary: '#5A31F4',
+//   purpleDark: '#3F22AB',
 
-  greenLight: '#56DCBA',
-  greenPrimary: '#0ECD9D',
-  greenDark: '#0A906E',
+//   greenLight: '#56DCBA',
+//   greenPrimary: '#0ECD9D',
+//   greenDark: '#0A906E',
 
-  black: '#0B0B0B',
-  white: '#F0F2F3',
-};
+//   black: '#0B0B0B',
+//   white: '#F0F2F3',
+// };
 
 
 const theme: BaseTheme = createTheme({
@@ -28,29 +28,36 @@ const theme: BaseTheme = createTheme({
     l: 24,
     xl: 40,
   },
+  borderRadii: {
+    s: 4,
+    m: 10,
+    l: 25,
+    xl: 40,
+    xxl: 75
+  },
   textVariants: {
     hero: {
         fontSize: 80,
         lineHeight: 80,
-        fontFamily: "SFProText-Bold",
+        fontFamily: "SFProDis-Bold",
         color:"white",
         textAlign:"center"
     },
     title1: {
         fontSize: 28,
-        fontFamily: "SFProText-Semibold",
+        fontFamily: "SFProDis-Semibold",
         color:"#0C0D34",
     },
     title2: {
         fontSize: 24,
         lineHeight: 30,
-        fontFamily: "SFProText-Semibold",
+        fontFamily: "SFProDis-Semibold",
         color:"title",
     },
     body: {
         fontSize: 16,
         lineHeight: 25,
-        fontFamily: "SFProText-Regular",
+        fontFamily: "SFProDis-Regular",
         color:"body",
     },
   },
@@ -59,5 +66,6 @@ const theme: BaseTheme = createTheme({
 
 
 export type Theme = typeof theme;
+export const Box = createBox<Theme>();
 export const Text = createText<Theme>();
 export default theme;

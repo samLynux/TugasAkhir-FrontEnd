@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 })
 
 interface ButtonProps{
-    variant: "default" | "primary";
+    variant: "default" | "primary" | "transparent";
     label: string;
     onPress: () => void;
 }
