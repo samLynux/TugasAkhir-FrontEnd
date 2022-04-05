@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Button } from '../../components';
 
-
+const {width} = Dimensions.get("window")
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
         alignItems:"center",
-        padding:44,
+        padding:44, 
+        width
     },
     subtitle: {
         fontSize: 24,
