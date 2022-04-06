@@ -1,0 +1,18 @@
+import { createStackNavigator } from '@react-navigation/stack';
+
+import { Routes } from '../components/Navigation';
+import Login from './Login';
+
+import Onboard from './Onboard';
+import Welcome from './Welcome';
+
+export const AuthStack = createStackNavigator<Routes>();
+export const AuthNavigator = () => {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="OnBoarding" component={Onboard} />
+      <AuthStack.Screen name="Welcome" component={Welcome} />
+      <AuthStack.Screen name="Login" component={Login} />
+    </AuthStack.Navigator>
+  );
+};
