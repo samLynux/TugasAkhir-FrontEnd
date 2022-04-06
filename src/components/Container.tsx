@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Text, StyleSheet, View, Image, Dimensions, StatusBar } from 'react-native';
+import { Text, StyleSheet, View, Image, Dimensions, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Box } from './Theme';
 
@@ -55,6 +55,7 @@ const Container = ({ children, footer }: ContainerProps) => {
             top: -height * 0.61,
           }}
         />
+        
         <Box //@ts-ignore
           borderRadius="xl"
           borderTopLeftRadius={0}
@@ -64,7 +65,8 @@ const Container = ({ children, footer }: ContainerProps) => {
           {children}
         </Box>
       </Box>
-      <Box backgroundColor="secondary" paddingTop="m">
+      
+      <Box backgroundColor="secondary" paddingTop="m"> 
         {footer}
         <Box height={insets.bottom} />
       </Box>
