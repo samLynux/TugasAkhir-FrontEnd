@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Box } from './Theme';
 
 export const assets = [require('../../assets/patterns/1.png')];
-const { width } = Dimensions.get('window');
+const { width, height:wHeight } = Dimensions.get('window');
 const aspectRatio = 750 / 1125;
 const height = width * aspectRatio;
 
@@ -19,7 +19,8 @@ const Container = ({ children, footer }: ContainerProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <Box flex={1} backgroundColor="secondary">
+    <KeyboardAwareScrollView scrollEnabled={false}>
+    <Box height={wHeight} backgroundColor="secondary">
       <StatusBar barStyle="light-content" />
       <Box backgroundColor="white">
         <Box
@@ -49,9 +50,9 @@ const Container = ({ children, footer }: ContainerProps) => {
           backgroundColor="white"
           flex={1}
         >
-          <KeyboardAwareScrollView>
+          
             {children}
-          </KeyboardAwareScrollView>
+          
         </Box>
       </Box>
       
@@ -60,6 +61,7 @@ const Container = ({ children, footer }: ContainerProps) => {
         <Box height={insets.bottom} />
       </Box>
     </Box>
+    </KeyboardAwareScrollView>
   );
 };
 

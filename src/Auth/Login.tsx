@@ -9,6 +9,7 @@ import * as Yup from "yup"
 import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 // import { TextInput } from 'react-native';
 
 
@@ -101,9 +102,15 @@ const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
               onChange={checked}
             />
 
-            <Button label='' variant='transparent' onPress={() => true}>
-              <Text color="primary">Forgot Password</Text>
-            </Button>
+            <TouchableWithoutFeedback  onPress={() => navigation.navigate("ForgotPassword")}
+                //@ts-ignore
+                variant="transparent">
+              <Box flexDirection="row">
+                <Text variant="body">
+                  Forgot Password?
+                </Text>
+              </Box>
+            </TouchableWithoutFeedback>
           </Box>
           
           

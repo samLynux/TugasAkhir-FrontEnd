@@ -1,24 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { StyleSheet, View, Image, Dimensions } from 'react-native';
+import {  Image, Dimensions } from 'react-native';
 import { Box, Button, Text } from '../../components';
 import { Routes } from '../../components/Navigation';
 
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 25,
-    height: 50,
-    width: 245,
-    justifyContent: 'center',
-  },
-  label: {
-    fontSize: 15,
-    // lineHeight: 80,
-    fontFamily: 'SFProText-Regular',
-    // color:"white",
-    textAlign: 'center',
-  },
-});
+
 
 const { width } = Dimensions.get('window');
 const picture = {
