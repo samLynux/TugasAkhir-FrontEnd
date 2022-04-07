@@ -1,44 +1,27 @@
-import React, { useState } from 'react';
-import { TextInput as RNTextInput, StyleSheet, TextInputProps as RNTextInputProps } from 'react-native';
+import React  from 'react';
+import { TextInput as RNTextInput, StyleSheet, TextInputProps as RNTextInputProps, Text } from 'react-native';
 import { Box } from '../Theme';
 import { Feather as Icon } from '@expo/vector-icons';
+import { Controller } from 'react-hook-form';
 
 
 
 interface TextInputProps extends RNTextInputProps {
   icon: string;
-  validator: (input: string) => boolean;
+  name: string;
+  placeholder: string;
+
+  control: any;
+  secureTextEntry: any;
 }
-const Valid = true;
-const Invalid = false;
-const Pristine = null;
-type InputState = typeof Valid | typeof Invalid | typeof Pristine;
 
-const TextInput = ({ icon, validator, ...props }: TextInputProps) => {
-  const [input, setInput] = useState("")
-  const [state, setState] = useState<null | boolean>(null)
-  
-  const color = state === Pristine ? "black" : 
-    (state === Valid) ? "light_green" : "pink"
-  const onChangeText = (text: string) => {
 
-    
-    setInput(text);
-    validate();
-    
-  }
-  const validate = () => {
-    const valid = validator(input)
-    setState(valid)
-  }
-  // let emailAdress = "test@gmail.com";
-  // let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  // if (emailAdress.match(regexEmail)) {
-  //   console.log(true);
-    
-  // } else {
-  //   console.log(false);
-  // }
+const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInputProps) => {
+
+  const color = "black" 
+ 
+
+
   return (
     <Box flexDirection="row" alignItems="center" height={48} //@ts-ignore
         //@ts-ignore
@@ -49,22 +32,39 @@ const TextInput = ({ icon, validator, ...props }: TextInputProps) => {
           name={icon} size={16} {...{color}}/>
       </Box>
       
-      <RNTextInput 
-        underlineColorAndroid="transparent" 
-        onBlur={() => validate}
-        onChangeText={onChangeText}
-        placeholder={props.placeholder} />
-      {
-        (state === Valid || state === Invalid) && (
-          <Box height={20} width={20} //@ts-ignore
-            borderRadius="m"
-            justifyContent="center" alignItems="center"
-            backgroundColor={state === Valid ? "title" : "pink"}
-            >
-            <Icon name={state === Valid ? "check" : "x"} color="white" />
-          </Box>
-        ) 
-      }
+      <Controller
+            control={control}  
+            name={name}
+            render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+              <>
+                <RNTextInput
+                  value={value} 
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  underlineColorAndroid="transparent" 
+                  placeholder={placeholder}
+                  secureTextEntry={secureTextEntry}
+                />
+
+                {
+                  (error) && (
+                    <>
+                    <Box height={20} width={20} //@ts-ignore
+                      borderRadius="m"
+                      justifyContent="center" alignItems="center"
+                      backgroundColor={ !error ? "title" : "pink"}
+                      >
+                      <Icon name={!error ? "check" : "x"} color="white" />
+                    </Box>
+                    {/* <Text>{error.message}</Text> */}
+                    </>
+                  ) 
+                }
+              </>
+            )}
+          />
+      
+      
     </Box>
   );
 };
