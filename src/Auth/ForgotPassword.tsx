@@ -1,27 +1,27 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Formik } from 'formik';
 import React from 'react';
 
-import { Box, Button, Container, Text } from '../../components';
-import Checkbox from '../../components/Form/Checkbox';
-import TextInput from '../../components/Form/TextInput';
-import { Routes } from '../../components/Navigation';
-import SocialLogin from '../../components/SocialLogin';
+import { Box, Button, Container, Text } from '../components';
+import Checkbox from '../components/Form/Checkbox';
+import TextInput from '../components/Form/TextInput';
+import { Routes } from '../components/Navigation';
 import * as Yup from "yup"
-import { Controller, useForm } from 'react-hook-form';
+import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Footer from '../components/Footer';
 // import { TextInput } from 'react-native';
 
 
-const LoginSchema = Yup.object().shape({
+const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string()
       .required('Email is required')
       .email('Email is invalid'),
-    password: Yup.string()
-      .required('Password is required')
-      .min(4, 'Password must be at least 4 characters')
-      .max(15, 'Password must not exceed 15 characters'),
-  })
+  password: Yup.string()
+    .required('Password is required')
+    .min(4, 'Password must be at least 4 characters')
+    .max(15, 'Password must not exceed 15 characters'),
+    
+})
 
   
 // const emailValidator = (email: string) => {
@@ -33,32 +33,20 @@ const LoginSchema = Yup.object().shape({
 // };
 
 //@ts-ignore
-const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
-  const footer = (
-    <>
-      <SocialLogin />
-      <Box alignItems="center">
-        <Button label="" onPress={() => alert('signup')} variant="transparent">
-          <Box flexDirection="row">
-            <Text variant="body" color="white">
-              DOnt have account?
-            </Text>
-            <Text marginLeft="s" variant="body" color="primary">
-            
-              Sign up
-            </Text>
-          </Box>
-        </Button>
-      </Box>
-    </>
-  );
+const ForgotPassword = ({ navigation }: StackNavigationProp<Routes, 'ForgotPassword'>) => {
+  const footer = <Footer 
+      title="Don't have account?" 
+      action='Sign up here'
+      onPress={() => console.log("ForgotPassword")}
+    />;
   
   const {control, 
     handleSubmit, 
   } = useForm({
-    resolver: yupResolver(LoginSchema)
+    resolver: yupResolver(ForgotPasswordSchema)
   });
 
+//@ts-ignore
   const onLogin = (data) => {
     console.log(data);
     
@@ -74,17 +62,22 @@ const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
     <Container {...{ footer }}>
       <Box padding="xl">
         <Text variant="title1" textAlign="center">
-          Welcome back
+          You forgot 
         </Text>
         <Text variant="body" textAlign="center">
-          use your credentials and login
+          duck 
         </Text>
-       
+        
+{/* @ts-ignore */}
         <TextInput
           name="email"
           icon="mail"
           placeholder="Email"
           control={control}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          returnKeyType='next'
+          returnKeyLabel='next'
         />
         <TextInput
           name="password"
@@ -92,6 +85,11 @@ const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
           placeholder="password"
           control={control}
           secureTextEntry
+          autoCapitalize="none"
+          autoCompleteType="password"
+          returnKeyType='go'
+          returnKeyLabel='go'
+
         />
           
         
@@ -119,4 +117,4 @@ const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

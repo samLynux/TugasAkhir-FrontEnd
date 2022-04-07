@@ -39,15 +39,17 @@ const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInp
               <>
                 <RNTextInput
                   value={value} 
-                  onChangeText={onChange}
+                  onChangeText={(onChange)}
                   onBlur={onBlur}
                   underlineColorAndroid="transparent" 
                   placeholder={placeholder}
                   secureTextEntry={secureTextEntry}
                 />
-
+                {/* {(error  && (
+                  <Text>{error.message}</Text>
+                ))} */}
                 {
-                  (error) && (
+                  (value !== undefined) && (
                     <>
                     <Box height={20} width={20} //@ts-ignore
                       borderRadius="m"
@@ -56,7 +58,7 @@ const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInp
                       >
                       <Icon name={!error ? "check" : "x"} color="white" />
                     </Box>
-                    {/* <Text>{error.message}</Text> */}
+                    
                     </>
                   ) 
                 }
