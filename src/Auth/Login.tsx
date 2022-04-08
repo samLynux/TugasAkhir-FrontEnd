@@ -1,15 +1,16 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-
+import { CompositeNavigationProp } from '@react-navigation/native';
 import { Box, Button, Container, Text } from '../components';
 import Checkbox from '../components/Form/Checkbox';
 import TextInput from '../components/Form/TextInput';
-import { Routes } from '../components/Navigation';
+import { AuthRoutes, HomeRoutes } from '../components/Navigation';
 import * as Yup from "yup"
 import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 // import { TextInput } from 'react-native';
 
 
@@ -24,17 +25,17 @@ const LoginSchema = Yup.object().shape({
     
 })
 
-  
-// const emailValidator = (email: string) => {
-  
-//   const result = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-//     email,
-//   );
-//   return result
-// };
+interface LoginProps{
+  navigation: 
+  CompositeNavigationProp<
+    StackNavigationProp<AuthRoutes, "Login">, 
+    DrawerNavigationProp<HomeRoutes, "OutfitIdeas"> 
+  >
+}
 
-//@ts-ignore
-const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
+
+
+const Login = ({ navigation }: LoginProps ) => {
   const footer = <Footer 
       title="Don't have account?" 
       action='Sign up here'
@@ -50,6 +51,7 @@ const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
 //@ts-ignore
   const onLogin = (data) => {
     console.log(data);
+    navigation.navigate("OutfitIdeas")
     
   }
 
@@ -60,7 +62,7 @@ const Login = ({ navigation }: StackNavigationProp<Routes, 'Login'>) => {
   
 
   return (
-    <Container {...{ footer }}>
+    <Container {...{ footer }} pattern={0}>
       <Box padding="xl">
         <Text variant="title1" textAlign="center">
           Welcome back

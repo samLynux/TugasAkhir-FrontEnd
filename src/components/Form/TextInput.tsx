@@ -1,8 +1,9 @@
 import React  from 'react';
-import { TextInput as RNTextInput, StyleSheet, TextInputProps as RNTextInputProps, Text } from 'react-native';
+import { TextInput as RNTextInput, StyleSheet, TextInputProps as RNTextInputProps } from 'react-native';
 import { Box } from '../Theme';
 import { Feather as Icon } from '@expo/vector-icons';
 import { Controller } from 'react-hook-form';
+import RoundedIcon from '../RoundedIcon';
 
 
 
@@ -23,6 +24,7 @@ const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInp
 
 
   return (
+    <>
     <Box flexDirection="row" alignItems="center" height={48} //@ts-ignore
         //@ts-ignore
         borderWidth={StyleSheet.hairlineWidth} borderRadius="s" borderColor={color}
@@ -51,13 +53,12 @@ const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInp
                 {
                   (value !== undefined) && (
                     <>
-                    <Box height={20} width={20} //@ts-ignore
-                      borderRadius="m"
-                      justifyContent="center" alignItems="center"
+                    <RoundedIcon
+                      name={!error ? "check" : "x"}
                       backgroundColor={ !error ? "title" : "pink"}
-                      >
-                      <Icon name={!error ? "check" : "x"} color="white" />
-                    </Box>
+                      color="black"
+                      size={20}
+                     />
                     
                     </>
                   ) 
@@ -68,6 +69,7 @@ const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInp
       
       
     </Box>
+    </>
   );
 };
 

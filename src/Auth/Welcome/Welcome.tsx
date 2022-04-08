@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import {  Image, Dimensions } from 'react-native';
 import { Box, Button, Text } from '../../components';
-import { Routes } from '../../components/Navigation';
+import { AuthRoutes } from '../../components/Navigation';
 
 
 
@@ -14,7 +14,7 @@ const picture = {
 };
 
 //@ts-ignore
-const Welcome = ({ navigation }: StackNavigationProp<Routes, 'Welcome'>) => {
+const Welcome = ({ navigation }: StackNavigationProp<AuthRoutes, 'Welcome'>) => {
   return (
     <Box flex={1} backgroundColor="white">
       <Box

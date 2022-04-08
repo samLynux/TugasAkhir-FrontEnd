@@ -30,7 +30,7 @@ const PasswordChange = ({ navigation }: StackNavigationProp<Routes, 'PasswordCha
   
 
   return (
-    <Container {...{ footer }}>
+    <Container {...{ footer }} pattern={2}>
       <Box flex={1} justifyContent="center" alignItems="center">
         <Box
           backgroundColor="light_green"  alignItems="center"
@@ -47,7 +47,7 @@ const PasswordChange = ({ navigation }: StackNavigationProp<Routes, 'PasswordCha
           Your password  has been changed
         </Text>
         <Text variant="body" textAlign="center">
-          We want to know your email, password, and name 
+          Close this and log in again
         </Text>
         
 

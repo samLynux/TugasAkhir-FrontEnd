@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { Routes } from '../components/Navigation';
+import { AuthRoutes } from '../components/Navigation';
 import ForgotPassword from './ForgotPassword';
 import Login from './Login';
 
@@ -9,7 +9,7 @@ import PasswordChange from './PasswordChanged';
 import Signup from './Signup';
 import Welcome from './Welcome';
 
-export const AuthStack = createStackNavigator<Routes>();
+export const AuthStack = createStackNavigator<AuthRoutes>();
 export const AuthNavigator = () => {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>

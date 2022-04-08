@@ -4,7 +4,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, { divide, interpolateColors, multiply } from 'react-native-reanimated';
 
 import { useScrollHandler } from 'react-native-redash';
-import { Routes } from '../../components/Navigation';
+import { AuthRoutes } from '../../components/Navigation';
 import Dot from './Dot';
 import Slide, { SLIDE_HEIGHT, BORDER_RADIUS } from './Slide';
 import Subslide from './Subslide';
@@ -88,7 +88,7 @@ const slides = [
   },
 ];
 //@ts-ignore
-const Onboarding = ({ navigation }: StackNavigationProp<Routes, 'OnBoarding'>) => {
+const Onboarding = ({ navigation }: StackNavigationProp<AuthRoutes, 'OnBoarding'>) => {
   const scroll = useRef<Animated.ScrollView>();
 
   // const x = useValue(0)
@@ -141,9 +141,10 @@ const Onboarding = ({ navigation }: StackNavigationProp<Routes, 'OnBoarding'>) =
                     if (last) {
                       navigation.navigate('Welcome');
                     }
+                    // console.log("yyyy");
                     if (scroll.current) {
-                      // console.log("yyyy");
-                      // console.log(scroll.current.getNode());
+                      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                      // console.log(index);
                       //@ts-ignore
                       scroll.current?.scrollTo({
                         x: width * (index + 1),

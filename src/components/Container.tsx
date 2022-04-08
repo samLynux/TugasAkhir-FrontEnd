@@ -4,7 +4,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Box } from './Theme';
 
-export const assets = [require('../../assets/patterns/1.png')];
+export const assets = [
+  require('../../assets/patterns/1.png'),
+  require('../../assets/patterns/2.png'),
+  require('../../assets/patterns/3.png')
+] as const;
+
+
 const { width, height:wHeight } = Dimensions.get('window');
 const aspectRatio = 750 / 1125;
 const height = width * aspectRatio;
@@ -13,11 +19,13 @@ const height = width * aspectRatio;
 interface ContainerProps {
   children: ReactNode;
   footer: ReactNode;
+  pattern: 0| 1| 2
 }
 
-const Container = ({ children, footer }: ContainerProps) => {
+const Container = ({ children, footer, pattern }: ContainerProps) => {
   const insets = useSafeAreaInsets();
 
+  const asset = assets[pattern]
   return (
     <KeyboardAwareScrollView scrollEnabled={false}>
     <Box height={wHeight} backgroundColor="secondary">
@@ -29,12 +37,12 @@ const Container = ({ children, footer }: ContainerProps) => {
           //@ts-ignore
           borderBottomLeftRadius="xl"
         >
-          <Image source={assets[0]} style={{ width, height, borderBottomLeftRadius: 75 }} />
+          <Image source={asset} style={{ width, height, borderBottomLeftRadius: 75 }} />
         </Box>
       </Box>
       <Box flex={1} overflow="hidden">
         <Image
-          source={assets[0]}
+          source={asset}
           style={{
             width,
             height,

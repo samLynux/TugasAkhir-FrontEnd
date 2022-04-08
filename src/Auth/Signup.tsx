@@ -53,7 +53,7 @@ const Signup = ({ navigation }: StackNavigationProp<Routes, 'Signup'>) => {
   
 
   return (
-    <Container {...{ footer }}>
+    <Container {...{ footer }} pattern={1}>
       <Box padding="xl">
         <Text variant="title1" textAlign="center">
           Create Account 
