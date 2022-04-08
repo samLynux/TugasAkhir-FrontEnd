@@ -31,6 +31,7 @@ const theme: BaseTheme = createTheme({
     m: 16,
     l: 24,
     xl: 40,
+    xxl: 50,
   },
   borderRadii: {
     s: 4,

@@ -1,10 +1,9 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
 import { Box, Button, Container, Text } from '../components';
 
 import TextInput from '../components/Form/TextInput';
-import { Routes } from '../components/Navigation';
+import { AuthNavigationProps } from '../components/Navigation';
 import * as Yup from "yup"
 import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,7 +27,7 @@ const SignupSchema = Yup.object().shape({
 })
 
 //@ts-ignore
-const Signup = ({ navigation }: StackNavigationProp<Routes, 'Signup'>) => {
+const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
   const footer = <Footer 
       title="Already have account?" 
       action='Log in here'

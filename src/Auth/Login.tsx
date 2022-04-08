@@ -1,17 +1,13 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { CompositeNavigationProp } from '@react-navigation/native';
 import { Box, Button, Container, Text } from '../components';
 import Checkbox from '../components/Form/Checkbox';
 import TextInput from '../components/Form/TextInput';
-import { AuthRoutes, HomeRoutes } from '../components/Navigation';
+import {  AuthNavigationProps } from '../components/Navigation';
 import * as Yup from "yup"
 import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-// import { TextInput } from 'react-native';
 
 
 const LoginSchema = Yup.object().shape({
@@ -25,17 +21,9 @@ const LoginSchema = Yup.object().shape({
     
 })
 
-interface LoginProps{
-  navigation: 
-  CompositeNavigationProp<
-    StackNavigationProp<AuthRoutes, "Login">, 
-    DrawerNavigationProp<HomeRoutes, "OutfitIdeas"> 
-  >
-}
 
 
-
-const Login = ({ navigation }: LoginProps ) => {
+const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
   const footer = <Footer 
       title="Don't have account?" 
       action='Sign up here'
@@ -51,7 +39,7 @@ const Login = ({ navigation }: LoginProps ) => {
 //@ts-ignore
   const onLogin = (data) => {
     console.log(data);
-    navigation.navigate("OutfitIdeas")
+    navigation.navigate("Home")
     
   }
 

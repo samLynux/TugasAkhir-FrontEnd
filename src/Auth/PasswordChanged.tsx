@@ -1,18 +1,17 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
 import { Box, Button, Container, Text } from '../components';
 import { Feather as Icon } from '@expo/vector-icons';
-import { Routes } from '../components/Navigation';
 
 import ClosedButton from '../components/ClosedButton';
+import { AuthNavigationProps } from '../components/Navigation';
 // import { TextInput } from 'react-native';
 
 
 
 
 //@ts-ignore
-const PasswordChange = ({ navigation }: StackNavigationProp<Routes, 'PasswordChange'>) => {
+const PasswordChange = ({ navigation }:AuthNavigationProps<'PasswordChange'>) => {
   const footer = (
       <Box flexDirection="row" justifyContent="center">
         <ClosedButton onPress={() => navigation.navigate("Login")}/>

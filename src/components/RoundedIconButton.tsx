@@ -17,7 +17,12 @@ const RoundedIconButton = ({onPress, ...props }: RoundedIconButtonProps) => {
     <>
       <RectButton {...{onPress}} >
       {/* @ts-ignore */}
-        <RoundedIcon {...{props}}/>
+        <RoundedIcon 
+          name={props.name}
+          color={props.color}
+          backgroundColor={props.backgroundColor}
+          size={props.size}
+        />
       </RectButton>
       
     </>

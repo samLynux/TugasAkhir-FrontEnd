@@ -1,8 +1,8 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+
 import React from 'react';
 import {  Image, Dimensions } from 'react-native';
 import { Box, Button, Text } from '../../components';
-import { AuthRoutes } from '../../components/Navigation';
+import { AuthNavigationProps } from '../../components/Navigation';
 
 
 
@@ -14,7 +14,7 @@ const picture = {
 };
 
 //@ts-ignore
-const Welcome = ({ navigation }: StackNavigationProp<AuthRoutes, 'Welcome'>) => {
+const Welcome = ({ navigation }: AuthNavigationProps<'Welcome'>) => {
   return (
     <Box flex={1} backgroundColor="white">
       <Box

@@ -1,10 +1,9 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useRef } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, { divide, interpolateColors, multiply } from 'react-native-reanimated';
 
 import { useScrollHandler } from 'react-native-redash';
-import { AuthRoutes } from '../../components/Navigation';
+import { AuthNavigationProps } from '../../components/Navigation';
 import Dot from './Dot';
 import Slide, { SLIDE_HEIGHT, BORDER_RADIUS } from './Slide';
 import Subslide from './Subslide';
@@ -88,7 +87,7 @@ const slides = [
   },
 ];
 //@ts-ignore
-const Onboarding = ({ navigation }: StackNavigationProp<AuthRoutes, 'OnBoarding'>) => {
+const Onboarding = ({ navigation }: AuthNavigationProps<'OnBoarding'>) => {
   const scroll = useRef<Animated.ScrollView>();
 
   // const x = useValue(0)
