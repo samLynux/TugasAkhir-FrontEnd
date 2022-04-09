@@ -25,6 +25,8 @@ const theme: BaseTheme = createTheme({
     leaf_green: '#42f54b',
     yellow: '#e6f542',
     pink: '#f542a7',
+    light_blue: "#a9a6ff",
+    dark_blue: "#02004a"
   },
   spacing: {
     s: 8,
@@ -64,6 +66,12 @@ const theme: BaseTheme = createTheme({
       lineHeight: 25,
       fontFamily: 'SFProDis-Regular',
       color: 'body',
+    },
+    header: {
+      fontSize: 12,
+      lineHeight: 24,
+      fontFamily: 'SFProDis-Semibold',
+      color: 'black',
     },
   },
   breakpoints: {},

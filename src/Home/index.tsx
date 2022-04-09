@@ -12,7 +12,8 @@ export const HomeNavigator = () =>(
     screenOptions={{
       drawerStyle: {
         width: WIDTH_DRAWER
-      }
+      },
+      headerShown: false
     }}
   >
     <Drawer.Screen name='OutfitIdeas' component={OutfitIdeas}/>

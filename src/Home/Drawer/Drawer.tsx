@@ -1,10 +1,9 @@
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import  React from 'react';
 
 // import { Feather as Icon } from '@expo/vector-icons';
-import { Dimensions, Image, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Box, Text } from '../../components';
-import RoundedIconButton from '../../components/RoundedIconButton';
+import { Dimensions, Image } from 'react-native';
+import { Box, Header, Text, theme } from '../../components';
 import DrawerItem from './DrawerItem';
 
 
@@ -53,7 +52,7 @@ const items = [
 ]
 
 const DrawerContent = () => {
-  const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
 
   return (
@@ -64,25 +63,18 @@ const DrawerContent = () => {
                 top={0} left={0} right={0} bottom={0} //@ts-ignore
                 borderBottomRightRadius="xl"
                 backgroundColor="light_green"
-                flexDirection="row"
-                justifyContent="space-between"
-                paddingHorizontal="m"
-                style={{paddingTop: insets.top}}
             >
-              <RoundedIconButton 
-                name='x' 
-                color="black"
-                backgroundColor='black'
-                onPress={() => true}
-                size={24}
-              />
-              <Text color="white">My Profile</Text>
-              <RoundedIconButton 
-                name='shopping-bag' 
-                color="black"
-                backgroundColor='black'
-                onPress={() => true}
-                size={24}
+              <Header
+                dark
+                title='Menu'
+                left={{
+                  icon:"x",
+                   onPress: () => navigation.dispatch(DrawerActions.closeDrawer())
+                }}
+                right={{
+                  icon:"shopping-bag",
+                   onPress: () => true
+                }}
               />
             </Box>
         </Box>
@@ -116,12 +108,13 @@ const DrawerContent = () => {
         </Box>
         <Box flex={0.2} backgroundColor="white"
             width={WIDTH_DRAWER} {...{height}}
+            overflow="hidden"
         >
             <Image
-                source={require("../../../assets/patterns/1.png")} 
+                source={require("../../../assets/patterns/drawer.png")} 
                 style={{
-                    ...StyleSheet.absoluteFillObject,
-                    width: undefined, height: undefined
+                    width: WIDTH_DRAWER, height, //@ts-ignore
+                    borderTopLeftRadius: theme.borderRadii.xxl
                 }}
                 
             />
