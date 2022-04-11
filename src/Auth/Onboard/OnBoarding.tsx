@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
+//@ts-ignore
 import Animated, { divide, interpolateColors, multiply } from 'react-native-reanimated';
 
 import { useScrollHandler } from 'react-native-redash';
@@ -99,7 +100,7 @@ const Onboarding = ({ navigation }: AuthNavigationProps<'OnBoarding'>) => {
   }) as any;
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.slider]}>
+      <Animated.View style={[styles.slider, {backgroundColor}]}>
         <Animated.ScrollView
           //@ts-ignore
           ref={scroll}
@@ -116,7 +117,7 @@ const Onboarding = ({ navigation }: AuthNavigationProps<'OnBoarding'>) => {
         </Animated.ScrollView>
       </Animated.View>
       <View style={styles.footer}>
-        <Animated.View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'red' }} />
+        <Animated.View style={{ ...StyleSheet.absoluteFillObject, backgroundColor }} />
         <Animated.View style={styles.footerContent}>
           <View style={styles.pagination}>
             {slides.map((_, index) => (
