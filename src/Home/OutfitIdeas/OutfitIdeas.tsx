@@ -45,7 +45,7 @@ const OutfitIdeas = ({ navigation}: HomeNavigationProps<"OutfitIdeas">) => {
         title='Outfit Ideas'
         left={{
           icon:"menu",
-            onPress: () => navigation.openDrawer
+            onPress: () => navigation.openDrawer()
         }}
         right={{
           icon:"shopping-bag",

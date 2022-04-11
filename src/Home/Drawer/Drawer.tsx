@@ -22,7 +22,7 @@ const items = [
   {
     icon: "heart",
     label: "Fav Outfit",
-    screen: "Fav Outfit",
+    screen: "FavouriteOutfits",
     color: "pink",
   },
   {
@@ -101,7 +101,7 @@ const DrawerContent = () => {
                   my@email.xxx
                 </Text>
               </Box>
-              {items.map((item) => (
+              {items.map((item) => (//@ts-ignore
                 <DrawerItem key={item.screen} {...item} />
               ))}
             </Box>

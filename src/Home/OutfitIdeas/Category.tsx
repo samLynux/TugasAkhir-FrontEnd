@@ -1,6 +1,6 @@
 import  React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 import { Box, Text } from '../../components';
 
 interface CategoryProps {
@@ -17,11 +17,12 @@ const Category = ({category: {color: backgroundColor,title}}: CategoryProps) => 
     const [selected, setSelected] = useState(false)
     return (
         <>
-        <TouchableWithoutFeedback onPress={() => setSelected((prev) => !prev)}>
         <Box 
             marginLeft="m" alignItems="center"
             marginTop="m"
         >
+        <RectButton onPress={() => setSelected((prev) => !prev)}>
+        
             <Box
                 width={75} height={120}
                 justifyContent="center"
@@ -48,8 +49,9 @@ const Category = ({category: {color: backgroundColor,title}}: CategoryProps) => 
                 {title}
             </Text>
             </Box>
+       
+        </RectButton>
         </Box>
-        </TouchableWithoutFeedback>
         </>
     )
 }
