@@ -1,20 +1,21 @@
 import  React  from 'react';
 import { Dimensions } from 'react-native';
 
-import { Box, theme } from '../../components';
-import { Theme } from '../../components/Theme';
+import { Box, theme } from '../../../components';
+import { Theme } from '../../../components/Theme';
+import { lerp } from './Helpers';
+import Underlay from './Underlay';
 
 const aspectRatio = 305/195
 const {width: wWidth} = Dimensions.get("window")
-const lerp = (v0:number, v1:number, t:number) => {
-    return (1-t) * v0 + t * v1
-}
+
 
 
 export interface DataPoint{
     date: number,
     value:number,
     color: keyof Theme["colors"];
+    id: number;
 }
 
 interface GraphProps {
@@ -25,21 +26,30 @@ interface GraphProps {
 const Graph = ({data}: GraphProps) => {
     
     //@ts-ignore
-    const width = wWidth - theme.spacing.m * 2
-    const height = width / aspectRatio;
+    const canvasWidth = wWidth - theme.spacing.m * 2
+    const canvasHeight = canvasWidth / aspectRatio;
+    const width = canvasWidth - 24;
+    const height = canvasHeight - 24
     const values = data.map(p => p.value)
     const dates = data.map(p => p.date)
     const step = width /data.length
-    const minX = Math.min(...dates);
-    const maxX = Math.max(...dates);
+    // const minX = Math.min(...dates);
+    // const maxX = Math.max(...dates);
     const minY = Math.min(...values);
     const maxY = Math.max(...values);
   return (
     <>
+    <Box 
+        marginTop="xl"
+        paddingBottom="xl"
+        paddingLeft="l"
+        flexDirection="row"
+    >
+        <Underlay dates={dates} minY={minY} maxY={maxY} step={step}/>
         <Box   
             width={width}
             height={height}
-            marginTop="xl"
+            backgroundColor='white'
         >
             { data.map((point, i) => {
                 if(point.value === 0){
@@ -54,6 +64,7 @@ const Graph = ({data}: GraphProps) => {
                         height={lerp(0, height, point.value/maxY)}
                         left={i * step}
                         bottom={0}
+                        
                         // backgroundColor="primary"
                         
                     >
@@ -82,6 +93,7 @@ const Graph = ({data}: GraphProps) => {
             })}
             
         </Box>
+    </Box>
     </>
   );
 }
