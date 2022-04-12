@@ -27,8 +27,8 @@ const items = [
   },
   {
     icon: "mail",
-    label: " Ideas",
-    screen: "Ideas",
+    label: " TransactionHistory",
+    screen: "TransactionHistory",
     color: "light_green",
   },
   {

@@ -17,7 +17,7 @@ const Footer = ({label, onPress}: FooterProps) => {
 
   return (
     <Box backgroundColor="secondary" //@ts-ignore
-        padding="m" borderTopLeftRadius="xl"
+        padding="m" borderTopLeftRadius="xxl"
     >
       
       <Box alignItems="center"

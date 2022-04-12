@@ -8,6 +8,7 @@ import { Box, Header } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import Footer from './Footer';
 import Outfit from './Outfit';
+import TopCurve from './TopCurve';
 
 const {width: wWidth} = Dimensions.get("window")
 const defaultOutfits = [
@@ -70,8 +71,8 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
     //     []
     // )
 
-    const left = useRef<typeof Transitioning.View>(null)
-    const right = useRef<typeof Transitioning.View>(null)
+    const list = useRef<typeof Transitioning.View>(null)
+    
     
     return (
         <>
@@ -95,29 +96,26 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                     paddingBottom: footerHeight
                 }}
             >
+                <Transitioning.View //@ts-ignore
+                    ref={list} {...{transition}}
+                >
                 <Box flexDirection="row"
                     alignItems="center"
                     justifyContent="center"
                 >
                     <Box marginRight="m">
-                        <Transitioning.View //@ts-ignore
-                            ref={left} {...{transition}}
-                        >
-                        {outfits.filter((_, i) => i % 2 !== 0).map((outfit) => 
-                            <Outfit key={outfit.id} 
-                                outfit={outfit}
-                                width={width}
-                                
-                                
-                            />
-                        )}
-                        </Transitioning.View>
+                        
+                            {outfits.
+                                filter(({id}) => id % 2 !== 0).map((outfit) => (
+                                <Outfit key={outfit.id} 
+                                    outfit={outfit}
+                                    width={width}
+                                />
+                            ))}
                     </Box>
                     <Box>
-                        <Transitioning.View //@ts-ignore
-                            ref={right} {...{transition}}
-                        >
-                        {outfits.filter((_, i) => i % 2 === 0).map((outfit) => 
+                        
+                        {outfits.filter(({id}) => id % 2 === 0).map((outfit) => 
                             <Outfit key={outfit.id} 
                                 outfit={outfit}
                                 width={width}
@@ -125,10 +123,12 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                                 
                             />
                         )}
-                        </Transitioning.View>
+                        
                     </Box>
                 </Box>
+                </Transitioning.View>
             </ScrollView>
+            <TopCurve footerHeight={footerHeight}/>
 
             <Box position="absolute" 
                 bottom={0} left={0} right={0}
@@ -140,8 +140,8 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
             >
                 <Footer
                     label='add to fav'
-                    onPress={() => {
-                        // left?.current.animatNextTransito
+                    onPress={() => { //@ts-ignore
+                        list.current?.animateNextTransition();
                         setOutfits(outfits.filter(outfit =>
                             !outfit.selected    
                         ))
