@@ -1,12 +1,26 @@
 import  React from 'react';
-import { ScrollView } from 'react-native';
+import {  Dimensions, Image,  ScrollView, StyleSheet } from 'react-native';
 import { Box, Header, Text } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import Graph, { DataPoint } from './Graph/Graph';
+import TopCurve from './TopCurve';
 import Transaction from './Transaction';
 
-// const minDate = new Date("2019-09-01").getTime();
-// const maxDate = new Date("2020-02-01").getTime();
+
+const footerHeight = Dimensions.get("window").width/3.5 ;
+
+const styles = StyleSheet.create({
+    footer: {
+        ...StyleSheet.absoluteFillObject,
+        width:undefined,
+        height: undefined,
+        borderTopLeftRadius: 75,
+
+    }
+})
+const aspectRatio = 3;
+const minDate = new Date("2019-09-01").getTime();
+const maxDate = new Date("2020-02-01").getTime();
 
 const data: DataPoint[] = [
     {
@@ -14,12 +28,6 @@ const data: DataPoint[] = [
         value:10,
         color: "pink",
         id: 1000000,
-    },
-    {
-        date: new Date("2019-10-01").getTime(),
-        value:2,
-        color: "primary",
-        id: 2000000,
     },
     {
         date: new Date("2019-11-01").getTime(),
@@ -98,14 +106,31 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
             </Box>
 
         </Box>
-        <Graph data={data}/>
-        <ScrollView>
+        <Graph data={data} minDate={minDate} maxDate={maxDate}/>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+             contentContainerStyle={{
+                paddingBottom: footerHeight,
+            }}
+        >
             {data.map((transaction) => (
                 <Transaction key={transaction.id} transaction={transaction}/>
             ))}
         </ScrollView>
         </Box>
-        
+        <TopCurve footerHeight={footerHeight}/>
+        <Box position="absolute" 
+            left={0}
+            right={0}
+            bottom={0}
+            height={footerHeight}
+            aspectRatio={aspectRatio}
+        >
+            <Image
+                style={styles.footer}
+                source={require("../../../assets/patterns/3.png")}
+            />
+        </Box>
     </Box>
   );
 }

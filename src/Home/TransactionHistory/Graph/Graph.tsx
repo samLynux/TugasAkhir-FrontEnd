@@ -1,3 +1,4 @@
+import moment from 'moment';
 import  React  from 'react';
 import { Dimensions } from 'react-native';
 
@@ -19,12 +20,14 @@ export interface DataPoint{
 }
 
 interface GraphProps {
-   data: DataPoint[]
+   data: DataPoint[];
+   minDate: number;
+   maxDate: number
 }
 
 
-const Graph = ({data}: GraphProps) => {
-    
+const Graph = ({data, minDate, maxDate}: GraphProps) => {
+    const numberOfMonths = new Date(maxDate - minDate).getMonth();
     //@ts-ignore
     const canvasWidth = wWidth - theme.spacing.m * 2
     const canvasHeight = canvasWidth / aspectRatio;
@@ -32,9 +35,9 @@ const Graph = ({data}: GraphProps) => {
     const height = canvasHeight - 24
     const values = data.map(p => p.value)
     const dates = data.map(p => p.date)
-    const step = width /data.length
-    // const minX = Math.min(...dates);
-    // const maxX = Math.max(...dates);
+    const step = width /numberOfMonths
+    const minX = Math.min(...dates);
+    const maxX = Math.max(...dates);
     const minY = Math.min(...values);
     const maxY = Math.max(...values);
   return (
@@ -45,13 +48,26 @@ const Graph = ({data}: GraphProps) => {
         paddingLeft="l"
         flexDirection="row"
     >
-        <Underlay dates={dates} minY={minY} maxY={maxY} step={step}/>
+        <Underlay 
+            dates={dates} 
+            minY={minY} 
+            maxY={maxY} 
+            minX={minX} 
+            maxX={maxX} 
+            step={step}
+        />
         <Box   
             width={width}
             height={height}
             backgroundColor='white'
         >
-            { data.map((point, i) => {
+            { data.map((point) => {
+                const i = Math.round(
+                    moment.duration(
+                        moment(point.date).diff(moment(minDate))
+                    ).asMonths()
+                )
+                
                 if(point.value === 0){
                     return null
                 }

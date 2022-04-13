@@ -1,23 +1,26 @@
-import { format } from 'date-fns';
+
 import  React from 'react';
 import { StyleSheet } from 'react-native';
 import { Box, Text, theme } from '../../../components';
 import { lerp } from './Helpers';
+import moment from "moment"
 
-
-const formatter = (date: Date) => format(date, "MMM")
+// const formatter = (date: Date) => format(date, "MMM")
 
 interface UnderlayProps {
     dates: number[];
     minY: number;
     maxY: number;
+    minX: number;
+    maxX: number;
     step: number;
  }
  
 
 
-const Underlay = ({dates, minY, maxY, step}: UnderlayProps) => {
-   
+const Underlay = ({dates, minY, maxY, step, minX, maxX}: UnderlayProps) => {
+    const numberOfMonths = 7
+   const minDate = moment(minX);
   return (
     <>
     <Box 
@@ -60,10 +63,13 @@ const Underlay = ({dates, minY, maxY, step}: UnderlayProps) => {
             alignItems="baseline"
         >
             {
-                dates.map((date, index) => (
-                    <Box width={step}>
-                        <Text key={index} textAlign="center">
-                            {formatter(new Date(date))}
+                new Array(numberOfMonths)
+                .fill(0)
+                .map((_, i) => minDate.clone().add(i,"month" ))
+                .map((date, index) => (
+                    <Box width={step}  key={index}>
+                        <Text textAlign="center">
+                            {date.format("MMM")}
                         </Text>
                     </Box>
                 ))

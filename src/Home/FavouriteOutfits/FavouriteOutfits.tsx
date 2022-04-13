@@ -44,7 +44,7 @@ const defaultOutfits = [
     },
     {
         id: 6,
-        color: "#F3F0EF",
+        color: "#BEECC4",
         aspectRatio: 120/145,
         selected: false
     },
@@ -63,7 +63,14 @@ const defaultOutfits = [
 ]
 
 const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">) => {
-    const transition = <Transition.Change interpolation="easeInOut"/>
+    const transition = (
+        <Transition.Together>
+            <Transition.Out type='fade' />
+            <Transition.In type='fade'  />
+        </Transition.Together>
+    )
+
+
     const width = (wWidth - 16 *3) /2;
     const [footerHeight, setFooterHeight] = useState(0)
     const [outfits, setOutfits] = useState(defaultOutfits)
@@ -106,7 +113,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                     <Box marginRight="m">
                         
                             {outfits.
-                                filter(({id}) => id % 2 !== 0).map((outfit) => (
+                                filter((_, i) => i % 2 !== 0).map((outfit) => (
                                 <Outfit key={outfit.id} 
                                     outfit={outfit}
                                     width={width}
@@ -115,7 +122,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                     </Box>
                     <Box>
                         
-                        {outfits.filter(({id}) => id % 2 === 0).map((outfit) => 
+                        {outfits.filter((_, i) => i % 2 === 0).map((outfit) => 
                             <Outfit key={outfit.id} 
                                 outfit={outfit}
                                 width={width}

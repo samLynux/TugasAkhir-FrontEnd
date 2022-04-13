@@ -114,6 +114,30 @@ const Onboarding = ({ navigation }: AuthNavigationProps<'OnBoarding'>) => {
           {slides.map(({ title, picture }, index) => (
             <Slide key={index} {...{ title, picture }} right={!!(index % 2)} />
           ))}
+          {/* {slides.map(({ subtitle, description }, index) => {
+              const last = index === slides.length - 1;
+              return (
+                <Subslide
+                  key={index}
+                  onPress={() => {
+                    if (last) {
+                      navigation.navigate('Welcome');
+                    }
+                    // console.log("yyyy");
+                    if (scroll.current) {
+                      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                      // console.log(index);
+                      //@ts-ignore
+                      scroll.current?.scrollTo({
+                        x: width * (index + 1),
+                        animated: true,
+                      });
+                    }
+                  }}
+                  {...{ subtitle, description, last }}
+                />
+              );
+            })} */}
         </Animated.ScrollView>
       </Animated.View>
       <View style={styles.footer}>

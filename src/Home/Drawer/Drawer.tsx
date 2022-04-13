@@ -1,8 +1,9 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, DrawerActions, useNavigation } from '@react-navigation/native';
 import  React from 'react';
 
 // import { Feather as Icon } from '@expo/vector-icons';
 import { Dimensions, Image } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Box, Header, Text, theme } from '../../components';
 import DrawerItem from './DrawerItem';
 
@@ -44,9 +45,14 @@ const items = [
     color: "black",
   },
   {
-    icon: "x",
-    label: " Ideas",
-    screen: "Ideas2fd",
+    icon: "log-out",
+    label: "Logout", //@ts-ignore
+    onPress: (navigation) => navigation.dispatch(CommonActions.reset({
+      index: 0,
+      routes: [
+        {name: "Authentication"},
+      ]
+    })),
     color: "black",
   },
 ]
@@ -101,9 +107,18 @@ const DrawerContent = () => {
                   my@email.xxx
                 </Text>
               </Box>
-              {items.map((item) => (//@ts-ignore
-                <DrawerItem key={item.screen} {...item} />
-              ))}
+              <Box>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                      paddingBottom: height/2
+                  }}
+                >
+                {items.map((item) => (//@ts-ignore
+                  <DrawerItem key={item.screen} {...item} />
+                ))}
+                </ScrollView>
+              </Box>
             </Box>
         </Box>
         <Box flex={0.2} backgroundColor="white"

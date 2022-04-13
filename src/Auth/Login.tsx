@@ -8,6 +8,7 @@ import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { CommonActions } from '@react-navigation/native';
 
 
 const LoginSchema = Yup.object().shape({
@@ -38,9 +39,14 @@ const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
 
 //@ts-ignore
   const onLogin = (data) => {
-    console.log(data);
-    navigation.navigate("Home")
     
+    console.log(data);
+    navigation.dispatch(CommonActions.reset({
+      index: 0,
+      routes: [
+        {name: "Home"},
+      ]
+    }))
   }
 
   const checked = () => {
@@ -105,7 +111,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
           
           
           <Box alignItems="center" marginTop="m">
-            <Button variant='primary' onPress={handleSubmit(onLogin)}
+            <Button variant='primary' onPress={(handleSubmit(onLogin))}
               label='Log in'/>
           </Box>
         
