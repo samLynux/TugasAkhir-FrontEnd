@@ -1,6 +1,7 @@
 import moment from 'moment';
-import  React  from 'react';
+import  React, { useLayoutEffect, useRef }  from 'react';
 import { Dimensions } from 'react-native';
+import { Transition, Transitioning, TransitioningView } from 'react-native-reanimated';
 
 import { Box, theme } from '../../../components';
 import { Theme } from '../../../components/Theme';
@@ -8,6 +9,12 @@ import { lerp } from './Helpers';
 import Underlay from './Underlay';
 
 const aspectRatio = 305/195
+const transition = (
+    <Transition.Together>
+        
+        <Transition.In type="slide-bottom" durationMs={650} interpolation="easeInOut"/>
+    </Transition.Together>
+)
 const {width: wWidth} = Dimensions.get("window")
 
 
@@ -27,6 +34,10 @@ interface GraphProps {
 
 
 const Graph = ({data, minDate, maxDate}: GraphProps) => {
+    const ref = useRef< TransitioningView>(null)
+    useLayoutEffect(() => {
+        ref.current?.animateNextTransition();
+    }, [])
     const numberOfMonths = new Date(maxDate - minDate).getMonth();
     //@ts-ignore
     const canvasWidth = wWidth - theme.spacing.m * 2
@@ -37,7 +48,7 @@ const Graph = ({data, minDate, maxDate}: GraphProps) => {
     const dates = data.map(p => p.date)
     const step = width /numberOfMonths
     const minX = Math.min(...dates);
-    const maxX = Math.max(...dates);
+    // const maxX = Math.max(...dates);
     const minY = Math.min(...values);
     const maxY = Math.max(...values);
   return (
@@ -49,18 +60,23 @@ const Graph = ({data, minDate, maxDate}: GraphProps) => {
         flexDirection="row"
     >
         <Underlay 
-            dates={dates} 
             minY={minY} 
             maxY={maxY} 
             minX={minX} 
-            maxX={maxX} 
             step={step}
+            numberOfMonths={numberOfMonths}
         />
-        <Box   
-            width={width}
-            height={height}
-            backgroundColor='white'
+        <Transitioning.View 
+            transition={transition}
+            ref={ref}
+            style={{
+                width,
+                height,
+                overflow: "hidden"
+            }}
+            
         >
+        
             { data.map((point) => {
                 const i = Math.round(
                     moment.duration(
@@ -74,7 +90,7 @@ const Graph = ({data, minDate, maxDate}: GraphProps) => {
                 
                 return (
                     <Box
-                        key={point.date}
+                        key={point.id}
                         position="absolute"
                         width={step}
                         height={lerp(0, height, point.value/maxY)}
@@ -108,7 +124,7 @@ const Graph = ({data, minDate, maxDate}: GraphProps) => {
                 )
             })}
             
-        </Box>
+        </Transitioning.View>
     </Box>
     </>
   );

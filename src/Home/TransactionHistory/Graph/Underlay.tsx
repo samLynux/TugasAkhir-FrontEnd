@@ -8,18 +8,17 @@ import moment from "moment"
 // const formatter = (date: Date) => format(date, "MMM")
 
 interface UnderlayProps {
-    dates: number[];
     minY: number;
     maxY: number;
     minX: number;
-    maxX: number;
     step: number;
+    numberOfMonths: number;
  }
  
 
 
-const Underlay = ({dates, minY, maxY, step, minX, maxX}: UnderlayProps) => {
-    const numberOfMonths = 7
+const Underlay = ({ minY, maxY, step, minX, numberOfMonths}: UnderlayProps) => {
+
    const minDate = moment(minX);
   return (
     <>
