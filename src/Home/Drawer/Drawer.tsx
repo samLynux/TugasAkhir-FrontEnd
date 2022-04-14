@@ -39,9 +39,9 @@ const items = [
     color: "light_green",
   },
   {
-    icon: "check",
-    label: "kalss",
-    screen: "kalss",
+    icon: "settings",
+    label: "Notification Settings",
+    screen: "Settings",
     color: "black",
   },
   {

@@ -1,14 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import  React, { ReactNode, useState } from 'react';
+import  React  from 'react';
 import { useForm } from 'react-hook-form';
-import {  Dimensions } from 'react-native';
+
 import { ScrollView } from 'react-native-gesture-handler';
 import { Box, Text } from '../../components';
 import TextInput from '../../components/Form/TextInput';
 import CheckboxGroup from './CheckboxGroup';
 import * as Yup from "yup"
 
-const {width} = Dimensions.get("window")
+// const {width} = Dimensions.get("window")
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
       .required('Email is required')
@@ -33,7 +33,6 @@ const genders = [
 
 const PersonalInfo = () => {
   const {control, 
-    handleSubmit, 
   } = useForm({
     resolver: yupResolver(LoginSchema)
   });
