@@ -78,8 +78,8 @@ const DrawerContent = () => {
                    onPress: () => navigation.dispatch(DrawerActions.closeDrawer())
                 }}
                 right={{
-                  icon:"shopping-bag",
-                   onPress: () => true
+                  icon:"shopping-bag", //@ts-ignore
+                   onPress: () =>  navigation.navigate("Cart")
                 }}
               />
             </Box>

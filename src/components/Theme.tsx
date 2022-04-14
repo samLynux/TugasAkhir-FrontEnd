@@ -1,4 +1,10 @@
 import { BaseTheme, createBox, createText, createTheme } from '@shopify/restyle';
+import { Dimensions } from 'react-native';
+
+export const {width} = Dimensions.get("window");
+  
+export const aspectRatio = width/375;
+
 
 const palette = {
   // purpleLight: '#8C6FF7',
@@ -14,6 +20,7 @@ const palette = {
 };
 
 const theme: BaseTheme = createTheme({
+
   colors: {
     black: '#0B0B0B',
     white: palette.white,

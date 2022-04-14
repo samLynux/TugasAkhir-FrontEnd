@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
         height: (width * 750)/1125,
     }
 })
-interface ContentFooterProp {
+interface ContentProp {
     children: React.ReactNode;
 }
 
 
-const ContentFooter = ({children}:ContentFooterProp) => {
+const Content = ({children}:ContentProp) => {
     
 
 
@@ -66,4 +66,4 @@ const ContentFooter = ({children}:ContentFooterProp) => {
   );
 }
 
-export default ContentFooter;
+export default Content;

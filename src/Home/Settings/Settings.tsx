@@ -1,5 +1,5 @@
 import  React from 'react';
-import { Box, ContentFooter, Header } from '../../components';
+import { Box, Content, Header } from '../../components';
 
 import { HomeNavigationProps } from '../../components/Navigation';
 import { DrawerActions } from '@react-navigation/native';
@@ -16,7 +16,7 @@ const Settings = ({ navigation}: HomeNavigationProps<"Settings">) => {
       
   return (
     <>
-    <ContentFooter>
+    <Content>
     
     <Box  backgroundColor="white">
         
@@ -55,7 +55,7 @@ const Settings = ({ navigation}: HomeNavigationProps<"Settings">) => {
         </Box>
         
     </Box>
-    </ContentFooter>
+    </Content>
     </>
   );
 }
