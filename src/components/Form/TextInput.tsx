@@ -13,7 +13,7 @@ interface TextInputProps extends RNTextInputProps {
   placeholder: string;
 
   control: any;
-  secureTextEntry: any;
+  secureTextEntry?: any;
 }
 
 

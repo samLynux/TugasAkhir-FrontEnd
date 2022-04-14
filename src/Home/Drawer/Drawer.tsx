@@ -22,21 +22,21 @@ const items = [
   },
   {
     icon: "heart",
-    label: "Fav Outfit",
+    label: "Favourite Outfit",
     screen: "FavouriteOutfits",
     color: "pink",
+  },
+  {
+    icon: "user",
+    label: "Edit Profile",
+    screen: "EditProfile",
+    color: "black",
   },
   {
     icon: "mail",
     label: " TransactionHistory",
     screen: "TransactionHistory",
     color: "light_green",
-  },
-  {
-    icon: "lock",
-    label: "Outfs",
-    screen: "Outfs",
-    color: "black",
   },
   {
     icon: "check",
@@ -115,7 +115,7 @@ const DrawerContent = () => {
                   }}
                 >
                 {items.map((item) => (//@ts-ignore
-                  <DrawerItem key={item.screen} {...item} />
+                  <DrawerItem key={item.label} {...item} />
                 ))}
                 </ScrollView>
               </Box>

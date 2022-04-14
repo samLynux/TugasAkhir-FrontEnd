@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,13 +23,14 @@ interface ButtonProps {
   label: string;
   onPress: () => void;
   children?: ReactNode;
+  style?: RectButtonProps["style"]
 }
 
-const Button = ({ variant, label, onPress, children }: ButtonProps) => {
+const Button = ({ variant, label, onPress, children, style }: ButtonProps) => {
   const backgroundColor = variant === 'primary' ? '#2CB9B0' : 'rgba(12,13,52,0.05)';
   const color = variant === 'primary' ? 'white' : '#0C0D34';
   return (
-    <RectButton style={[styles.container, { backgroundColor }]} {...{ onPress }}>
+    <RectButton style={[styles.container, style, { backgroundColor }]} {...{ onPress }}>
       {children ? children : <Text style={[styles.label, { color }]}>{label}</Text>}
     </RectButton>
   );

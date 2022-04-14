@@ -65,7 +65,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
           use your credentials and login
         </Text>
         
-{/* @ts-ignore */}
+
         <TextInput
           name="email"
           icon="mail"
