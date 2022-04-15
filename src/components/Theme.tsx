@@ -74,6 +74,12 @@ const theme: BaseTheme = createTheme({
       fontFamily: 'SFProDis-Semibold',
       color: 'title',
     },
+    title4: {
+      fontSize: 8,
+      lineHeight: 30,
+      fontFamily: 'SFProDis-Semibold',
+      color: 'title',
+    },
     body: {
       fontSize: 16,
       lineHeight: 25,
