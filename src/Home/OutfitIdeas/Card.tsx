@@ -1,76 +1,109 @@
 import  React from 'react';
-import { Dimensions, Image, ImageRequireSource, StyleSheet} from 'react-native';
+import { ImageRequireSource, StyleSheet} from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, { add,  interpolateColors } from 'react-native-reanimated';
-import { mix,  usePanGestureHandler, withSpring, WithSpringParams } from 'react-native-redash';
+import Animated, {  Extrapolate,  interpolate, useAnimatedGestureHandler, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
+import { mix, mixColor, snapPoint} from 'react-native-redash';
+
 
 import { Box } from '../../components';
+import { width as wWidth } from '../../components/Theme';
 
-const { width: wWidth } = Dimensions.get('window');
+
 const width = wWidth * 0.65
 const height = width * (425/294)
+const snapPoints = [-wWidth, 0, wWidth]
 
 interface CardProps{
-    position: Animated.Node<number>;
     source: ImageRequireSource;
     onSwipe : () => void;
+    index: number;
+    aIndex: Animated.SharedValue<number>;
+    step: number
 }
-const Card = ({position, source, onSwipe}: CardProps) => {
-    const {gestureHandler, translation, velocity, state} = usePanGestureHandler()
-    
-    const translateYOffset = mix(position,0,-50)
+const Card = ({step, source, onSwipe, index, aIndex}: CardProps) => {
 
-    const translateX = withSpring({
-        value: translation.x,
-        velocity: velocity.x,
-        state,
-        snapPoints: [-width * 2, 0, width * 2],
-        onSnap: ([x]) => x !== 0 && onSwipe(),
-    },)
-    
-    const translateY = add(
-        translateYOffset, withSpring({
-        value: translation.y,
-        velocity: velocity.y,
-        state,
-        snapPoints: [0]
+    const translateY = useSharedValue(0);
+    const translateX = useSharedValue(0);
+
+    const position = useDerivedValue(() => (index * step) - aIndex.value)
+
+    //@ts-ignore
+    const onGestureEvent = useAnimatedGestureHandler<{x: number; y: number}>({
+        onStart: (_, ctx) => {//@ts-ignore
+            ctx.x = translateX.value;//@ts-ignore
+            ctx.y = translateY.value
+        },
+        onActive: ({translationX, translationY}, ctx) => {//@ts-ignore
+            translateX.value = translationX + ctx.x;//@ts-ignore
+            translateY.value = translationY + ctx.y;
+        },
+        onEnd: ({velocityX, velocityY}) => {
+            translateY.value = withSpring(
+                0, {velocity: velocityY}
+            );
+
+            const dest = snapPoint(
+                translateX.value, velocityX, snapPoints)
+            translateX.value = withSpring(
+                dest, {
+                    overshootClamping: dest === 0 ? false : true,
+                    restSpeedThreshold: dest === 0 ? 0.01 : 100,
+                    restDisplacementThreshold: dest === 0 ? 0.01 : 100,
+                }, () => dest !== 0 && onSwipe()
+            );
+        }
+    })
+    const imageStyle = useAnimatedStyle(() => ({
+        transform: [{scale: interpolate(
+            position.value,
+            [0,step],
+            [1,2,1],
+            Extrapolate.CLAMP
+        )}]
     }))
 
-    const scale = mix(position, 1, 0.9)
-    const imageScale = mix(position, 1.05, 0.85)
-    // const backgroundColor= //@ts-ignore
-    //     position === 1? "#C9E9E7" : (position === 0.5? "#74BCBE": "#eb4034")
-    const backgroundColor = interpolateColors(
-        position,{
-            inputRange: [0,1],
-            outputColorRange:  ["#C9E9E7", "#74BCBE"] 
+    const cardStyle = useAnimatedStyle(() => {
+        const scale = mix(position.value, 1, 0.9)
+
+        return{
+            transform: [
+                {translateY: translateY.value}, 
+                {translateX: translateX.value}, 
+                {scale}
+            ],
+            backgroundColor: mixColor(position.value, "#C9E9E7" , "#74BCBE")
         }
-    ) ;
+    })
+
+
+    
+
+    
+    
+    // const backgroundColor= mixColor(position.value, "#C9E9E7" , "#74BCBE")
+        
+
   return (
     <>
     <Box style={StyleSheet.absoluteFill} 
         justifyContent="center" alignItems="center"
     >
-        <PanGestureHandler {...gestureHandler}>
+        {/* @ts-ignore */}
+        <PanGestureHandler onGestureEvent={onGestureEvent}>
         <Animated.View //@ts-ignore
-            style={{
-                backgroundColor, 
+            style={[{
                 width, height, 
                 borderRadius:24,
-                transform: [{translateY}, {translateX}, {scale}],
                 overflow:"hidden"    
-            }}
+            }, cardStyle]}
         >
             <Animated.Image
                 {...{source}} 
-                style={{
+                style={[{
                     ...StyleSheet.absoluteFillObject,
                     width: undefined,
                     height: undefined,
-                    transform: [{
-                        scale: imageScale
-                    }]
-                }}
+                }, imageStyle]}
                 
             
             />

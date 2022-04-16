@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-//@ts-ignore
-import Animated, { divide, interpolateColors, multiply } from 'react-native-reanimated';
+import { View, StyleSheet, Dimensions, Image } from 'react-native';
 
-import { useScrollHandler } from 'react-native-redash';
+import Animated, { useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import { interpolateColor } from 'react-native-redash';
+import { theme } from '../../components';
+
+
 import { AuthNavigationProps } from '../../components/Navigation';
 import Dot from './Dot';
 import Slide, { SLIDE_HEIGHT, BORDER_RADIUS } from './Slide';
@@ -36,9 +38,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor:"green",
-    // flex:1
   },
+  underlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems:"center",
+    justifyContent: "flex-end", //@ts-ignore
+    borderBottomRightRadius: theme.borderRadii.xl,
+    overflow:"hidden"
+  }
 });
 
 const slides = [
@@ -87,74 +94,95 @@ const slides = [
     },
   },
 ];
-//@ts-ignore
-const Onboarding = ({ navigation }: AuthNavigationProps<'OnBoarding'>) => {
-  const scroll = useRef<Animated.ScrollView>();
 
-  // const x = useValue(0)
-  const { scrollHandler, x } = useScrollHandler();
-  //@ts-ignore
-  const backgroundColor = interpolateColors(x, {
-    inputRange: slides.map((_, i) => i * width),
-    outputColorRange: slides.map((slide) => slide.color),
-  }) as any;
+const Onboarding = ({ navigation }: AuthNavigationProps<'OnBoarding'>) => {
+  const scroll = useRef<Animated.ScrollView>(null);
+
+  const x = useSharedValue(0);
+  const onScroll = useAnimatedScrollHandler({
+    onScroll: ({contentOffset}) => {
+      x.value = contentOffset.x;
+    }
+  })
+  const backgroundColor = useDerivedValue(() => 
+    interpolateColor(
+      x.value, 
+      slides.map((_, i) => i * width),
+      slides.map((slide) => slide.color),
+  ))
+  const slider = useAnimatedStyle(() => ({
+    backgroundColor: backgroundColor.value
+  }))
+
+  const background = useAnimatedStyle(() => ({
+    backgroundColor: backgroundColor.value
+  }))
+  const currentIndex = useDerivedValue(() => x.value / width );
+  const footerStyle = useAnimatedStyle(() => ({
+    transform: [{translateX: -x.value }]
+  }))
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.slider, {backgroundColor}]}>
+      <Animated.View style={[styles.slider, slider]}>
         <Animated.ScrollView
-          //@ts-ignore
           ref={scroll}
           horizontal
           snapToInterval={width}
           decelerationRate="fast"
           showsHorizontalScrollIndicator={false}
           bounces={false}
-          {...scrollHandler}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
         >
+          {/* {slides.map(({  picture }, index) => {
+            const style = useAnimatedStyle(() => ({
+              opacity:  interpolate(x.value, 
+                [
+                  (index - 0.5) * width,
+                  index * width,
+                  (index + 0.5) * width
+                ],
+                [0,1,0],
+                Extrapolate.CLAMP,
+              )
+            }))
+
+            return(
+              <Animated.View style={[styles.underlay,style]} key={index}>
+                <Image
+                  source={picture.src}
+                  style={{//@ts-ignore
+                    width: width - theme.borderRadii.xl,
+                    height:(//@ts-ignore
+                      (width - theme.borderRadii.xl) * picture.height
+                    ) / picture.width
+                  }}
+                />
+              </Animated.View>
+            )})} */}
+
+
+
           {slides.map(({ title, picture }, index) => (
             <Slide key={index} {...{ title, picture }} right={!!(index % 2)} />
           ))}
-          {/* {slides.map(({ subtitle, description }, index) => {
-              const last = index === slides.length - 1;
-              return (
-                <Subslide
-                  key={index}
-                  onPress={() => {
-                    if (last) {
-                      navigation.navigate('Welcome');
-                    }
-                    // console.log("yyyy");
-                    if (scroll.current) {
-                      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                      // console.log(index);
-                      //@ts-ignore
-                      scroll.current?.scrollTo({
-                        x: width * (index + 1),
-                        animated: true,
-                      });
-                    }
-                  }}
-                  {...{ subtitle, description, last }}
-                />
-              );
-            })} */}
         </Animated.ScrollView>
       </Animated.View>
       <View style={styles.footer}>
-        <Animated.View style={{ ...StyleSheet.absoluteFillObject, backgroundColor }} />
+        <Animated.View style={[StyleSheet.absoluteFillObject, background  ]} />
         <Animated.View style={styles.footerContent}>
           <View style={styles.pagination}>
             {slides.map((_, index) => (
-              <Dot key={index} currentIndex={divide(x, width)} {...{ index, x }} />
+              <Dot key={index} currentIndex={currentIndex} {...{ index, x }} />
             ))}
           </View>
           <Animated.View
-            style={{
+            style={[{
               flexDirection: 'row',
               width: width * slides.length,
               flex: 1,
-              transform: [{ translateX: multiply(x, -1) }],
-            }}
+              
+            }, footerStyle]}
           >
             {slides.map(({ subtitle, description }, index) => {
               const last = index === slides.length - 1;
@@ -165,7 +193,6 @@ const Onboarding = ({ navigation }: AuthNavigationProps<'OnBoarding'>) => {
                     if (last) {
                       navigation.navigate('Welcome');
                     }
-                    // console.log("yyyy");
                     if (scroll.current) {
                       console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                       // console.log(index);
