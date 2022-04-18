@@ -4,15 +4,22 @@ import SwipableRow from './SwipableRow';
 
 interface ItemProps{
   onDelete: () => void;
+  Product: {
+      id: number,
+      size: string,
+      name: string,
+      price: string,
+  },
 }
 
-const Item = ({onDelete}: ItemProps) => {
-   
+const Item = ({onDelete, Product}: ItemProps) => {
+  //@ts-ignore 
+  const height = 120 + theme.spacing.m * 2
     
   return (
     <>
-    <SwipableRow onDelete={(onDelete)}>
-       <Box padding="m" flexDirection="row" >
+    <SwipableRow height={height} onDelete={(onDelete)}>
+       <Box padding="m" flexDirection="row" backgroundColor="white">
            <Box 
                 width={120}
                 height={120} //@ts-ignore
@@ -24,9 +31,9 @@ const Item = ({onDelete}: ItemProps) => {
              
            </Box>
            <Box padding="s" flex={1} justifyContent="center">
-              <Text variant="header">Size S M L</Text>
-              <Text variant="title3" marginBottom="s" >Short Sleeve Organic Top</Text>
-              <Text variant="title3" >$29.90</Text>
+              <Text variant="header">Size {Product.size}</Text>
+              <Text variant="title3" marginBottom="s" >{Product.name}</Text>
+              <Text variant="title3" >${Product.price}</Text>
             </Box>
             <Box justifyContent="center">
               <Box 

@@ -53,7 +53,7 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
 
   return (
     <Container {...{ footer }} pattern={1}>
-      <Box padding="xl">
+      <Box padding="m">
         <Text variant="title1" textAlign="center">
           Create Account 
         </Text>

@@ -46,7 +46,7 @@ const OutfitIdeas = ({ navigation}: HomeNavigationProps<"OutfitIdeas">) => {
         }}
         right={{
           icon:"shopping-bag",
-            onPress: () => true
+            onPress: () => navigation.navigate("Cart")
         }}
       />
       <Categories/>               

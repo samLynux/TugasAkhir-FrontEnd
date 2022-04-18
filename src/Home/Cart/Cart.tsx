@@ -7,7 +7,6 @@ import { Box,  Header,  theme , Text} from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import { aspectRatio, width } from '../../components/Theme';
 import CartContainer from './CartContainer';
-import Checkout from './Checkout';
 import Item from './Item';
 
 
@@ -15,14 +14,39 @@ const height = width * aspectRatio;
 const d = "M 0 0 A 50 50 0 0 0 50 50 H 325 A 50 50 0 0 1 375 100 V 0 0 Z"
 
 
-const defaultItems = [{id: 1},{id: 2},{id: 3},{id: 4}]
+const defaultItems = [
+    {
+        id: 0,
+        size: "s",
+        name: "Short Sleeves Top",
+        price: "29.20"
+    },
+    {
+        id: 1,
+        size: "s",
+        name: "Short Sleeves Bottom",
+        price: "20.20"
+    },
+    {
+        id: 2,
+        size: "s",
+        name: "No Sleeves Top",
+        price: "9.20"
+    },
+    {
+        id: 3,
+        size: "s",
+        name: "No Sleeves Bottom",
+        price: "0"
+    },
+]
 
 const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
    const [items, setItems] = useState(defaultItems);
     
   return (
     <>
-        <CartContainer checkoutComponent={Checkout}>
+        <CartContainer>
             <Box backgroundColor="primary"paddingTop="m">
 
             
@@ -38,19 +62,23 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
             
             <Box flex={1} >
                 <ScrollView
-                    style={{ 
+                    nestedScrollEnabled = {true}
+                    style={{ backgroundColor:"white",
                         //@ts-ignore
                         borderBottomLeftRadius: theme.borderRadii.xl,//@ts-ignore
                         borderBottomRightRadius: theme.borderRadii.xl
                     }}
                     contentContainerStyle={{
-                        paddingVertical: 100 * aspectRatio
+                        
+                        paddingVertical: 50 * aspectRatio
                     }}
                 >
-                    {items.map((_, index) => (
-                        <Item key={index} onDelete={() => {
+                    {items.map((item, index) => (
+                        <Item Product={item} key={item.id} onDelete={() => {
                             items.splice(index, 1);
-                            setItems(items.concat);
+                            setItems(items.concat());
+
+                            console.log(items)
                         }}/>
                     ))}
                 </ScrollView>

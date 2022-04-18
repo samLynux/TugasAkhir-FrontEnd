@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import  React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { snapPoint } from 'react-native-redash';
 import { Box,  Text, theme  } from '../../components';
 import RoundedIconButton from '../../components/RoundedIconButton';
@@ -11,6 +11,7 @@ import { aspectRatio, width } from '../../components/Theme';
 interface SwipableRowProps{
     children: React.ReactNode;
     onDelete: () => void;
+    height: number;
 }
 const finalDestination = width;
 const snapPoints = [-85 * aspectRatio, 0, width]
@@ -18,11 +19,13 @@ const snapPoints = [-85 * aspectRatio, 0, width]
 // const funcx = () => console.log('11111')
 
 
-const SwipableRow = ({children, onDelete}: SwipableRowProps) => {
-    
+const SwipableRow = ({children, onDelete, height: defaultHeight}: SwipableRowProps) => {
+    const height = useSharedValue(defaultHeight);
     const deleteItem = useCallback(() => {
         onDelete();
     }, [onDelete])
+
+
     const translateX = useSharedValue(0) //@ts-ignore
     const onGestureEvent = useAnimatedGestureHandler<{x: number}>({
         onStart: (_, ctx) => { //@ts-ignore
@@ -43,13 +46,19 @@ const SwipableRow = ({children, onDelete}: SwipableRowProps) => {
                 },
                 () => {
                     if(dest === finalDestination){
-                        deleteItem();
+                        height.value = withTiming(0,
+                            {duration: 500},
+                            () => runOnJS(deleteItem)() 
+                        );
+                        
+                        // translateX.value = 0
                     }
                 }
             )
         }
     })
     const style = useAnimatedStyle(() => ({
+        height: height.value ,
         transform: [{translateX: translateX.value}],
         backgroundColor: theme.colors.white
     }))
@@ -117,7 +126,7 @@ const SwipableRow = ({children, onDelete}: SwipableRowProps) => {
         </Animated.View>
         
     {/* @ts-ignore */}
-    <PanGestureHandler onGestureEvent={onGestureEvent}>
+    <PanGestureHandler activeOffsetY={0} onGestureEvent={onGestureEvent}>
         <Animated.View style={style}>
             {children}
         </Animated.View>

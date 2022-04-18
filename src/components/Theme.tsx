@@ -28,6 +28,7 @@ const theme: BaseTheme = createTheme({
     primary: '#2CB9B0',
     title: '#0C0D34',
     secondary: '#4287f5',
+    red: "#ff0004",
     light_green: '#42f5bf',
     leaf_green: '#42f54b',
     yellow: '#e6f542',

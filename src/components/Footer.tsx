@@ -8,16 +8,18 @@ interface FooterProps {
     onPress: () => void;
     title: string;
     action: string;
+    socialLogin?: boolean;
 }
 
 
-const Footer = ({title, action, onPress}: FooterProps) => {
+const Footer = ({title, action, onPress, socialLogin}: FooterProps) => {
     
 
 
   return (
     <>
-      <SocialLogin />
+      {socialLogin && <SocialLogin />}
+      
       <Box alignItems="center">
         <TouchableWithoutFeedback  {...{onPress}}
             //@ts-ignore

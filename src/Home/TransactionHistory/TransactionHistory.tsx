@@ -112,9 +112,6 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                     marginBottom:30,
                 }}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    paddingBottom: footerHeight,
-                }}
                 
             >
                 {data.map((transaction) => (

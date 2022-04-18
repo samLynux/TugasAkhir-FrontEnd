@@ -86,7 +86,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
         <Box flex={1} backgroundColor="white">
             <Header
                 dark
-                title='Outfit Ideas'
+                title='Favourite Outfits'
                 left={{
                 icon:"menu",
                     onPress: () => navigation.openDrawer()

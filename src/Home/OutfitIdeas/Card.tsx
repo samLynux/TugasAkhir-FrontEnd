@@ -1,7 +1,7 @@
 import  React from 'react';
 import { ImageRequireSource, StyleSheet} from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, {  Extrapolate,  interpolate, useAnimatedGestureHandler, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, {  Extrapolate,  interpolate, runOnJS, useAnimatedGestureHandler, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
 import { mix, mixColor, snapPoint} from 'react-native-redash';
 
 
@@ -21,26 +21,29 @@ interface CardProps{
     step: number
 }
 const Card = ({step, source, onSwipe, index, aIndex}: CardProps) => {
-
+    
     const translateY = useSharedValue(0);
     const translateX = useSharedValue(0);
 
     const position = useDerivedValue(() => (index * step) - aIndex.value)
 
+    const translateYOffset = mix(position.value,0,-50)
+
+
     //@ts-ignore
     const onGestureEvent = useAnimatedGestureHandler<{x: number; y: number}>({
         onStart: (_, ctx) => {//@ts-ignore
             ctx.x = translateX.value;//@ts-ignore
-            ctx.y = translateY.value
+            ctx.y = translateYOffset
         },
         onActive: ({translationX, translationY}, ctx) => {//@ts-ignore
             translateX.value = translationX + ctx.x;//@ts-ignore
             translateY.value = translationY + ctx.y;
         },
-        onEnd: ({velocityX, velocityY}) => {
-            translateY.value = withSpring(
-                0, {velocity: velocityY}
-            );
+        onEnd: ({velocityX}) => {
+            // translateY.value = withSpring(
+            //     0, {velocity: velocityY}
+            // );
 
             const dest = snapPoint(
                 translateX.value, velocityX, snapPoints)
@@ -49,7 +52,7 @@ const Card = ({step, source, onSwipe, index, aIndex}: CardProps) => {
                     overshootClamping: dest === 0 ? false : true,
                     restSpeedThreshold: dest === 0 ? 0.01 : 100,
                     restDisplacementThreshold: dest === 0 ? 0.01 : 100,
-                }, () => dest !== 0 && onSwipe()
+                }, () => dest !== 0 && runOnJS(onSwipe)()
             );
         }
     })
@@ -57,7 +60,7 @@ const Card = ({step, source, onSwipe, index, aIndex}: CardProps) => {
         transform: [{scale: interpolate(
             position.value,
             [0,step],
-            [1,2,1],
+            [1.1, 1, 1.1],
             Extrapolate.CLAMP
         )}]
     }))
@@ -67,7 +70,7 @@ const Card = ({step, source, onSwipe, index, aIndex}: CardProps) => {
 
         return{
             transform: [
-                {translateY: translateY.value}, 
+                {translateY:translateYOffset}, 
                 {translateX: translateX.value}, 
                 {scale}
             ],

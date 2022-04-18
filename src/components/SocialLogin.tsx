@@ -59,8 +59,8 @@ const SociaIcon = ({ children }: SocialLoginProps) => {
       backgroundColor="white" //@ts-ignore
       borderRadius="l"
       margin="m"
-      width={44}
-      height={44}
+      width={33}
+      height={33}
       justifyContent="center"
       alignItems="center"
     >

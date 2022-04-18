@@ -1,10 +1,7 @@
-import { useIsFocused } from '@react-navigation/native';
 import moment from 'moment';
 import  React   from 'react';
 import { Dimensions, View } from 'react-native';
-import Animated, { divide, multiply, sub,  } from 'react-native-reanimated';
-import { useTransition } from 'react-native-redash';
-
+import Animated, { useAnimatedStyle, useSharedValue, withTiming,  } from 'react-native-reanimated';
 import { Box, theme } from '../../../components';
 import { Theme } from '../../../components/Theme';
 import { lerp } from './Helpers';
@@ -32,10 +29,8 @@ interface GraphProps {
 
 
 const Graph = ({data, minDate, maxDate}: GraphProps) => {
-    const isFocused = useIsFocused();
-    const transition = useTransition(isFocused, {duration: 650});
-
-
+    // const isFocused = useIsFocused();
+    // const transition = useTiming(isFocused, {duration: 650});
     // const ref = useRef< TransitioningView>(null)
     // useLayoutEffect(() => {
     //     ref.current?.animateNextTransition();
@@ -87,9 +82,18 @@ const Graph = ({data, minDate, maxDate}: GraphProps) => {
                 if(point.value === 0){
                     return null
                 }
+                
+                const tranlateY = useSharedValue(0)
+                const h = useSharedValue(0);
+                const style = useAnimatedStyle(() => ({
+                    height: h.value,
+                    transform: [{translateX: tranlateY.value}],
+                }))
                 const totalHeight = lerp(0, height, point.value/maxY);
-                const currentHeight = multiply(totalHeight, transition);
-                const translateY = divide(sub(totalHeight, currentHeight),2)
+
+                h.value = withTiming(totalHeight,
+                    {duration: 500}, 
+                );
                 return (
                     <AnimatedBox
                         key={point.id}
@@ -98,16 +102,7 @@ const Graph = ({data, minDate, maxDate}: GraphProps) => {
                         height={totalHeight}
                         left={i * step}
                         bottom={0}
-                        style={{
-                            transform: [
-                                {
-                                    translateY
-                                },
-                                {
-                                    scaleY: transition
-                                }
-                            ]
-                        }}
+                        style={style}
                         // backgroundColor="primary"
                         
                     >

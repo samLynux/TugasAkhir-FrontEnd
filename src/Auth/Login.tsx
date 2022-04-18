@@ -26,6 +26,7 @@ const LoginSchema = Yup.object().shape({
 
 const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
   const footer = <Footer 
+      socialLogin
       title="Don't have account?" 
       action='Sign up here'
       onPress={() => navigation.navigate("Signup")}

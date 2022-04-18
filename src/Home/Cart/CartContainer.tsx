@@ -1,4 +1,4 @@
-import  React, { FC } from 'react';
+import  React  from 'react';
 import { Box,  theme } from '../../components';
 import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { View } from 'react-native';
@@ -17,11 +17,11 @@ const snapPoints = [-(height - minHeight),0, ]
 
 interface CartContainerProps{
     children: React.ReactNode;
-    checkoutComponent: FC<{minHeight: number}>;
+    // checkoutComponent: FC<{minHeight: number}>;
 }
 
 
-const CartContainer = ({children, checkoutComponent}: CartContainerProps) => {
+const CartContainer = ({children}: CartContainerProps) => {
    
     const translateY = useSharedValue(0) //@ts-ignore
     const onGestureEvent = useAnimatedGestureHandler<{y? : number}>({
@@ -39,7 +39,6 @@ const CartContainer = ({children, checkoutComponent}: CartContainerProps) => {
                 snapPoints
             )
             translateY.value = withSpring(dest, {overshootClamping: true})
-            console.log(translateY.value);
             
         }
     })

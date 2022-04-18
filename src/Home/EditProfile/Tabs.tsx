@@ -48,7 +48,7 @@ const Tabs = ({ tabs, children }: TabsProps) => {
             >
                 <Box 
                     padding="m"
-                    paddingBottom="xl"
+                    paddingBottom="l"
                 >
                     <Text
                         variant="title3"
@@ -62,9 +62,9 @@ const Tabs = ({ tabs, children }: TabsProps) => {
         <Animated.View 
             style={[{
                 position:"absolute",
-                bottom: 0,
+                bottom: 10,
                 left: -5,
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.secondary,
                 width: 10,
                 height: 10,
                 borderRadius: 5,
