@@ -7,6 +7,7 @@ import { Box,  Header,  theme , Text} from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import { aspectRatio, width } from '../../components/Theme';
 import CartContainer from './CartContainer';
+import Checkout from './Checkout';
 import Item from './Item';
 
 
@@ -21,7 +22,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     
   return (
     <>
-        <CartContainer>
+        <CartContainer checkoutComponent={Checkout}>
             <Box backgroundColor="primary"paddingTop="m">
 
             
@@ -46,7 +47,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
                         paddingVertical: 100 * aspectRatio
                     }}
                 >
-                    {items.map((item, index) => (
+                    {items.map((_, index) => (
                         <Item key={index} onDelete={() => {
                             items.splice(index, 1);
                             setItems(items.concat);

@@ -93,7 +93,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                 }}
                 right={{
                 icon:"shopping-bag",
-                    onPress: () => true
+                    onPress: () => navigation.navigate("Cart")
                 }}
             />
             <Box flex={1}>
