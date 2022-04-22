@@ -42,7 +42,7 @@ const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInp
         >
           <Box padding="s">
             <Icon //@ts-ignore
-              name={icon} size={16} {...{color}}/>
+              name={icon} size={16} color={color}/>
           </Box>
 
 

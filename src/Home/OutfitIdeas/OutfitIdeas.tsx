@@ -61,8 +61,12 @@ const OutfitIdeas = ({ navigation}: HomeNavigationProps<"OutfitIdeas">) => {
               aIndex={aIndex}
               step={step}
               
-              {...{source}}
-              onSwipe={() => setCurrentIndex((prev) => prev + step)}
+              source={source}
+              onSwipe={() => {
+                
+                
+                setCurrentIndex((prev) => prev + step)
+              }}
             />
           ))
         }

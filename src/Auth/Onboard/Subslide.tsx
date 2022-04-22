@@ -8,23 +8,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 44,
+    padding: 54,
     width,
   },
   subtitle: {
+    paddingTop:24,
     marginBottom: 12,
     textAlign: 'center',
   },
   description: {
     color: '#0C0D34',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
   },
-  // titleContainer: {
-  //     height:100,
-  //     justifyContent: "center",
-
-  // },
 });
 
 interface SlideProps {

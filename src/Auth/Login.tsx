@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
+import axios from 'axios';
 
 
 const LoginSchema = Yup.object().shape({
@@ -39,9 +40,16 @@ const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
   });
 
 //@ts-ignore
-  const onLogin = (data) => {
+  const onLogin = async (data) => {
     
-    console.log(data);
+    await axios.post("login", {
+      email:data.email,
+      password:data.password,
+    })
+
+    
+
+
     navigation.dispatch(CommonActions.reset({
       index: 0,
       routes: [

@@ -1,5 +1,4 @@
 import React from 'react';
-// import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
 interface DotProps {
@@ -22,7 +21,7 @@ const Dot = ({ index, currentIndex }: DotProps) => {
     );
     return {
       opacity,
-      backgroundColor: 'blue',
+      backgroundColor: 'gray',
       width: 8,
       height: 8,
       borderRadius: 4,

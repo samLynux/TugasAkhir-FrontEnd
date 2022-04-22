@@ -2,7 +2,7 @@ import  React from 'react';
 
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Box, Button, Text } from '../../components';
+import { Box, Button} from '../../components';
 
 
 interface FooterProps {
@@ -25,16 +25,16 @@ const Footer = ({label, onPress}: FooterProps) => {
             paddingBottom: insets.bottom
         }}
       >
-        <Button  {...{label, onPress}}
+        <Button label={label} onPress={onPress}
             variant="primary">
           
         </Button>
 
-        <Box flexDirection="row">
+        {/* <Box flexDirection="row">
         <Text variant="body" color="white">
             {label}
         </Text>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

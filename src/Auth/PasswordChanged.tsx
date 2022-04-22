@@ -20,10 +20,7 @@ const PasswordChange = ({ navigation }:AuthNavigationProps<'PasswordChange'>) =>
   
     
   const onPushedBtn = () => {
-    console.log("xxx");
-    
-    // console.log(data);
-    
+    navigation.navigate("Login")
   }
 
   
@@ -50,11 +47,6 @@ const PasswordChange = ({ navigation }:AuthNavigationProps<'PasswordChange'>) =>
         </Text>
         
 
-          
-        
-         
-          
-          
           <Box alignItems="center" marginTop="m">
             <Button variant='primary' onPress={onPushedBtn}
               label='Go back to Login'/>

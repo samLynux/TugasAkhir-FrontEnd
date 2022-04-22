@@ -8,8 +8,7 @@ import * as Yup from "yup"
 import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
-// import { TextInput } from 'react-native';
-
+import axios from "axios"
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
@@ -41,16 +40,39 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
   });
 
 //@ts-ignore
-  const onSignup = (data) => {
-    // console.log("xxx");
+  const onSignup = async (data) => {
     
-    console.log(data);
+    
+    // console.log(data);
+     await axios.post("register", {
+      firstname:"samuel",
+
+      lastname:"putra",
+
+      email:data.email,
+
+      password:data.password,
+
+      passwordconfirm: data.passwordConfirm,
+    })
+
+
+    navigation.navigate("Login")
     
   }
 
  
-  
+  // const testBackend = async () => {
+  //   console.log("3");
+  //   const {data} = await axios.get("http://192.168.1.5:3000/api/test")
+     
+      
+  //   console.log(data);
 
+    
+  //   console.log("32");
+  // }
+  // testBackend()
   return (
     <Container {...{ footer }} pattern={1}>
       <Box padding="m">
@@ -58,10 +80,9 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
           Create Account 
         </Text>
         <Text variant="body" textAlign="center">
-          We want to know your email, password, and name 
+          We want to know your email, password, and name!
         </Text>
-        
-{/* @ts-ignore */}
+
         <TextInput
           name="email"
           icon="mail"
@@ -105,7 +126,6 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
             <Button variant='primary' onPress={handleSubmit(onSignup)}
               label='Create Account'/>
           </Box>
-        
       </Box>
     </Container>
   );

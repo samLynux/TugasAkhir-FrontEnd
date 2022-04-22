@@ -18,7 +18,7 @@ const items = [
     icon: "zap",
     label: "Outfit Ideas",
     screen: "OutfitIdeas",
-    color: "black",
+    color: "dark_blue",
   },
   {
     icon: "heart",
@@ -30,7 +30,7 @@ const items = [
     icon: "user",
     label: "Edit Profile",
     screen: "EditProfile",
-    color: "black",
+    color: "leaf_green",
   },
   {
     icon: "mail",
@@ -68,7 +68,7 @@ const DrawerContent = () => {
             <Box position="absolute" 
                 top={0} left={0} right={0} bottom={0} //@ts-ignore
                 borderBottomRightRadius="xl"
-                backgroundColor="light_green"
+                backgroundColor="light_blue"
             >
               <Header
                 dark
@@ -85,7 +85,7 @@ const DrawerContent = () => {
             </Box>
         </Box>
         <Box flex={0.8} >
-            <Box flex={1} backgroundColor="light_green"/>
+            <Box flex={1} backgroundColor="light_blue"/>
             <Box flex={1} backgroundColor="pink"/>
             <Box position="absolute" 
                 top={0} left={0} right={0} bottom={0} //@ts-ignore
@@ -109,6 +109,7 @@ const DrawerContent = () => {
               </Box>
               <Box>
                 <ScrollView
+                  
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{
                       paddingBottom: height/2
@@ -122,7 +123,7 @@ const DrawerContent = () => {
             </Box>
         </Box>
         <Box flex={0.2} backgroundColor="white"
-            width={WIDTH_DRAWER} {...{height}}
+            width={WIDTH_DRAWER} height={height}
             overflow="hidden"
         >
             <Image

@@ -65,7 +65,7 @@ const defaultOutfits = [
 const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">) => {
     const transition = (
         <Transition.Together>
-            <Transition.Out type='fade' />
+            <Transition.Out type='fade' durationMs={500}/>
             <Transition.In type='fade'  />
         </Transition.Together>
     )
@@ -74,9 +74,6 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
     const width = (wWidth - 16 *3) /2;
     const [footerHeight, setFooterHeight] = useState(0)
     const [outfits, setOutfits] = useState(defaultOutfits)
-    // const [selectedOutfits, setSelectedOutfits] = useState<typeof defaultOutfits>(
-    //     []
-    // )
 
     const list = useRef<typeof Transitioning.View>(null)
     
@@ -104,7 +101,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                 }}
             >
                 <Transitioning.View //@ts-ignore
-                    ref={list} {...{transition}}
+                    ref={list} transition={transition}
                 >
                 <Box flexDirection="row"
                     alignItems="center"

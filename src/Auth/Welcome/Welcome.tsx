@@ -19,7 +19,7 @@ const Welcome = ({ navigation }: AuthNavigationProps<'Welcome'>) => {
     <Box flex={1} backgroundColor="white">
       <Box
         flex={1}
-        backgroundColor="black"
+        backgroundColor="light_blue"
         //@ts-ignore
         borderBottomRightRadius="xxl"
         alignItems="center"
@@ -41,7 +41,7 @@ const Welcome = ({ navigation }: AuthNavigationProps<'Welcome'>) => {
       >
         <Box
           flex={1}
-          backgroundColor="black"
+          backgroundColor="light_blue"
           position="absolute"
           top={0}
           left={0}

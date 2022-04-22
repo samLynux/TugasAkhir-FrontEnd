@@ -101,7 +101,7 @@ const Card = ({step, source, onSwipe, index, aIndex}: CardProps) => {
             }, cardStyle]}
         >
             <Animated.Image
-                {...{source}} 
+                source={source}
                 style={[{
                     ...StyleSheet.absoluteFillObject,
                     width: undefined,

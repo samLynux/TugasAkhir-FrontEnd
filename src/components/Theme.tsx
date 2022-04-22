@@ -33,8 +33,12 @@ const theme: BaseTheme = createTheme({
     leaf_green: '#42f54b',
     yellow: '#e6f542',
     pink: '#f542a7',
-    light_blue: "#a9a6ff",
-    dark_blue: "#02004a"
+    light_blue: "#BFEAF5",
+    dark_blue: "#02004a",
+    green: "#5eff81",
+    purple: "#ff5ec9",
+    pink_orange: "#f78686",
+    gray: "#bababa",
   },
   spacing: {
     s: 8,

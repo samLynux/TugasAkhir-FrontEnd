@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeNavigator } from './src/Home';
 import { AppRoutes } from './src/components/Navigation';
+import axios from 'axios';
 
 const fonts = {
   "SFProText-Bold": require("./assets/fonts/SF-Pro-Text-Bold.otf"),
@@ -27,6 +28,8 @@ const fonts = {
 const AppStack = createStackNavigator<AppRoutes>();
 
 export default function App() {
+  axios.defaults.baseURL = "http://192.168.1.5:3000/api/";
+  axios.defaults.withCredentials = true;
   return (
     <ThemeProvider {...{theme}}>
       <LoadAssets {...{fonts}}>
