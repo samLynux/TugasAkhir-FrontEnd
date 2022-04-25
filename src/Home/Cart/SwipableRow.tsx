@@ -11,6 +11,8 @@ import { aspectRatio, width } from '../../components/Theme';
 interface SwipableRowProps{
     children: React.ReactNode;
     onDelete: () => void;
+    onPlus: () => void;
+    onMinus: () => void;
     height: number;
 }
 const finalDestination = width;
@@ -19,7 +21,7 @@ const snapPoints = [-85 * aspectRatio, 0, width]
 // const funcx = () => console.log('11111')
 
 
-const SwipableRow = ({children, onDelete, height: defaultHeight}: SwipableRowProps) => {
+const SwipableRow = ({children, onDelete, height: defaultHeight, onPlus, onMinus}: SwipableRowProps) => {
     const height = useSharedValue(defaultHeight);
     const deleteItem = useCallback(() => {
         onDelete();
@@ -51,7 +53,6 @@ const SwipableRow = ({children, onDelete, height: defaultHeight}: SwipableRowPro
                             () => runOnJS(deleteItem)() 
                         );
                         
-                        // translateX.value = 0
                     }
                 }
             )
@@ -91,17 +92,17 @@ const SwipableRow = ({children, onDelete, height: defaultHeight}: SwipableRowPro
             >
                 <RoundedIconButton
                     name='plus'
-                    size={24}
+                    size={36}
                     color="white"
                     backgroundColor='primary'
-                    onPress={() => alert("Hello")}
+                    onPress={() => onPlus()}
                 />
                 <RoundedIconButton
                     name='minus'
-                    size={24}
+                    size={36}
                     color="white"
                     backgroundColor='light_green'
-                    onPress={() => alert("Hello")}
+                    onPress={() => onMinus()}
                 />
             </Box>
         </Animated.View>

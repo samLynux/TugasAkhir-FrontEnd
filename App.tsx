@@ -32,6 +32,7 @@ export default function App() {
   axios.defaults.withCredentials = true;
   return (
     <ThemeProvider {...{theme}}>
+      
       <LoadAssets {...{fonts}}>
         <SafeAreaProvider>
         <AppStack.Navigator screenOptions={{ headerShown: false }}>

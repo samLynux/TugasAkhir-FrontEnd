@@ -3,7 +3,7 @@ import {  ScrollView } from 'react-native';
 
 import { Box, Text } from '../../components';
 import CheckboxGroup from './CheckboxGroup';
-import RoundedCheckbox from './RoundedCheckboxGroup';
+import RoundedCheckboxGroup from '../../components/RoundedCheckboxGroup';
 
 
 // const {width} = Dimensions.get("window")
@@ -38,19 +38,19 @@ const prefferedBrands = [
 ]
 
 const sizes = [
-    {value: "s"},
-    {value: "m"},
-    {value: "l"},
-    {value: "xl"},
-    {value: "xxl"},
+    "s",
+    "m",
+    "l",
+    "xl",
+    "xxl",
 ]
 
 const colors = [
-    {value: "#0C0D34"},
-    {value: "#FF0058"},
-    {value: "#50B9DE"},
-    {value: "#00D99A"},
-    {value: "#FE5E33"},
+    "#0C0D34",
+    "#FF0058",
+    "#50B9DE",
+    "#00D99A",
+    "#FE5E33",
 ]
 
 const Configuration = () => {
@@ -68,12 +68,12 @@ const Configuration = () => {
             <Text variant="body">
                 What is your clothing size
             </Text>
-            <RoundedCheckbox options={sizes}/>
+            <RoundedCheckboxGroup options={sizes}/>
 
             <Text variant="body">
                 What type of clothes do you wear
             </Text>
-            <RoundedCheckbox options={colors} valueIsColor/>
+            <RoundedCheckboxGroup options={colors} valueIsColor/>
 
             <Text variant="body">
                 My preffered brands

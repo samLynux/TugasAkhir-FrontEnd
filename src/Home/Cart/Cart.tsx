@@ -1,4 +1,4 @@
-import  React, { useState } from 'react';
+import  React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Svg, { Path } from 'react-native-svg';
@@ -6,6 +6,7 @@ import { Box,  Header,  theme , Text} from '../../components';
 
 import { HomeNavigationProps } from '../../components/Navigation';
 import { aspectRatio, width } from '../../components/Theme';
+import { CartContext } from '../services/cart.context';
 import CartContainer from './CartContainer';
 import Item from './Item';
 
@@ -14,39 +15,75 @@ const height = width * aspectRatio;
 const d = "M 0 0 A 50 50 0 0 0 50 50 H 325 A 50 50 0 0 1 375 100 V 0 0 Z"
 
 
-const defaultItems = [
-    {
-        id: 0,
-        size: "s",
-        name: "Short Sleeves Top",
-        price: "29.20"
-    },
-    {
-        id: 1,
-        size: "s",
-        name: "Short Sleeves Bottom",
-        price: "20.20"
-    },
-    {
-        id: 2,
-        size: "s",
-        name: "No Sleeves Top",
-        price: "9.20"
-    },
-    {
-        id: 3,
-        size: "s",
-        name: "No Sleeves Bottom",
-        price: "0"
-    },
-]
+// const defaultItems = [
+//     {
+//         id: 0,
+//         size: "s",
+//         name: "Short Sleeves Top",
+//         price: "29.20"
+//     },
+//     {
+//         id: 1,
+//         size: "s",
+//         name: "Short Sleeves Bottom",
+//         price: "20.20"
+//     },
+//     {
+//         id: 2,
+//         size: "s",
+//         name: "No Sleeves Top",
+//         price: "9.20"
+//     },
+//     {
+//         id: 3,
+//         size: "s",
+//         name: "No Sleeves Bottom",
+//         price: "0"
+//     },
+// ]
 
 const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
-   const [items, setItems] = useState(defaultItems);
-    
+    const [cart, setCart] = useContext(CartContext)
+    const [total, setTotal] = useState(0)
+   
+    //@ts-ignore
+   const addItem = (item, index)  => {
+        if(item.quantity >= 9){
+            alert("Reached Maximum Quantity")
+            return
+        }
+        setCart(
+            cart.map((item, i) => 
+                i === index 
+                ? {...item, quantity :( item.quantity + 1)} 
+                : item 
+        ))
+    }
+    //@ts-ignore
+    const decreaseItem = (item, index)  => {
+        if(item.quantity <= 1){
+            alert("Swipe Left to remove product")
+            return
+        }
+        setCart(
+            cart.map((item, i) => 
+                i === index 
+                ? {...item, quantity :( item.quantity - 1)} 
+                : item 
+        ))
+    }
+
+
+   useEffect(() => {
+        let newTotal = 0
+        cart.forEach((item) => {
+            newTotal += item.price * item.quantity
+        });
+        setTotal(newTotal)
+    }, [cart]);
   return (
     <>
-        <CartContainer>
+        <CartContainer total={total}>
             <Box backgroundColor="primary"paddingTop="m">
 
             
@@ -63,23 +100,34 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
             <Box flex={1} >
                 <ScrollView
                     nestedScrollEnabled = {true}
-                    style={{ backgroundColor:"white",
+                    style={{ backgroundColor:theme.colors.gray,
                         //@ts-ignore
                         borderBottomLeftRadius: theme.borderRadii.xl,//@ts-ignore
-                        borderBottomRightRadius: theme.borderRadii.xl
+                        borderBottomRightRadius: theme.borderRadii.xl,
+                        
                     }}
                     contentContainerStyle={{
                         
-                        paddingVertical: 50 * aspectRatio
+                        paddingVertical: 70 * aspectRatio
                     }}
                 >
-                    {items.map((item, index) => (
-                        <Item Product={item} key={item.id} onDelete={() => {
-                            items.splice(index, 1);
-                            setItems(items.concat());
-
-                            console.log(items)
-                        }}/>
+                    {cart.map((item, index) => (
+                        <Item 
+                            Product={item} 
+                            key={item.id } 
+                            onDelete={() => {
+                                cart.splice(index, 1);
+                                setCart(cart.concat());
+                            }}
+                            onPlus={() => {
+                                addItem(item, index)
+                                
+                            }}
+                            onMinus={() => {
+                                decreaseItem(item, index)
+                                
+                            }}
+                        />
                     ))}
                 </ScrollView>
                 <Box 

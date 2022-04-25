@@ -8,24 +8,31 @@ import TransactionHistory from "./TransactionHistory";
 import EditProfile from "./EditProfile";
 import Settings from "./Settings";
 import Cart from "./Cart";
+import Catalog from "./Catalog";
+import ProductDetails from "./ProductDetails";
+import { CartContextProvider } from "./services/cart.context";
 
 
 const Drawer = createDrawerNavigator<HomeRoutes>();
 export const HomeNavigator = () =>(
-  <Drawer.Navigator 
-    drawerContent={() =><DrawerContent/>}
-    screenOptions={{
-      drawerStyle: {
-        width: WIDTH_DRAWER
-      },
-      headerShown: false
-    }}
-  >
-    <Drawer.Screen name='OutfitIdeas' component={OutfitIdeas}/>
-    <Drawer.Screen name='FavouriteOutfits' component={FavouriteOutfits}/>
-    <Drawer.Screen name='TransactionHistory' component={TransactionHistory}/>
-    <Drawer.Screen name='EditProfile' component={EditProfile}/>
-    <Drawer.Screen name='Settings' component={Settings}/>
-    <Drawer.Screen name='Cart' component={Cart}/>
-  </Drawer.Navigator>
+  <CartContextProvider>
+    <Drawer.Navigator 
+      drawerContent={() =><DrawerContent/>}
+      screenOptions={{
+        drawerStyle: {
+          width: WIDTH_DRAWER
+        },
+        headerShown: false
+      }}
+    >
+      <Drawer.Screen name='OutfitIdeas' component={OutfitIdeas}/>
+      <Drawer.Screen name='FavouriteOutfits' component={FavouriteOutfits}/>
+      <Drawer.Screen name='TransactionHistory' component={TransactionHistory}/>
+      <Drawer.Screen name='EditProfile' component={EditProfile}/>
+      <Drawer.Screen name='Settings' component={Settings}/>
+      <Drawer.Screen name='Cart' component={Cart}/>
+      <Drawer.Screen name='Catalog' component={Catalog}/>
+      <Drawer.Screen name='ProductDetails' component={ProductDetails}/>
+    </Drawer.Navigator>
+  </CartContextProvider>
 )

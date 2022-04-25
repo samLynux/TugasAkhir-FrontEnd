@@ -1,40 +1,47 @@
 import  React, {  useState } from 'react';
 import { View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
-import { Box, Text, theme } from '../../components';
+import { Box, Text, theme } from '.';
 import {Feather as Icon} from "@expo/vector-icons"
 
 // const {width} = Dimensions.get("window")
 
-interface RoundedCheckboxProps{
-  options: {
-      value: string;
-  }[];
-  valueIsColor?: boolean
+interface RoundedCheckboxGroupProps{
+  options: string[];
+  valueIsColor?: boolean;
+  radio?: boolean;
+  onPress?: (size:string) => void;
 }
 
 
 
-const RoundedCheckbox = ({ options, valueIsColor }: RoundedCheckboxProps) => {
+const RoundedCheckboxGroup = ({ options, valueIsColor, radio, onPress }: RoundedCheckboxGroupProps) => {
     const [selectedValues, setSelectedValues]= useState<string[]>([])
       
   return (
     <>
       <Box flexDirection="row" flexWrap="wrap" marginTop="s">
-        {options.map(({value}) => {
-            const index = selectedValues.indexOf(value)
+        {options.map((option) => {
+            const index = selectedValues.indexOf(option)
             const isSelected = index !== -1
             const backgroundColor = isSelected ? theme.colors.primary : theme.colors.default
             return(
             <BorderlessButton
-                key={value}
+                key={option}
                 onPress={() => {
-                    if(isSelected){
-                        selectedValues.splice(index, 1)
-                    } else{
-                        selectedValues.push(value)
-                    }
-                    setSelectedValues([...selectedValues])
+                  if(onPress){
+                    onPress(option);
+                  }
+                  if(radio){
+                    setSelectedValues([option]);
+                  }else{
+                      if(isSelected){
+                          selectedValues.splice(index, 1)
+                      } else{
+                          selectedValues.push(option)
+                      }
+                      setSelectedValues([...selectedValues])
+                  }
                 }}
             >
               <View
@@ -56,7 +63,7 @@ const RoundedCheckbox = ({ options, valueIsColor }: RoundedCheckboxProps) => {
                 borderRadius:30,
                 justifyContent:"center",
                 alignItems:"center",
-                backgroundColor: valueIsColor ? value : backgroundColor
+                backgroundColor: valueIsColor ? option : backgroundColor
               }}>
                 {!valueIsColor &&(
                   <Text 
@@ -64,7 +71,7 @@ const RoundedCheckbox = ({ options, valueIsColor }: RoundedCheckboxProps) => {
                     variant="header"
                     color={isSelected ? "white" : "black"}
                   >
-                    {value.toUpperCase()}
+                    {option.toUpperCase()}
                   </Text>
                 )}
                 {valueIsColor && isSelected &&(
@@ -82,4 +89,4 @@ const RoundedCheckbox = ({ options, valueIsColor }: RoundedCheckboxProps) => {
   );
 }
 
-export default RoundedCheckbox;
+export default RoundedCheckboxGroup;

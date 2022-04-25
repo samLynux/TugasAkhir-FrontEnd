@@ -22,6 +22,12 @@ const items = [
   },
   {
     icon: "heart",
+    label: "Outfit Catalog",
+    screen: "Catalog",
+    color: "light_blue",
+  },
+  {
+    icon: "heart",
     label: "Favourite Outfit",
     screen: "FavouriteOutfits",
     color: "pink",

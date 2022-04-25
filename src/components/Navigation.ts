@@ -47,4 +47,6 @@ export type HomeRoutes ={
   EditProfile: undefined;
   Settings: undefined;
   Cart: undefined;
+  Catalog: undefined;
+  ProductDetails: undefined;
 }
