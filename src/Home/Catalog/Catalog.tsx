@@ -4,11 +4,13 @@ import { Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Transition, Transitioning } from 'react-native-reanimated';
 import { Box, Header } from '../../components';
+import Categories from '../../components/Categories';
 
 import { HomeNavigationProps } from '../../components/Navigation';
 import Outfit from './Outfit';
 
 const {width: wWidth} = Dimensions.get("window")
+
 const defaultOutfits = [
     {
         id: 1,
@@ -92,10 +94,14 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
         </Transition.Together>
     )
 
+    const filtering = (tags: string[]) => {
+        console.log(tags);
+        setOutfits(defaultOutfits)
+    }
 
     const width = (wWidth - 16 *3) /2;
     const [footerHeight, setFooterHeight] = useState(0)
-    const [outfits, _] = useState(defaultOutfits)
+    const [outfits, setOutfits] = useState(defaultOutfits)
 
     const list = useRef<typeof Transitioning.View>(null)
     
@@ -115,6 +121,10 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                     onPress: () => navigation.navigate("Cart")
                 }}
             />
+            <Categories onPress={(tags) => {
+                filtering(tags);
+                
+            }}/> 
             <Box flex={1}>
             <ScrollView
                 contentContainerStyle={{

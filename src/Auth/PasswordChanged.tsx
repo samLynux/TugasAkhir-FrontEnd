@@ -11,7 +11,7 @@ import { AuthNavigationProps } from '../components/Navigation';
 
 
 //@ts-ignore
-const PasswordChange = ({ navigation }:AuthNavigationProps<'PasswordChange'>) => {
+const PasswordChanged = ({ navigation }:AuthNavigationProps<'PasswordChanged'>) => {
   const footer = (
       <Box flexDirection="row" justifyContent="center">
         <ClosedButton onPress={() => navigation.navigate("Login")}/>
@@ -57,4 +57,4 @@ const PasswordChange = ({ navigation }:AuthNavigationProps<'PasswordChange'>) =>
   );
 };
 
-export default PasswordChange;
+export default PasswordChanged;

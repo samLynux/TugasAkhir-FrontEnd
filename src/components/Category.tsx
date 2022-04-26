@@ -1,7 +1,8 @@
 import  React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
-import { Box, Text } from '../../components';
+import { Box, Text } from './Theme';
+
 
 interface CategoryProps {
     category: {
@@ -10,10 +11,12 @@ interface CategoryProps {
         title: string;
 
     }
+    onAdd: (title: string) => void;
+    onRemove: (title: string) => void;
 }
 
 
-const Category = ({category: {color: backgroundColor,title}}: CategoryProps) => {
+const Category = ({category: {color: backgroundColor,title}, onAdd, onRemove}: CategoryProps) => {
     const [selected, setSelected] = useState(false)
     return (
         <>
@@ -21,7 +24,14 @@ const Category = ({category: {color: backgroundColor,title}}: CategoryProps) => 
             marginLeft="m" alignItems="center"
             marginTop="m"
         >
-        <RectButton onPress={() => setSelected((prev) => !prev)}>
+        <RectButton onPress={() => {
+            setSelected((prev) => !prev)
+            if(!selected){
+                onAdd(title);
+            }else{
+                onRemove(title);
+            }
+        }}>
         
             <Box
                 width={75} height={120}

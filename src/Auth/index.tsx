@@ -5,7 +5,8 @@ import ForgotPassword from './ForgotPassword';
 import Login from './Login';
 
 import Onboard from './Onboard';
-import PasswordChange from './PasswordChanged';
+import PasswordChanged from './PasswordChanged';
+import PasswordChange from './PasswordChange';
 import Signup from './Signup';
 import Welcome from './Welcome';
 
@@ -19,6 +20,7 @@ export const AuthNavigator = () => {
       <AuthStack.Screen name="Signup" component={Signup} />
       <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
       <AuthStack.Screen name="PasswordChange" component={PasswordChange} />
+      <AuthStack.Screen name="PasswordChanged" component={PasswordChanged} />
     </AuthStack.Navigator>
   );
 };

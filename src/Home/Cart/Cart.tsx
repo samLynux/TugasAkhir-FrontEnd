@@ -46,6 +46,10 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     const [cart, setCart] = useContext(CartContext)
     const [total, setTotal] = useState(0)
    
+    const checkout = () => {
+        console.log("checkout");
+        
+    }
     //@ts-ignore
    const addItem = (item, index)  => {
         if(item.quantity >= 9){
@@ -83,7 +87,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     }, [cart]);
   return (
     <>
-        <CartContainer total={total}>
+        <CartContainer total={total} onCheckout={checkout}>
             <Box backgroundColor="primary"paddingTop="m">
 
             
@@ -100,10 +104,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
             <Box flex={1} >
                 <ScrollView
                     nestedScrollEnabled = {true}
-                    style={{ backgroundColor:theme.colors.gray,
-                        //@ts-ignore
-                        borderBottomLeftRadius: theme.borderRadii.xl,//@ts-ignore
-                        borderBottomRightRadius: theme.borderRadii.xl,
+                    style={{ backgroundColor:theme.colors.white,
                         
                     }}
                     contentContainerStyle={{
@@ -149,7 +150,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
                         textAlign="center"
                         color="white"
                     >
-                        3 Items Added
+                        {cart.length} Items Added
                     </Text>
                 </Box>
             </Box>

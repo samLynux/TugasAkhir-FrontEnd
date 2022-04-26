@@ -23,28 +23,36 @@ export interface DataPoint{
 
 interface GraphProps {
    data: DataPoint[];
-   minDate: number;
    maxDate: number
 }
 
 
-const Graph = ({data, minDate, maxDate}: GraphProps) => {
+const Graph = ({data, maxDate}: GraphProps) => {
     // const isFocused = useIsFocused();
     // const transition = useTiming(isFocused, {duration: 650});
     // const ref = useRef< TransitioningView>(null)
     // useLayoutEffect(() => {
     //     ref.current?.animateNextTransition();
     // }, [])
-    const numberOfMonths = new Date(maxDate - minDate).getMonth();
+    const minDate = moment(maxDate).subtract(6, "month");
+    // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    
+    // console.log(new Date(minDate).getTime());
+    
+    // console.log(moment(minDatex).format());
+    const numberOfMonths = 6
     //@ts-ignore
     const canvasWidth = wWidth - theme.spacing.m * 2
     const canvasHeight = canvasWidth / aspectRatio;
     const width = canvasWidth - 24;
     const height = canvasHeight - 24
     const values = data.map(p => p.value)
-    const dates = data.map(p => p.date)
+    // const dates = data.map(p => p.date)
     const step = width /numberOfMonths
-    const minX = Math.min(...dates);
+    //@ts-ignore
+    const minX = new Date(minDate).getTime()
+    
+    
     // const maxX = Math.max(...dates);
     const minY = Math.min(...values);
     const maxY = Math.max(...values);

@@ -18,11 +18,12 @@ const snapPoints = [-(height - minHeight),0, ]
 interface CartContainerProps{
     children: React.ReactNode;
     total: number;
+    onCheckout: () => void;
     // checkoutComponent: FC<{minHeight: number}>;
 }
 
 
-const CartContainer = ({children, total}: CartContainerProps) => {
+const CartContainer = ({children, total, onCheckout}: CartContainerProps) => {
    
    
     const translateY = useSharedValue(0) //@ts-ignore
@@ -51,7 +52,7 @@ const CartContainer = ({children, total}: CartContainerProps) => {
     <>
     <Box flex={1}
         backgroundColor="secondary">
-    <CheckoutComponent total={total} minHeight={minHeight}/>
+    <CheckoutComponent total={total} minHeight={minHeight} onCheckout={onCheckout}/>
     <PanGestureHandler //@ts-ignore
         onGestureEvent={onGestureEvent}
     >

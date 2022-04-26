@@ -4,10 +4,10 @@ import { Box, Header } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import Background from './Background';
 import Card from './Card';
-import Categories from './Categories';
+import Categories from '../../components/Categories';
 
 
-const cards = [
+const defaultCards = [
   {
     index: 3,
     source: require("../../../assets/4.png")
@@ -25,12 +25,17 @@ const cards = [
     source: require("../../../assets/1.png")
   },
 ]
-const step = 1 /(cards.length -1)
+
 
 const OutfitIdeas = ({ navigation}: HomeNavigationProps<"OutfitIdeas">) => {
+    const [cards, setCards] = useState(defaultCards)
+    const step = 1 /(cards.length -1)
     const [currentIndex, setCurrentIndex] = useState(0)
     const aIndex = useTiming(currentIndex)
-    
+    const filtering = (tags: string[]) => {
+      console.log(tags);
+      setCards(defaultCards)
+    }
 
   return (
     <>
@@ -49,7 +54,9 @@ const OutfitIdeas = ({ navigation}: HomeNavigationProps<"OutfitIdeas">) => {
             onPress: () => navigation.navigate("Cart")
         }}
       />
-      <Categories/>               
+      <Categories onPress={(tags) => {
+        filtering(tags);
+      }}/>            
       <Box flex={1}>
         <Background/>
         

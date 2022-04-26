@@ -20,6 +20,7 @@ interface UnderlayProps {
 const Underlay = ({ minY, maxY, step, minX, numberOfMonths}: UnderlayProps) => {
 
    const minDate = moment(minX);
+//    console.log(moment(minDate).format());
   return (
     <>
     <Box 
@@ -64,7 +65,7 @@ const Underlay = ({ minY, maxY, step, minX, numberOfMonths}: UnderlayProps) => {
             {
                 new Array(numberOfMonths)
                 .fill(0)
-                .map((_, i) => minDate.clone().add(i,"month" ))
+                .map((_, i) => minDate.clone().add(i+1,"month" ))
                 .map((date, index) => (
                     <Box width={step}  key={index}>
                         <Text textAlign="center">

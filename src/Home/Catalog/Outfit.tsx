@@ -41,12 +41,11 @@ const Outfit = ({outfit, width, onPress}: OutfitProps) => {
             width, height: (width * outfit.aspectRatio)
         }}   
     >
-            <Image style={{
-                
+        <Image style={{
                 width: width/1.5,
                 height: (width / 1.5 * outfit.aspectRatio)
             }}
-                source={{uri:outfit.image}}/>
+            source={{uri:outfit.image}}/>
       
         <Text>{outfit.label}</Text>
       

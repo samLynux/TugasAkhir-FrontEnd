@@ -1,4 +1,4 @@
-import  React from 'react';
+import  React, { useEffect, useState } from 'react';
 import {  View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -33,14 +33,34 @@ const categories = [
     },
 ]
 
-const Categories = () => {
+interface CategoryProps {
+    onPress: (tags: string[]) => void;
+}
+
+const Categories = ({onPress}: CategoryProps) => {
+    const [tags, setTags]= useState<string[]>([])
+
+    useEffect(() => {
+        onPress(tags);
+    }, [tags])
     return (
         <View>
             <ScrollView horizontal
                 showsHorizontalScrollIndicator={false}
             >
                 {categories.map(category => (
-                    <Category key={category.id} category={category}/>
+                    <Category key={category.id} category={category}
+                        onAdd={ (title) => {
+                            if (tags.includes(title) === true){
+                                return;
+                            }
+                            setTags(tags => [...tags, title])
+                        }}
+                        onRemove={(title) => {
+                            
+                           setTags( tags.filter(t => t !== title));
+                        }}
+                    />
                 ))}
             </ScrollView>
         </View>

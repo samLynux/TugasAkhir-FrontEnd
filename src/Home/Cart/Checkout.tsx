@@ -9,6 +9,7 @@ import { CARD_HEIGHT } from './CardLayout';
 interface CheckoutComponentProps{
     minHeight: number;
     total: number;
+    onCheckout: () => void;
 }
 
 
@@ -65,7 +66,7 @@ const LineItem = ({value, label} : LineItemProps) => {
 }
 const deliveryCost = 12;
 
-const CheckoutComponent = ({minHeight, total}:CheckoutComponentProps) => {
+const CheckoutComponent = ({minHeight, total, onCheckout}:CheckoutComponentProps) => {
     const [selectedCard, setSelectedCard] = useState(cards[0].id)
     
   return (
@@ -140,8 +141,7 @@ const CheckoutComponent = ({minHeight, total}:CheckoutComponentProps) => {
                 <Button 
                     variant='primary'
                     label='Transact'
-                    onPress={() => console.log('1231')
-                    }
+                    onPress={onCheckout}
                 />
             </Box>
         </Box>
