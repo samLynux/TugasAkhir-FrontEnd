@@ -1,5 +1,5 @@
 
-import  React, { useContext, useState } from 'react';
+import  React, { useContext, useEffect, useState } from 'react';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {  Box, Header, Text } from '../../components';
@@ -11,11 +11,12 @@ import Footer from './Footer';
 
 interface outfit {
     id: string;
-    color: string;
+    primaryColor: string;
     image: string;
-    label: string;
+    title: string;
+    description: string;
     price: number;
-    sizes: string[];
+    sizes?: string[];
 }
 
 
@@ -28,13 +29,40 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
     const {outfit}: outfit = route.params
 
     const [cart, setCart] = useContext(CartContext)
-    const [size, setSize] = useState(outfit.sizes[0])
-    
+    const [size, setSize] = useState(outfit.sizes ? outfit.sizes[0] : "m")
+    useEffect(() => {
+        console.log('new outfit');
+        
+    }, [outfit])
+    const addToCart = () => {
+        let checker = false;
+        cart.forEach((item, index) => {
+            if ( item.label === outfit.title && item.size === size){
+                setCart(
+                    cart.map((it, i) => 
+                        i === index 
+                        ? {...it, quantity :( it.quantity + 1)} 
+                        : it 
+                ))
+                checker = true;
+            }
+        });
+        if(!checker){
+            setCart([...cart, {
+                id: outfit.title + "-" + size,
+                label:outfit.title,
+                price:outfit.price,
+                image:outfit.image,
+                quantity: 1,
+                size
+            }])
+        }
+    }
     return (
         <>
         <Header
             dark
-            title={outfit.label}
+            title={outfit.title}
             left={{
             icon:"arrow-left",
                 onPress: () => navigation.navigate("Catalog")
@@ -52,7 +80,7 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
             alignItems="center" 
             padding="m"
             style={{
-                backgroundColor: outfit.color,
+                backgroundColor: outfit.primaryColor,
                 width, height: (width * aspectRatio)
             }}   
         >
@@ -68,20 +96,30 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
         </Box>
         
         <Box marginLeft="m">
-            <Text >
+            <Text variant="body">
+                {outfit.description}
+            </Text>
+            <Text variant="body">
                 {outfit.price}
             </Text>
             <Text variant="body">
                 Size
             </Text>
-            <RoundedCheckboxGroup
-                options={outfit.sizes} 
-                radio    
-                onPress={(s) => {
-                    setSize(s)
-                    
-                }}
-            />
+            {outfit.sizes ? (
+                <RoundedCheckboxGroup
+                    options={outfit.sizes} 
+                    radio    
+                    onPress={(s) => {
+                        setSize(s)
+                        
+                    }}
+                />
+            ):(
+                <Text>M</Text>
+            )
+            
+            }
+            
         </Box>
         </ScrollView>
         <Box position="absolute" 
@@ -90,35 +128,12 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
         >
         <Footer
             onBuy={() => { 
-                console.log('buy');
+                addToCart();
+                navigation.navigate("Cart")
             }}
             onCart={() => { 
-                let checker = false;
-                
-
-                cart.forEach((item, index) => {
-                    if ( item.label === outfit.label && item.size === size){
-                        setCart(
-                            cart.map((it, i) => 
-                                i === index 
-                                ? {...it, quantity :( it.quantity + 1)} 
-                                : it 
-                        ))
-                        checker = true;
-                    }
-                   
-                });
-                if(!checker){
-                    setCart([...cart, {
-                        id: outfit.label + "-" + size,
-                        label:outfit.label,
-                        price:outfit.price,
-                        image:outfit.image,
-                        quantity: 1,
-                        size
-                    }])
-                }
-                alert("added")
+                addToCart();
+                alert("added");
             }}
             onFav={() => { 
                 console.log('fav');

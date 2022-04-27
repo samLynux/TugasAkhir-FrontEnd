@@ -1,12 +1,15 @@
 import moment from 'moment';
 import  React from 'react';
 import { Box, Text } from '../../components';
-import { DataPoint } from './Graph/Graph';
 
 
 
 interface TransactionProps {
-    transaction: DataPoint;
+    transaction: {
+      date: number,
+      total:number,
+      id: number;
+    };
  }
  
 
@@ -28,7 +31,7 @@ const Transaction = ({transaction}: TransactionProps) => {
           marginBottom="s"
         >
           <Box 
-            backgroundColor={transaction.color} 
+            backgroundColor={"black"} 
             marginRight="s"
             style={{
               width: 10,
@@ -42,7 +45,7 @@ const Transaction = ({transaction}: TransactionProps) => {
         </Box>
         <Box>
           <Text>
-            {`$${transaction.value} - ${moment(
+            {`$${transaction.total} - ${moment(
                 transaction.date
               ).format("DD MMM, YYYY")
             }`}

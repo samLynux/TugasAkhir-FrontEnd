@@ -3,7 +3,6 @@ import  React   from 'react';
 import { Dimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming,  } from 'react-native-reanimated';
 import { Box, theme } from '../../../components';
-import { Theme } from '../../../components/Theme';
 import { lerp } from './Helpers';
 import Underlay from './Underlay';
 
@@ -16,8 +15,7 @@ const {width: wWidth} = Dimensions.get("window")
 
 export interface DataPoint{
     date: number,
-    value:number,
-    color: keyof Theme["colors"];
+    total:number,
     id: number;
 }
 
@@ -46,7 +44,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
     const canvasHeight = canvasWidth / aspectRatio;
     const width = canvasWidth - 24;
     const height = canvasHeight - 24
-    const values = data.map(p => p.value)
+    const values = data.map(p => p.total)
     // const dates = data.map(p => p.date)
     const step = width /numberOfMonths
     //@ts-ignore
@@ -87,7 +85,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
                     ).asMonths()
                 )
                 
-                if(point.value === 0){
+                if(point.total === 0){
                     return null
                 }
                 
@@ -97,7 +95,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
                     height: h.value,
                     transform: [{translateX: tranlateY.value}],
                 }))
-                const totalHeight = lerp(0, height, point.value/maxY);
+                const totalHeight = lerp(0, height, point.total/maxY);
 
                 h.value = withTiming(totalHeight,
                     {duration: 500}, 
@@ -115,7 +113,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
                         
                     >
                         <Box 
-                            backgroundColor= {point.color} //@ts-ignore
+                            backgroundColor= "black" //@ts-ignore
                             borderTopLeftRadius="m" //@ts-ignore
                             borderTopRightRadius= "m"
                             position="absolute"
@@ -126,7 +124,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
                             opacity={0.1}
                         />
                         <Box 
-                            backgroundColor={point.color}//@ts-ignore
+                            backgroundColor="black"//@ts-ignore
                             borderRadius="m" 
                             position="absolute"
                             top={0}

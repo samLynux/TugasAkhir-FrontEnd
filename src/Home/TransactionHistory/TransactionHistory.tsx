@@ -1,4 +1,5 @@
 import { useIsFocused } from '@react-navigation/native';
+import axios from 'axios';
 import  React, { useEffect, useState } from 'react';
 import {     ScrollView } from 'react-native';
 import { Box, ScrollableContent, Header, Text } from '../../components';
@@ -24,44 +25,37 @@ const maxDate = new Date().getTime();
 const defaultData: DataPoint[] = [
     {
         date: new Date("2021-09-01").getTime(),
-        value:10,
-        color: "pink",
+        total:10,
         id: 1000000,
     },
     {
         date: new Date("2021-11-01").getTime(),
-        value:10,
-        color: "secondary",
+        total:10,
         id: 3000000,
     },
     {
         date: new Date("2021-12-01").getTime(),
-        value:4,
-        color: "light_blue",
+        total:4,
         id: 4000000,
     },
     {
         date: new Date("2022-01-01").getTime(),
-        value:6,
-        color: "pink",
+        total:6,
         id: 5000000,
     },
     {
         date: new Date("2022-02-01").getTime(),
-        value:3,
-        color: "dark_blue",
+        total:3,
         id: 6000000,
     },
     {
         date: new Date("2022-03-01").getTime(),
-        value:12,
-        color: "black",
+        total:12,
         id: 7000000,
     },
     {
         date: new Date("2022-04-01").getTime(),
-        value:15,
-        color: "black",
+        total:15,
         id: 8000000,
     },
 ]
@@ -70,15 +64,21 @@ const defaultData: DataPoint[] = [
 const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHistory">) => {
    const isFocused = useIsFocused()
     const [transactions, setTransactions] = useState(defaultData)
+    const [transactionsChart, setTransactionsChart] = useState(defaultData)
     const [total, setTotal] = useState(0)
 
     useEffect(() => {
         console.log("change transaction here");
-        setTransactions(defaultData);
+        axios.get("orders")
+            .then((e) => {
+                // console.log(e.data.data);
+                setTransactions(e.data.data)
+            })
+        setTransactionsChart(defaultData);
 
         let newTotal = 0
         transactions.forEach((item) => {
-            newTotal += item.value 
+            newTotal += item.total 
         });
         setTotal(newTotal)
     }, [isFocused])
@@ -126,7 +126,7 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 </Box> */}
 
             </Box>
-            <Graph data={transactions} maxDate={maxDate}/>
+            <Graph data={transactionsChart} maxDate={maxDate}/>
             <ScrollView
                 style={{
                     marginBottom:30,

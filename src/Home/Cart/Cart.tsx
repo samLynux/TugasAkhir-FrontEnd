@@ -1,3 +1,4 @@
+import axios from 'axios';
 import  React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -46,8 +47,26 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     const [cart, setCart] = useContext(CartContext)
     const [total, setTotal] = useState(0)
    
-    const checkout = () => {
-        console.log("checkout");
+    const checkout = async () => {
+        if(cart.length <= 0){
+            alert("Nothing is in the cart");
+            navigation.navigate("Catalog")
+            return
+        }
+        const order_items = cart.map(order => ({
+            product_title: order.label,
+            price: order.price,
+            quantity: order.quantity
+        }))
+
+        axios.post("orders",{
+            total: total,
+            order_items: order_items
+        })
+            .then((e) => {
+                console.log(e.data);
+                setCart([])
+            })
         
     }
     //@ts-ignore

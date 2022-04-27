@@ -8,11 +8,12 @@ import { Box, Text } from '../../components';
 
 interface OutfitProps {
     outfit: {
-        id: number;
-        color: string;
+        id: string;
+        primaryColor: string;
         image: string;
-        label: string;
-        aspectRatio: number;
+        title: string;
+        price: number;
+        sizes?: string[];
     }
     width: number
     onPress: () => void
@@ -37,17 +38,17 @@ const Outfit = ({outfit, width, onPress}: OutfitProps) => {
         alignItems="center" 
         padding="m"
         style={{
-            backgroundColor: outfit.color,
-            width, height: (width * outfit.aspectRatio)
+            backgroundColor: outfit.primaryColor,
+            width, height: (width )
         }}   
     >
         <Image style={{
                 width: width/1.5,
-                height: (width / 1.5 * outfit.aspectRatio)
+                height: (width / 1.5 )
             }}
             source={{uri:outfit.image}}/>
       
-        <Text>{outfit.label}</Text>
+        <Text>{outfit.title}</Text>
       
     </Box>
 
