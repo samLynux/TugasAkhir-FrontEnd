@@ -10,7 +10,7 @@ interface RoundedCheckboxGroupProps{
   options: string[];
   valueIsColor?: boolean;
   radio?: boolean;
-  onPress?: (size:string) => void;
+  onPress?: (varX:string) => void;
 }
 
 

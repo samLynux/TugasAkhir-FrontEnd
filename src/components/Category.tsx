@@ -27,9 +27,9 @@ const Category = ({category: {color: backgroundColor,title}, onAdd, onRemove}: C
         <RectButton onPress={() => {
             setSelected((prev) => !prev)
             if(!selected){
-                onAdd(title);
+                onAdd(title.toLowerCase());
             }else{
-                onRemove(title);
+                onRemove(title.toLowerCase());
             }
         }}>
         

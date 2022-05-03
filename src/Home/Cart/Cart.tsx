@@ -54,6 +54,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
             return
         }
         const order_items = cart.map(order => ({
+            product_id: order.id,
             product_title: order.label,
             price: order.price,
             quantity: order.quantity
@@ -63,8 +64,8 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
             total: total,
             order_items: order_items
         })
-            .then((e) => {
-                console.log(e.data);
+            .then(() => {
+                alert("Transaction Complete")
                 setCart([])
             })
         

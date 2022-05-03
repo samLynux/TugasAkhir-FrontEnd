@@ -15,8 +15,7 @@ const {width: wWidth} = Dimensions.get("window")
 
 export interface DataPoint{
     date: number,
-    total:number,
-    id: number;
+    total:number
 }
 
 interface GraphProps {
@@ -26,18 +25,9 @@ interface GraphProps {
 
 
 const Graph = ({data, maxDate}: GraphProps) => {
-    // const isFocused = useIsFocused();
-    // const transition = useTiming(isFocused, {duration: 650});
-    // const ref = useRef< TransitioningView>(null)
-    // useLayoutEffect(() => {
-    //     ref.current?.animateNextTransition();
-    // }, [])
+    
     const minDate = moment(maxDate).subtract(6, "month");
-    // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    
-    // console.log(new Date(minDate).getTime());
-    
-    // console.log(moment(minDatex).format());
+
     const numberOfMonths = 6
     //@ts-ignore
     const canvasWidth = wWidth - theme.spacing.m * 2
@@ -52,8 +42,8 @@ const Graph = ({data, maxDate}: GraphProps) => {
     
     
     // const maxX = Math.max(...dates);
-    const minY = Math.min(...values);
-    const maxY = Math.max(...values);
+    const minY = 0;
+    const maxY = Math.ceil(Math.max(...values) /1000) * 1000;
   return (
     <>
     <Box 
@@ -83,7 +73,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
                     moment.duration(
                         moment(point.date).diff(moment(minDate))
                     ).asMonths()
-                )
+                ) - 1
                 
                 if(point.total === 0){
                     return null
@@ -102,7 +92,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
                 );
                 return (
                     <AnimatedBox
-                        key={point.id}
+                        key={point.date}
                         position="absolute"
                         width={step}
                         height={totalHeight}

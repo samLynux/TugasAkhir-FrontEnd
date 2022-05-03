@@ -8,7 +8,7 @@ const categories = [
     
     {
         id: "newin",
-        title: "New In",
+        title: "Year-Round",
         color: "#FFE8E9"
     },
     {
@@ -18,17 +18,17 @@ const categories = [
     },
     {
         id: "activewear",
-        title: "Active Wear",
+        title: "Spring",
         color: "#BFEAF5"
     },
     {
         id: "outlet",
-        title: "Outlet",
+        title: "Autumn",
         color: "#F1E0FF"
     },
     {
         id: "accesories",
-        title: "Accesories",
+        title: "Winter",
         color: "#FFE8E9"
     },
 ]

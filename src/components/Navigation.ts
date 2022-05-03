@@ -50,4 +50,5 @@ export type HomeRoutes ={
   Cart: undefined;
   Catalog: undefined;
   ProductDetails: undefined;
+  TransactionDetails: undefined;
 }

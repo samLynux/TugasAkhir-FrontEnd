@@ -97,8 +97,23 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
     )
 
     const filtering = (tags: string[]) => {
-        console.log(tags);
+        // console.log(tags);
         // setOutfits([])
+        if(tags.length <= 0){
+            axios.get("products")
+            .then((response) => {
+                // console.log(e.data.data[0]);
+                setOutfits(response.data.data)
+            })
+            return;
+        }
+        axios.post("products/filtered",{
+            categories: [...tags]
+        })
+        .then((response) => {
+            // console.log(response.data);
+            setOutfits(response.data.data)
+        })
     }
 
     
@@ -115,9 +130,9 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
         // console.log("xxxxxxxxxxxxxxxxxxx");
         
         axios.get("products")
-            .then((e) => {
-                // console.log(e.data.data);
-                setOutfits(e.data.data)
+            .then((response) => {
+                // console.log(e.data.data[0]);
+                setOutfits(response.data.data)
             })
         
             
@@ -163,10 +178,18 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                             {outfits.
                                 filter((_, i) => i % 2 !== 0).map((outfit) => (
                                 <Outfit key={outfit.id} 
-                                    outfit={outfit}
+                                    outfit={{
+                                        ...outfit, //@ts-ignore
+                                        primaryColor:outfit.primaryColor.value
+                                    }}
                                     onPress={()=>{
                                         //@ts-ignore
-                                        navigation.navigate("ProductDetails",{outfit:outfit})
+                                        navigation.navigate("ProductDetails",{outfit:{
+                                            ...outfit,//@ts-ignore
+                                            primaryColor:outfit.primaryColor.value,//@ts-ignore
+                                            sizes: outfit.sizes.map(s => s.value)
+
+                                        }})
                                     }}
                                     width={width}
                                 />
@@ -178,9 +201,17 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                             <Outfit key={outfit.id} 
                                 onPress={()=>{
                                             //@ts-ignore
-                                    navigation.navigate("ProductDetails",{outfit:outfit})
+                                    navigation.navigate("ProductDetails",{outfit:{
+                                        ...outfit,//@ts-ignore
+                                        primaryColor:outfit.primaryColor.value,//@ts-ignore
+                                        sizes: outfit.sizes.map(s => s.value)
+
+                                    }})
                                 }}
-                                outfit={outfit}
+                                outfit={{
+                                    ...outfit, //@ts-ignore
+                                    primaryColor:outfit.primaryColor.value
+                                }}
                                 width={width}
                                 
                                 

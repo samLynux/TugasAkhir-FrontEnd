@@ -9,12 +9,13 @@ interface CheckboxGroupProps{
       value: string;
       label:string;
   }[];
-  radio?: boolean
+  radio?: boolean;
+  onPress?: (varX:string) => void;
 }
 
 
 
-const CheckboxGroup = ({ options, radio }: CheckboxGroupProps) => {
+const CheckboxGroup = ({ options, radio, onPress }: CheckboxGroupProps) => {
     const [selectedValues, setSelectedValues]= useState<string[]>([])
       
   return (
@@ -39,6 +40,9 @@ const CheckboxGroup = ({ options, radio }: CheckboxGroupProps) => {
                     marginRight:4,
                 }}
                 onPress={() => {
+                    if(onPress){
+                        onPress(label.toLowerCase());
+                      }
                     if(radio){
                         setSelectedValues([value]);
                     }else{

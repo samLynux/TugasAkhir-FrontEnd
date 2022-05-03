@@ -11,6 +11,7 @@ import Cart from "./Cart";
 import Catalog from "./Catalog";
 import ProductDetails from "./ProductDetails";
 import { CartContextProvider } from "./services/cart.context";
+import TransactionDetails from "./TransactionHistory/TransactionDetails";
 
 
 const Drawer = createDrawerNavigator<HomeRoutes>();
@@ -33,6 +34,7 @@ export const HomeNavigator = () =>(
       <Drawer.Screen name='Cart' component={Cart}/>
       <Drawer.Screen name='Catalog' component={Catalog}/>
       <Drawer.Screen name='ProductDetails' component={ProductDetails}/>
+      <Drawer.Screen name='TransactionDetails' component={TransactionDetails}/>
     </Drawer.Navigator>
   </CartContextProvider>
 )

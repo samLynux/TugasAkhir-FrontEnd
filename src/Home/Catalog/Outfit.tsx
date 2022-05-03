@@ -48,7 +48,11 @@ const Outfit = ({outfit, width, onPress}: OutfitProps) => {
             }}
             source={{uri:outfit.image}}/>
       
-        <Text>{outfit.title}</Text>
+        <Text textAlign="center" 
+            color={outfit.primaryColor === "white" ? "black" : "white"}
+        >
+            {outfit.title}
+        </Text>
       
     </Box>
 

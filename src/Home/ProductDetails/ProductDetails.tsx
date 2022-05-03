@@ -1,4 +1,5 @@
 
+import axios from 'axios';
 import  React, { useContext, useEffect, useState } from 'react';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -58,6 +59,15 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
             }])
         }
     }
+
+    const addToFav = () => {
+        axios.post(`users/favourite/add?id=${outfit.id}`)
+        .then(() => {
+            alert("added to Favourites")
+        })
+    }
+
+
     return (
         <>
         <Header
@@ -136,7 +146,7 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
                 alert("added");
             }}
             onFav={() => { 
-                console.log('fav');
+                addToFav();
             }}
         />
         </Box>

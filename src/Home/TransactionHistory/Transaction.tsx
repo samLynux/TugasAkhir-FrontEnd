@@ -1,20 +1,22 @@
 import moment from 'moment';
 import  React from 'react';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { Box, Text } from '../../components';
 
 
 
 interface TransactionProps {
     transaction: {
-      date: number,
+      created_at: number,
       total:number,
       id: number;
     };
+    onPress:  () => void;
  }
  
 
 
-const Transaction = ({transaction}: TransactionProps) => {
+const Transaction = ({transaction, onPress}: TransactionProps) => {
    
   return (
    <>
@@ -46,14 +48,16 @@ const Transaction = ({transaction}: TransactionProps) => {
         <Box>
           <Text>
             {`$${transaction.total} - ${moment(
-                transaction.date
-              ).format("DD MMM, YYYY")
+                transaction.created_at
+              ).format("DD MMM, YYYY") 
             }`}
           </Text>
         </Box>
       </Box>
       <Box>
-        <Text>See More</Text>
+        <BorderlessButton onPress={onPress}>
+          <Text>See More</Text>
+        </BorderlessButton>
       </Box>
     </Box>
    </>
