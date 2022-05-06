@@ -15,7 +15,7 @@ const height = WIDTH_DRAWER * aspectRatio
 
 const items = [
   {
-    icon: "heart",
+    icon: "isv",
     label: "Outfit Catalog",
     screen: "Catalog",
     color: "light_blue",
@@ -39,13 +39,7 @@ const items = [
     color: "light_green",
   },
   {
-    icon: "settings",
-    label: "Notification Settings",
-    screen: "Settings",
-    color: "black",
-  },
-  {
-    icon: "log-out",
+    icon: "logout",
     label: "Logout", //@ts-ignore
     onPress: (navigation) => {
       axios.post("logout")
@@ -81,11 +75,11 @@ const DrawerContent = () => {
                 dark
                 title='Menu'
                 left={{
-                  icon:"x",
+                  icon:"close",
                    onPress: () => navigation.dispatch(DrawerActions.closeDrawer())
                 }}
                 right={{
-                  icon:"shopping-bag", //@ts-ignore
+                  icon:"shoppingcart", //@ts-ignore
                    onPress: () =>  navigation.navigate("Cart")
                 }}
               />
@@ -100,12 +94,6 @@ const DrawerContent = () => {
                 backgroundColor="white" padding="xl"
                 justifyContent="center" 
             >
-              <Box 
-                alignSelf="center"
-                width={100} height={100}
-                backgroundColor="black" //@ts-ignore
-                borderRadius="xxl" 
-              />
               <Box marginVertical="m">
                 <Text variant="title1" textAlign='center'>
                   {(user && user.firstname && user.lastname) ?

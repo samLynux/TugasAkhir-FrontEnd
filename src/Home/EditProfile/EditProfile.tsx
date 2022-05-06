@@ -1,4 +1,4 @@
-import { DrawerActions } from '@react-navigation/native';
+import { CommonActions, DrawerActions } from '@react-navigation/native';
 import  React, { useContext } from 'react';
 import { Box, Header, Text } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
@@ -16,7 +16,7 @@ const tabs: Tab[] = [
 
 
 const EditProfile = ({ navigation}: HomeNavigationProps<"EditProfile">) => {//@ts-ignore
-    const [[user, setUser], [userUpdater, setUserUpdater]] = useContext(UserContext);
+    const [[user], [userUpdater, setUserUpdater]] = useContext(UserContext);
     
     
     return (
@@ -34,7 +34,7 @@ const EditProfile = ({ navigation}: HomeNavigationProps<"EditProfile">) => {//@t
                     dark
                     title='Edit Profile'
                     left={{
-                        icon:"menu",
+                        icon:"menuunfold",
                         onPress: () => navigation.dispatch(DrawerActions.openDrawer())
                     }}
                 />
@@ -43,14 +43,6 @@ const EditProfile = ({ navigation}: HomeNavigationProps<"EditProfile">) => {//@t
             </Box>
             
             <Box >
-                <Box 
-                    position="absolute"
-                    alignSelf="center"
-                    top={-50}
-                    width={100} height={100}
-                    backgroundColor="black" //@ts-ignore
-                    borderRadius="xxl" 
-                />
                 <Box marginVertical="m" style={{marginTop:50}}>
                     <Text variant="title1" textAlign='center'>
                         {(user && user.firstname && user.lastname) ?
@@ -70,9 +62,28 @@ const EditProfile = ({ navigation}: HomeNavigationProps<"EditProfile">) => {//@t
                 </Box>
             </Box>
             <Tabs tabs={tabs} >
-                <Configuration/>
+                <Configuration
+                    timedOut={() => {
+                        alert("You are not logged in/ Your Login has Timed Out")
+                        navigation.dispatch(CommonActions.reset({
+                            index: 0,
+                            routes: [
+                            {name: "Authentication"},
+                            ]
+                        }))
+                    }}
+                />
                 <PersonalInfo
                     changed={() =>  setUserUpdater(!userUpdater)}
+                    timedOut={() => {
+                        alert("You are not logged in/ Your Login has Timed Out")
+                        navigation.dispatch(CommonActions.reset({
+                            index: 0,
+                            routes: [
+                            {name: "Authentication"},
+                            ]
+                        }))
+                    }}
                 />
             </Tabs>
         </Box>

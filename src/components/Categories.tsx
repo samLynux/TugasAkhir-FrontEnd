@@ -3,6 +3,7 @@ import {  View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import Category from './Category';
+import CategoryGroup from './CategoryGroup';
 
 const categories = [
     
@@ -62,8 +63,30 @@ const categories = [
     },
 ]
 
+const outfitType = [
+    {
+        id: "n",
+        title: "All",
+        type: "Gender",
+        color: "#FFE8E9"
+    },
+    {
+        id: "f",
+        title: "Women",
+        type: "Gender",
+        color: "#FFE8E9"
+    },
+    {
+        id: "m",
+        title: "Men",
+        type: "Gender",
+        color: "#FFE8E9"
+    },
+    
+]
+
 interface CategoryProps {
-    onPress: (brand: string[], cats: string[]) => void;
+    onPress: (brand: string[], cats: string[], gender: string) => void;
     onRecommend: (active: boolean) => void;
     recommend?: boolean;
 }
@@ -71,11 +94,15 @@ interface CategoryProps {
 const Categories = ({onPress, onRecommend, recommend = false}: CategoryProps) => {
     const [brand, setBrand]= useState<string[]>([])
     const [cats, setCats]= useState<string[]>([])
+    const [gender, setGender]= useState<string>('n')
     const [forceSelected, setForceSelected] = useState<boolean>(false)
 
     useEffect(() => {
-        onPress(brand, cats);
-    }, [brand, cats])
+        
+        onPress(brand, cats, gender);
+    }, [brand, cats, gender])
+
+
     return (
         <View>
             <ScrollView horizontal
@@ -102,33 +129,48 @@ const Categories = ({onPress, onRecommend, recommend = false}: CategoryProps) =>
                 }
                 
                 {(!forceSelected || !recommend) &&
-                    (categories.map(category => (
-                        <Category key={category.id} category={category}
-                            onAdd={ (title) => {
-                                if (brand.includes(title) === true){
-                                    return;
-                                }
-                                if(category.type === "category"){
-                                    setCats(cats => [...cats, title])
-                                }else if(category.type === "brand"){
-                                    setBrand(brand => [...brand, title])
-                                }
+                    (
+                        <>
+                        <CategoryGroup category={outfitType} 
+                            optionsCount={3}
+                            onPress={(title) => {
+                                setGender(title);
                                 
-                            }}
-                            onRemove={(title) => {
-                                
-                                if(category.type === "category"){
-                                    setCats( cats.filter(t => t !== title));
-                                }else if(category.type === "brand"){
-                                    setBrand( brand.filter(t => t !== title));
-                                }
-                            
                             }}
                         />
-                    )))
+                        
+                        {categories.map(category => (
+                            <Category key={category.id} category={category}
+                                onAdd={ (title) => {
+                                    if (brand.includes(title) === true){
+                                        return;
+                                    }
+                                    if(category.type === "category"){
+                                        setCats(cats => [...cats, title])
+                                    }else if(category.type === "brand"){
+                                        setBrand(brand => [...brand, title])
+                                    }
+                                    
+                                }}
+                                onRemove={(title) => {
+                                    
+                                    if(category.type === "category"){
+                                        setCats( cats.filter(t => t !== title));
+                                    }else if(category.type === "brand"){
+                                        setBrand( brand.filter(t => t !== title));
+                                    }
+                                
+                                }}
+                            />
+                            ))}
+                        
+                        </>
+                    )
                 
                 
                 }
+
+                
             </ScrollView>
         </View>
     )

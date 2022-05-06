@@ -7,13 +7,14 @@ import { Box, Button, RoundedIcon} from '../../components';
 
 
 interface FooterProps {
+    favIcon: string;
     onBuy: () => void;
     onFav: () => void;
     onCart: () => void;
 }
 
 
-const Footer = ({onBuy, onCart, onFav}: FooterProps) => {
+const Footer = ({onBuy, onCart, onFav, favIcon}: FooterProps) => {
     const insets = useSafeAreaInsets();    
 
 
@@ -34,7 +35,7 @@ const Footer = ({onBuy, onCart, onFav}: FooterProps) => {
            >
                <RoundedIcon  //@ts-ignore
                     backgroundColor="pink" color="pink"
-                    size={36} name="heart"
+                    size={36} name={favIcon}
                />
            </Box>
         </RectButton>
@@ -49,7 +50,7 @@ const Footer = ({onBuy, onCart, onFav}: FooterProps) => {
            >
                <RoundedIcon  //@ts-ignore
                     backgroundColor="dark_blue" color="pink"
-                    size={36} name="shopping-bag"
+                    size={36} name="shoppingcart"
                />
            </Box>
         </RectButton>

@@ -1,11 +1,12 @@
 
-import { useIsFocused } from '@react-navigation/native';
+import { CommonActions, useIsFocused} from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useEffect, useRef, useState }  from 'react';
 import { Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Transition, Transitioning } from 'react-native-reanimated';
-import { Box, Header } from '../../components';
+import SimpleToast from 'react-native-simple-toast';
+import { Box, Button, Header } from '../../components';
 import Categories from '../../components/Categories';
 
 import { HomeNavigationProps } from '../../components/Navigation';
@@ -97,60 +98,111 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
         </Transition.Together>
     )
     const [recommend, setRecommend] = useState<boolean>(false)
-    const filtering = (brands: string[], cats: string[]) => {
-        // console.log(brands);
-        // setOutfits([])
-        if(brands.length <= 0 && cats.length <= 0){
-            axios.get("products")
+    const filtering = (brands: string[], cats: string[], gender: string) => {
+        
+        if(brands.length <= 0 && cats.length <= 0 && gender === "n"){
+            SimpleToast.show("Loading All Products...",30)
+            axios.get(`products?page=${page}`)
             .then((response) => {
-                // console.log(e.data.data[0]);
                 setOutfits(response.data.data)
+                setShowAll(true);
+                
             })
             return;
         }
+        SimpleToast.show("Loading Products...",30)
         axios.post("products/filtered",{
             categories: cats.length > 0 ? [...cats] : null,
-            brands: brands.length > 0 ? [...brands] : null
+            brands: brands.length > 0 ? [...brands] : null,
+            gender: gender !== "n" ? gender : null,
         })
         .then((response) => {
-            // console.log(response.data);
             setOutfits(response.data.data)
+            setShowAll(false);
         })
     }
 
-    const recommendUser = () => {
-        console.log("fdsffffffffffff");
+    const recommendUser = (rec: boolean) => {
         
-        axios.get("users/foruser")
-        .then((response) => {
-            console.log(response.data);
-            setOutfits(response.data)
-        })
+        if(rec){
+            SimpleToast.show("Loading Products...",30)
+            axios.get("users/foruser")
+                .then((response) => {
+                    setOutfits(response.data)
+                    setShowAll(false);
+                    
+            }).catch(err => {
+                if(err.response.data.statusCode === 403){
+                    alert("You are not logged in/ Your Login has Timed Out")
+                    navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [
+                        {name: "Authentication"},
+                        ]
+                    }))
+                }
+                
+                
+            })
+            return
+        }
+        SimpleToast.show("Loading All Products...",30)
+        axios.get(`products?page=${page}`)
+            .then((response) => {
+                setOutfits(response.data.data)
+                setShowAll(true);
+                
+            })
+        
     }
 
     const width = (wWidth - 16 *3) /2;
-    const [footerHeight, setFooterHeight] = useState(0) 
+    
     const [outfits, setOutfits] = useState<outfit[]>([])
+    const [showAll, setShowAll] = useState(true)
+    const [page, setPage] = useState(1)
+    const [lastPage, setLastPage] = useState(1)
+
+    const scroll = useRef<ScrollView>(null);
 
     const isFocused = useIsFocused()
 
     const list = useRef<typeof Transitioning.View>(null)
 
     useEffect(() => {
-        // console.log("xxxxxxxxxxxxxxxxxxx");
-        
-        axios.get("products")
-            .then((response) => {
-                // console.log(e.data.data[0]);
-                setOutfits(response.data.data)
-            })
         
         axios.get("users/foruser")
             .then((response) => {
-                if(response.data && response.data.length > 0) setRecommend(true)
+                if(response.data && response.data.length > 0) {
+                    setRecommend(true)
+                }
                 else setRecommend(false)
+            }).catch(err => {
+                if(err.response.data.statusCode === 403){
+                    alert("You are not logged in/ Your Login has Timed Out")
+                    navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [
+                        {name: "Authentication"},
+                        ]
+                    }))
+                }
             })
     }, [isFocused])
+
+    useEffect(() => {
+        SimpleToast.show("Loading All Products...",30)
+        axios.get(`products?page=${page}`)
+            .then((response) => {
+                // console.log(response.data.meta);
+                
+                setOutfits(response.data.data)
+                setLastPage(response.data.meta.lastpage);
+                setShowAll(true);
+                
+            })
+        
+    }, [page])
     
     
     return (
@@ -160,33 +212,33 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                 dark
                 title='Outfits Catalog'
                 left={{
-                icon:"menu",
+                icon:"menuunfold",
                     onPress: () => navigation.openDrawer()
                 }}
                 right={{
-                icon:"shopping-bag",
+                icon:"shoppingcart",
                     onPress: () => navigation.navigate("Cart")
                 }}
             />
             <Categories 
-                onPress={(brand, cats) => {
-                    filtering(brand, cats);    
+                onPress={(brand, cats, gender) => {
+                    filtering(brand, cats, gender);    
                 }}
                 onRecommend={(active) => {
                     if(active){
-                        recommendUser();
+                        recommendUser(true);
                     }else{
-                        //getAll again
+                        recommendUser(false);
                     }
                 }}
                 recommend={recommend}
             /> 
             <Box flex={1}>
             <ScrollView
+                ref={scroll}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                     paddingHorizontal:8,
-                    paddingBottom: footerHeight,
                     
                 }}
             >
@@ -235,19 +287,53 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                     </Box>
                 </Box>
                 </Transitioning.View>
+                {showAll && (
+                    <Box 
+                        paddingBottom="l"
+                        flexDirection="row"
+                        alignItems="stretch"
+                        justifyContent="space-evenly"
+                    >
+                        {page > 1 && (
+                            <Button
+                                style={{
+                                    width: width,
+                                    borderRadius:0,
+                                }}
+                                variant="primary"
+                                label='<Previous Page'
+                                onPress={() =>{
+                                    setPage(page - 1)
+                                    scroll.current?.scrollTo({
+                                        y: 0,
+                                    });
+                                }}
+                            />
+                        )}
+                        {page < lastPage && (
+                            <Button
+                                style={{
+                                    width: width,
+                                    borderRadius:0,
+                                }}
+                                variant="primary"
+                                label='Next Page>'
+                                onPress={() =>{
+                                    setPage(page + 1)
+                                    scroll.current?.scrollTo({
+                                        y: 0,
+                                    });
+                                }}
+                            />
+                        )}
+                        
+                    </Box>
+                )}
+                
             </ScrollView>
            
 
-            <Box position="absolute" 
-                bottom={0} left={0} right={0}
-                onLayout={({
-                    nativeEvent: {
-                        layout: {height}
-                    },
-                }) => setFooterHeight(height)}
-            >
-                
-            </Box>
+            
             </Box>
         </Box>
         </>

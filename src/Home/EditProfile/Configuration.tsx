@@ -51,7 +51,11 @@ const colorOptions = [
     "green",
 ]
 
-const Configuration = () => {
+interface ConfigurationProps{
+    timedOut: () => void;
+}
+
+const Configuration = ({timedOut}: ConfigurationProps ) => {
 
     const [gender, setGender] = useState<string>("n")
     const [size, setSize] = useState<string>("")
@@ -60,26 +64,44 @@ const Configuration = () => {
 
     useEffect(() => {
         
-        // axios.get("users/me")
-        //     .then((result) => {
-        //         console.log(result.data);
-        //         setGender(result.data.gender);
-        //         setSize(result.data.size);
-        //         setColors(result.data.colors);
-        //         setBrands(result.data.brands);
+        if(gender === "n" &&
+            size === "" &&
+            colors.length <= 0 &&
+            brands.length <= 0
+        ){
+            axios.get("users/me")
+            .then((result) => {
+                setGender(result.data.gender);
+                setSize(result.data.size.value);
+                setColors(result.data.colors.map((i: any) => i.value));
+                setBrands(result.data.brands.map((i: any) => i.value));
                 
-        //     })
+            }).catch(err => {
+                if(err.response.data.statusCode === 403){
+                    timedOut();
+                }
+            })
+            
+            
+            return;
+        }
         
-    },[gender, size, brands, colors])
+        
 
-    const setPref = () => {
         axios.post("users/updatepref",{
             gender,
             brands,
             colors,
             size
+        }).catch(err => {
+            if(err.response.data.statusCode === 403){
+                timedOut();
+            }
         })
-    }
+        
+    },[gender, size, brands, colors])
+
+   
   return (
     <>
     <ScrollView>
@@ -88,6 +110,7 @@ const Configuration = () => {
                 What type of clothes do you wear
             </Text>
             <CheckboxGroup options={outfitType} radio
+                defaults={[gender]}
                 onPress={(s) => {
                     setGender(s)
                     
@@ -98,6 +121,7 @@ const Configuration = () => {
                 What is your clothing size
             </Text>
             <RoundedCheckboxGroup options={sizes} radio
+                defaults={[size]}
                 onPress={(s) => {
                     setSize(s)
                     
@@ -105,9 +129,10 @@ const Configuration = () => {
             />
 
             <Text variant="body">
-                What type of clothes do you wear
+                What color of clothes do you like?
             </Text>
             <RoundedCheckboxGroup options={colorOptions} valueIsColor
+                defaults={colors}
                 onPress={(s) => {
                     if(!colors.includes(s))
                         setColors([...colors, s])
@@ -121,6 +146,7 @@ const Configuration = () => {
                 My preffered brands
             </Text>
             <CheckboxGroup options={prefferedBrands}
+                defaults={brands}
                 onPress={(s) => {
                     if(!brands.includes(s))
                         setBrands([...brands, s])

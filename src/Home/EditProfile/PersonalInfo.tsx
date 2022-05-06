@@ -20,10 +20,11 @@ const AdditionalInfo = Yup.object().shape({
 
 interface PersonalInfoProps{
   changed: () => void;
+  timedOut: () => void;
 }
 
 
-const PersonalInfo = ({ changed}: PersonalInfoProps) => {
+const PersonalInfo = ({ changed, timedOut}: PersonalInfoProps) => {
   const {control, handleSubmit
   } = useForm({
     resolver: yupResolver(AdditionalInfo)
@@ -41,6 +42,11 @@ const PersonalInfo = ({ changed}: PersonalInfoProps) => {
       address: data.address,
 
     }).then(() => changed())
+    .catch(err => {
+      if(err.response.data.statusCode === 403){
+          timedOut();
+      }
+    })
 
     alert("Personal Data Updated")
     

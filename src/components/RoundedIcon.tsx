@@ -1,6 +1,6 @@
 import  React from 'react';
 
-import { Feather as Icon } from '@expo/vector-icons';
+import { AntDesign as Icon } from '@expo/vector-icons';
 import { Box, Text, Theme } from './Theme';
 
 export interface RoundedIconProps {

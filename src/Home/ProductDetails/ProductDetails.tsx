@@ -1,8 +1,9 @@
 
+import { CommonActions } from '@react-navigation/native';
 import axios from 'axios';
 import moment from 'moment';
-import  React, { useContext, useState } from 'react';
-import { Image } from 'react-native';
+import  React, { useContext, useState, useEffect } from 'react';
+import { Alert, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {  Box, Header, Text } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
@@ -64,10 +65,27 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
 
     const [cart, setCart] = useContext(CartContext)
     const [size, setSize] = useState<string>('')
-    // useEffect(() => {
-    //     console.log('xxxxxxxxxxxxxxxxx1');
+    const [isFav, setIsFav] = useState(false)
+
+
+    useEffect(() => {
+        axios.get(`users/favCheck?id=${outfit.id}`)
+        .then((res) => {
+            
+            setIsFav(res.data)
+        }).catch((err) => {
+            if(err.response.data.statusCode === 403){
+                alert("You are not logged in/ Your Login has Timed Out")
+                navigation.dispatch(CommonActions.reset({
+                    index: 0,
+                    routes: [
+                    {name: "Authentication"},
+                    ]
+                }))
+            }
+        })
         
-    // }, [outfit])
+    }, [outfit])
 
     const sizes = outfit.sizes //@ts-ignore
         .sort((a, b)=> a.id > b.id ? 1 : -1) 
@@ -105,8 +123,27 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
 
     const addToFav = () => {
         axios.post(`users/favourited?id=${outfit.id}`)
-        .then(() => {
-            alert("added to Favourites")
+        .then((res) => {
+            const favourited = res.data
+            setIsFav(favourited)
+            if(favourited){
+                // alert("Added to Favourites")
+                Alert.alert("Favourites", "Added To Favourites")
+            }else{
+                Alert.alert("Favourites", "Removed From Favourites")
+            }
+            
+            
+        }).catch((err) => {
+            if(err.response.data.statusCode === 403){
+                alert("You are not logged in/ Your Login has Timed Out")
+                navigation.dispatch(CommonActions.reset({
+                    index: 0,
+                    routes: [
+                    {name: "Authentication"},
+                    ]
+                }))
+            }
         })
     }
 
@@ -117,11 +154,11 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
             dark
             title={outfit.title}
             left={{
-            icon:"arrow-left",
+            icon:"caretleft",
                 onPress: () => navigation.navigate("Catalog")
             }}
             right={{
-            icon:"shopping-bag",
+            icon:"shoppingcart",
                 onPress: () => navigation.navigate("Cart")
             }}
         />
@@ -192,6 +229,7 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
             
         >
         <Footer
+            favIcon={isFav ? "heart" : "hearto"}
             onBuy={() => { 
                 if(addToCart()) navigation.navigate("Cart")
             }}

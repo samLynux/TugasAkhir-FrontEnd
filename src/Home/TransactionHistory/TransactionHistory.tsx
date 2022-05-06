@@ -1,4 +1,4 @@
-import { useIsFocused } from '@react-navigation/native';
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useEffect, useState } from 'react';
 import {     ScrollView } from 'react-native';
@@ -46,6 +46,16 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
         axios.get("orders")
             .then((e) => {
                 setTransactions(e.data)
+            }).catch((err) => {
+                if(err.response.data.statusCode === 403){
+                    alert("You are not logged in/ Your Login has Timed Out")
+                    navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [
+                        {name: "Authentication"},
+                        ]
+                    }))
+                }
             })
         
         axios.get("orders/chart")
@@ -57,6 +67,16 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 
                 
                 setTransactionsChart(testArr);
+            }).catch((err) => {
+                if(err.response.data.statusCode === 403){
+                    alert("You are not logged in/ Your Login has Timed Out")
+                    navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [
+                        {name: "Authentication"},
+                        ]
+                    }))
+                }
             })
     }, [isFocused])
 
@@ -80,7 +100,7 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 dark
                 title='Transaction History'
                 left={{
-                icon:"menu",
+                icon:"menuunfold",
                     onPress: () => navigation.openDrawer()
                 }}
             />

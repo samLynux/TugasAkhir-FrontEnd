@@ -1,5 +1,5 @@
 
-import { useIsFocused } from '@react-navigation/native';
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useEffect, useRef, useState }  from 'react';
 import { Dimensions } from 'react-native';
@@ -47,12 +47,18 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
             .then((response) => {
                 // console.log(response.data)
                 setOutfits(response.data)
+            }).catch((err) => {
+                if(err.response.data.statusCode === 403){
+                    alert("You are not logged in/ Your Login has Timed Out")
+                    navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [
+                        {name: "Authentication"},
+                        ]
+                    }))
+                }
             })
         
-            // axios.get("orders")
-            // .then((e) => {
-            //     console.log(e.data.data);
-            // })
     }, [isFocused])
     return (
         <>
@@ -61,11 +67,11 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                 dark
                 title='Favourite Outfits'
                 left={{
-                icon:"menu",
+                icon:"menuunfold",
                     onPress: () => navigation.openDrawer()
                 }}
                 right={{
-                icon:"shopping-bag",
+                icon:"shoppingcart",
                     onPress: () => navigation.navigate("Cart")
                 }}
             />

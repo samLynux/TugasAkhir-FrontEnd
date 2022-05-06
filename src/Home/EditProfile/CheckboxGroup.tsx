@@ -1,4 +1,4 @@
-import  React, {  useState } from 'react';
+import  React, {  useEffect, useState } from 'react';
 import { Box, Button } from '../../components';
 
 
@@ -11,13 +11,18 @@ interface CheckboxGroupProps{
   }[];
   radio?: boolean;
   onPress?: (varX:string) => void;
+  defaults?: string[];
 }
 
 
 
-const CheckboxGroup = ({ options, radio, onPress }: CheckboxGroupProps) => {
+const CheckboxGroup = ({ options, radio, onPress, defaults }: CheckboxGroupProps) => {
     const [selectedValues, setSelectedValues]= useState<string[]>([])
       
+    useEffect (() => {
+      if(defaults) setSelectedValues(defaults)
+    },[defaults])
+
   return (
     <>
       <Box flexDirection="row" flexWrap="wrap" marginTop="s">
@@ -41,7 +46,7 @@ const CheckboxGroup = ({ options, radio, onPress }: CheckboxGroupProps) => {
                 }}
                 onPress={() => {
                     if(onPress){
-                        onPress(label.toLowerCase());
+                        onPress(value.toLowerCase());
                       }
                     if(radio){
                         setSelectedValues([value]);

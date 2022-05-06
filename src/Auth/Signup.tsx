@@ -43,7 +43,6 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
   const onSignup = async (data) => {
     
     
-    // console.log(data);
     await axios.post("register", {
       email:data.email,
       password:data.password,
@@ -60,17 +59,7 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
   }
 
  
-  // const testBackend = async () => {
-  //   console.log("3");
-  //   const {data} = await axios.get("http://192.168.1.5:3000/api/test")
-     
-      
-  //   console.log(data);
 
-    
-  //   console.log("32");
-  // }
-  // testBackend()
   return (
     <Container {...{ footer }} pattern={1}>
       <Box padding="m">

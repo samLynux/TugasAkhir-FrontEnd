@@ -29,13 +29,14 @@ export const UserContextProvider = ({children}: {children: React.ReactNode}) => 
     
 
     useEffect(() => {
+        
         axios.get("user")
         .then((result) => {
             setUser(result.data)
             
             
         }).catch(() => {
-            alert("You are not logged in")
+            alert("You are not logged in/ Your Login has Timed Out")
             navigation.dispatch(CommonActions.reset({
                 index: 0,
                 routes: [

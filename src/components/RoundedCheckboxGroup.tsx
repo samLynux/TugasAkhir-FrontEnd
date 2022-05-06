@@ -1,4 +1,4 @@
-import  React, {  useState } from 'react';
+import  React, {  useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Box, Text, theme } from '.';
@@ -11,12 +11,18 @@ interface RoundedCheckboxGroupProps{
   valueIsColor?: boolean;
   radio?: boolean;
   onPress?: (varX:string) => void;
+  defaults?: string[];
 }
 
 
 
-const RoundedCheckboxGroup = ({ options, valueIsColor, radio, onPress }: RoundedCheckboxGroupProps) => {
-    const [selectedValues, setSelectedValues]= useState<string[]>(["blue"])
+const RoundedCheckboxGroup = ({ options, valueIsColor, radio, onPress, defaults }: RoundedCheckboxGroupProps) => {
+  
+    const [selectedValues, setSelectedValues]= useState<string[]>(defaults ? defaults: [])
+
+    useEffect(() => {
+      if(defaults) setSelectedValues(defaults)
+    },[defaults])
       
   return (
     <>
@@ -76,7 +82,7 @@ const RoundedCheckboxGroup = ({ options, valueIsColor, radio, onPress }: Rounded
                 )}
                 {valueIsColor && isSelected &&(
                   <>
-                  <Icon color="white" name='check' size={16}/>
+                  <Icon color={option === "white" ? "black" : "white"} name='check' size={16}/>
                   </>
                 )}
                 

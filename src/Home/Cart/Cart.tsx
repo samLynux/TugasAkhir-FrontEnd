@@ -1,3 +1,4 @@
+import { CommonActions } from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -49,7 +50,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     const [total, setTotal] = useState(0)
 
     // @ts-ignore
-    const [[user]] = useContext(UserContext);
+    const [[user], [setUserUpdater]] = useContext(UserContext);
    
     const checkout = async () => {
         if(cart.length <= 0){
@@ -78,8 +79,17 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
                 alert("Transaction Complete") 
                 setCart([])
                 navigation.navigate("TransactionHistory")
-            }).catch((err) => {
-                console.log(err);
+            }).catch(err => {
+                if(err.response.data.statusCode === 403){
+                    alert("You are not logged in/ Your Login has Timed Out")
+                    navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [
+                        {name: "Authentication"},
+                        ]
+                    }))
+                }
+                
                 
             })
         
@@ -135,7 +145,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
                 dark
                 title='Cart'
                 left={{
-                icon:"arrow-left",
+                icon:"caretleft",
                     onPress: () => navigation.goBack()
                 }}
             />
