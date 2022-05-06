@@ -1,10 +1,10 @@
 import { CommonActions, DrawerActions, useNavigation } from '@react-navigation/native';
-import  React from 'react';
-
-// import { Feather as Icon } from '@expo/vector-icons';
+import axios from 'axios';
+import  React, { useContext } from 'react';
 import { Dimensions, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Box, Header, Text, theme } from '../../components';
+import { UserContext } from '../services/user.context';
 import DrawerItem from './DrawerItem';
 
 
@@ -14,12 +14,6 @@ const aspectRatio = 750/ 1125;
 const height = WIDTH_DRAWER * aspectRatio
 
 const items = [
-  {
-    icon: "zap",
-    label: "Outfit Ideas",
-    screen: "OutfitIdeas",
-    color: "dark_blue",
-  },
   {
     icon: "heart",
     label: "Outfit Catalog",
@@ -53,20 +47,27 @@ const items = [
   {
     icon: "log-out",
     label: "Logout", //@ts-ignore
-    onPress: (navigation) => navigation.dispatch(CommonActions.reset({
-      index: 0,
-      routes: [
-        {name: "Authentication"},
-      ]
-    })),
+    onPress: (navigation) => {
+      axios.post("logout")
+      navigation.dispatch(CommonActions.reset({
+        index: 0,
+        routes: [
+          {name: "Authentication"},
+        ]
+      }))
+      
+    },
     color: "black",
   },
 ]
 
 const DrawerContent = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); //@ts-ignore
+  const [[user], [userUpdater, setUserUpdater ]] = useContext(UserContext)
 
-
+  
+  // console.log(user);
+  
   return (
     <>
       <Box flex={1}>
@@ -107,10 +108,14 @@ const DrawerContent = () => {
               />
               <Box marginVertical="m">
                 <Text variant="title1" textAlign='center'>
-                  Me
+                  {(user && user.firstname && user.lastname) ?
+                      (user.firstname +" " + user.lastname ):
+                      "Me"
+                  }
                 </Text>
                 <Text variant="body" textAlign='center'>
-                  my@email.xxx
+                  
+                  {user && user.email}
                 </Text>
               </Box>
               <Box>

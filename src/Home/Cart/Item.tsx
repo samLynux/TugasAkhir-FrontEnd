@@ -40,7 +40,6 @@ const Item = ({onDelete, onPlus, onMinus, Product}: ItemProps) => {
               <Text variant="header">Size {Product.size}</Text>
               <Text variant="title3" marginBottom="s" >{Product.label}</Text>
               <Text variant="title3" >${Product.price}</Text>
-              <Text variant="title3" >{Product.id}</Text>
             </Box>
             <Box justifyContent="center">
               <Box 

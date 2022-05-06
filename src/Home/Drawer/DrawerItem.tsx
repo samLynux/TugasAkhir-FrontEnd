@@ -28,7 +28,7 @@ export type DrawerItemProps = ScreenDrawerItem | OnPressDrawerItem;
 const DrawerItem = ({ icon, label,color,...props }: DrawerItemProps) => {
     
   const navigation = useNavigation<
-    DrawerNavigationProp<HomeRoutes, "OutfitIdeas">
+    DrawerNavigationProp<HomeRoutes, "Catalog">
   >();
 
   return (

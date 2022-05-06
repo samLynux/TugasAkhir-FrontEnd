@@ -1,7 +1,8 @@
 import { DrawerActions } from '@react-navigation/native';
-import  React from 'react';
+import  React, { useContext } from 'react';
 import { Box, Header, Text } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
+import { UserContext } from '../services/user.context';
 import Configuration from './Configuration';
 import PersonalInfo from './PersonalInfo';
 import Tabs, { Tab } from './Tabs';
@@ -14,7 +15,9 @@ const tabs: Tab[] = [
 ]
 
 
-const EditProfile = ({ navigation}: HomeNavigationProps<"EditProfile">) => {
+const EditProfile = ({ navigation}: HomeNavigationProps<"EditProfile">) => {//@ts-ignore
+    const [[user, setUser], [userUpdater, setUserUpdater]] = useContext(UserContext);
+    
     
     return (
         <>
@@ -50,16 +53,27 @@ const EditProfile = ({ navigation}: HomeNavigationProps<"EditProfile">) => {
                 />
                 <Box marginVertical="m" style={{marginTop:50}}>
                     <Text variant="title1" textAlign='center'>
-                        Me
+                        {(user && user.firstname && user.lastname) ?
+                            (user.firstname +" " + user.lastname ):
+                            "Me"
+                        }
                     </Text>
                     <Text variant="body" textAlign='center'>
-                        my@email.xxx
+                        {user && user.email}
+                    </Text>
+                    <Text variant="body" textAlign='center'>
+                        {(user && user.address) ?
+                            (user.address ):
+                            "Address not inputed yet"
+                        }
                     </Text>
                 </Box>
             </Box>
             <Tabs tabs={tabs} >
                 <Configuration/>
-                <PersonalInfo/>
+                <PersonalInfo
+                    changed={() =>  setUserUpdater(!userUpdater)}
+                />
             </Tabs>
         </Box>
         </>

@@ -1,4 +1,5 @@
 
+import { useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useEffect, useRef, useState }  from 'react';
 import { Dimensions } from 'react-native';
@@ -8,7 +9,7 @@ import { Box, Header } from '../../components';
 import Categories from '../../components/Categories';
 
 import { HomeNavigationProps } from '../../components/Navigation';
-import Outfit from './Outfit';
+import Outfit from '../../components/Outfit';
 
 const {width: wWidth} = Dimensions.get("window")
 
@@ -95,11 +96,11 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
             <Transition.In type='fade'  />
         </Transition.Together>
     )
-
-    const filtering = (tags: string[]) => {
-        // console.log(tags);
+    const [recommend, setRecommend] = useState<boolean>(false)
+    const filtering = (brands: string[], cats: string[]) => {
+        // console.log(brands);
         // setOutfits([])
-        if(tags.length <= 0){
+        if(brands.length <= 0 && cats.length <= 0){
             axios.get("products")
             .then((response) => {
                 // console.log(e.data.data[0]);
@@ -108,7 +109,8 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
             return;
         }
         axios.post("products/filtered",{
-            categories: [...tags]
+            categories: cats.length > 0 ? [...cats] : null,
+            brands: brands.length > 0 ? [...brands] : null
         })
         .then((response) => {
             // console.log(response.data);
@@ -116,13 +118,21 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
         })
     }
 
-    
+    const recommendUser = () => {
+        console.log("fdsffffffffffff");
+        
+        axios.get("users/foruser")
+        .then((response) => {
+            console.log(response.data);
+            setOutfits(response.data)
+        })
+    }
 
     const width = (wWidth - 16 *3) /2;
     const [footerHeight, setFooterHeight] = useState(0) 
     const [outfits, setOutfits] = useState<outfit[]>([])
 
-    
+    const isFocused = useIsFocused()
 
     const list = useRef<typeof Transitioning.View>(null)
 
@@ -135,9 +145,12 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                 setOutfits(response.data.data)
             })
         
-            
-        
-    }, [])
+        axios.get("users/foruser")
+            .then((response) => {
+                if(response.data && response.data.length > 0) setRecommend(true)
+                else setRecommend(false)
+            })
+    }, [isFocused])
     
     
     return (
@@ -155,15 +168,26 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                     onPress: () => navigation.navigate("Cart")
                 }}
             />
-            <Categories onPress={(tags) => {
-                filtering(tags);
-                
-            }}/> 
+            <Categories 
+                onPress={(brand, cats) => {
+                    filtering(brand, cats);    
+                }}
+                onRecommend={(active) => {
+                    if(active){
+                        recommendUser();
+                    }else{
+                        //getAll again
+                    }
+                }}
+                recommend={recommend}
+            /> 
             <Box flex={1}>
             <ScrollView
+                showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                     paddingHorizontal:8,
-                    paddingBottom: footerHeight
+                    paddingBottom: footerHeight,
+                    
                 }}
             >
                 <Transitioning.View //@ts-ignore
@@ -184,12 +208,7 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                                     }}
                                     onPress={()=>{
                                         //@ts-ignore
-                                        navigation.navigate("ProductDetails",{outfit:{
-                                            ...outfit,//@ts-ignore
-                                            primaryColor:outfit.primaryColor.value,//@ts-ignore
-                                            sizes: outfit.sizes.map(s => s.value)
-
-                                        }})
+                                        navigation.navigate("ProductDetails",{outfit})
                                     }}
                                     width={width}
                                 />
@@ -201,12 +220,7 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                             <Outfit key={outfit.id} 
                                 onPress={()=>{
                                             //@ts-ignore
-                                    navigation.navigate("ProductDetails",{outfit:{
-                                        ...outfit,//@ts-ignore
-                                        primaryColor:outfit.primaryColor.value,//@ts-ignore
-                                        sizes: outfit.sizes.map(s => s.value)
-
-                                    }})
+                                            navigation.navigate("ProductDetails",{outfit})
                                 }}
                                 outfit={{
                                     ...outfit, //@ts-ignore

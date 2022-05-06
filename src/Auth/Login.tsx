@@ -45,17 +45,21 @@ const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
     await axios.post("login", {
       email:data.email,
       password:data.password,
+    }).then(() => {
+      navigation.dispatch(CommonActions.reset({
+        index: 0,
+        routes: [
+          {name: "Home"},
+        ]
+      }))
+    }).catch(() => {
+      alert("Wrong Email/ Password")
     })
 
     
 
 
-    navigation.dispatch(CommonActions.reset({
-      index: 0,
-      routes: [
-        {name: "Home"},
-      ]
-    }))
+  
   }
 
   const checked = () => {

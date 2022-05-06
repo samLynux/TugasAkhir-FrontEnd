@@ -3,39 +3,48 @@ import  React  from 'react';
 import { useForm } from 'react-hook-form';
 
 import { ScrollView } from 'react-native-gesture-handler';
-import { Box, Text } from '../../components';
+import { Box, Button, Text } from '../../components';
 import TextInput from '../../components/Form/TextInput';
-import CheckboxGroup from './CheckboxGroup';
 import * as Yup from "yup"
+import axios from 'axios';
 
 // const {width} = Dimensions.get("window")
-const LoginSchema = Yup.object().shape({
-  email: Yup.string()
-      .required('Email is required')
-      .email('Email is invalid'),
-  password: Yup.string()
-    .required('Password is required')
-    .min(4, 'Password must be at least 4 characters')
-    .max(15, 'Password must not exceed 15 characters'),
+const AdditionalInfo = Yup.object().shape({
+  firstname: Yup.string().nullable(true),
+  lastname: Yup.string().nullable(true),
+  address: Yup.string().nullable(true),
     
 })
 
 
 
-// interface PersonalInfoProps{
-//   children: ReactNode;
-// }
+interface PersonalInfoProps{
+  changed: () => void;
+}
 
-const genders = [
-  {value: "male",   label: "Male"},
-  {value: "female",   label: "Female"},
-]
 
-const PersonalInfo = () => {
-  const {control, 
+const PersonalInfo = ({ changed}: PersonalInfoProps) => {
+  const {control, handleSubmit
   } = useForm({
-    resolver: yupResolver(LoginSchema)
+    resolver: yupResolver(AdditionalInfo)
   });
+
+  const onSignup = async (data: any) => {
+    
+    
+    // console.log(data);
+     await axios.put("users", {
+      firstname: data.firstname,
+
+      lastname: data.lastname,
+
+      address: data.address,
+
+    }).then(() => changed())
+
+    alert("Personal Data Updated")
+    
+  }
       
   return (
     <>
@@ -47,24 +56,23 @@ const PersonalInfo = () => {
 
           <Box marginBottom="m">
             <TextInput
-              name="name"
+              name="firstname"
               icon="user"
-              placeholder="Name"
+              placeholder="First Name"
               control={control}
               autoCapitalize="none"
               autoCompleteType="name"
             />
           </Box>
+
           <Box marginBottom="m">
             <TextInput
-              name="password"
-              icon="lock"
-              placeholder="password"
+              name="lastname"
+              icon="user"
+              placeholder="Last Name"
               control={control}
-              secureTextEntry
               autoCapitalize="none"
-              autoCompleteType="password"
-
+              autoCompleteType="name"
             />
           </Box>
 
@@ -80,7 +88,10 @@ const PersonalInfo = () => {
           </Box>
           
 
-          <CheckboxGroup options={genders} radio/>
+          <Box alignItems="center" marginTop="m">
+            <Button variant='primary' onPress={handleSubmit(onSignup)}
+              label='Update Account Info'/>
+          </Box>
 
         </Box>
         

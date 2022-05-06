@@ -1,51 +1,51 @@
 
-import  React, {useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
+import  React, { useContext } from 'react';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { Box, Button, Text } from '../../components';
-import AddCard from './AddCard';
-import Card, { CardBrand } from './Card';
-import { CARD_HEIGHT } from './CardLayout';
+import { UserContext } from '../services/user.context';
+
 
 interface CheckoutComponentProps{
     minHeight: number;
     total: number;
     onCheckout: () => void;
+    onChangeAddress: () => void;
 }
 
 
 
-const cards = [
-    {
-        id: 0,
-        type: CardBrand.VISA,
-        last4Digits: 5467,
-        expiration: "05/24"
-    },
-    {
-        id: 1,
-        type: CardBrand.MASTERCARD,
-        last4Digits: 7575,
-        expiration: "11/22"
-    },
-    {
-        id: 2,
-        type: CardBrand.VISA,
-        last4Digits: 9127,
-        expiration: "12/25"
-    },
-    {
-        id: 3,
-        type: CardBrand.MASTERCARD,
-        last4Digits: 2579,
-        expiration: "01/21"
-    },
-    {
-        id: 4,
-        type: CardBrand.VISA,
-        last4Digits: 6567,
-        expiration: "03/22"
-    },
-]
+// const cards = [
+//     {
+//         id: 0,
+//         type: CardBrand.VISA,
+//         last4Digits: 5467,
+//         expiration: "05/24"
+//     },
+//     {
+//         id: 1,
+//         type: CardBrand.MASTERCARD,
+//         last4Digits: 7575,
+//         expiration: "11/22"
+//     },
+//     {
+//         id: 2,
+//         type: CardBrand.VISA,
+//         last4Digits: 9127,
+//         expiration: "12/25"
+//     },
+//     {
+//         id: 3,
+//         type: CardBrand.MASTERCARD,
+//         last4Digits: 2579,
+//         expiration: "01/21"
+//     },
+//     {
+//         id: 4,
+//         type: CardBrand.VISA,
+//         last4Digits: 6567,
+//         expiration: "03/22"
+//     },
+// ]
 
 interface LineItemProps{
     label: string;
@@ -66,8 +66,12 @@ const LineItem = ({value, label} : LineItemProps) => {
 }
 const deliveryCost = 12;
 
-const CheckoutComponent = ({minHeight, total, onCheckout}:CheckoutComponentProps) => {
-    const [selectedCard, setSelectedCard] = useState(cards[0].id)
+const CheckoutComponent = ({minHeight, total, onCheckout, onChangeAddress}:CheckoutComponentProps) => {
+    // const [selectedCard, setSelectedCard] = useState(cards[0].id) 
+    // @ts-ignore
+    const [[user] ]= useContext(UserContext);
+    
+    
     
   return (
     <>
@@ -80,7 +84,7 @@ const CheckoutComponent = ({minHeight, total, onCheckout}:CheckoutComponentProps
             flex={1} 
             padding="m"
         >
-            <Box height={CARD_HEIGHT}>
+            {/* <Box height={CARD_HEIGHT}>
                 <ScrollView horizontal
                     showsHorizontalScrollIndicator={false}
                 >
@@ -95,7 +99,7 @@ const CheckoutComponent = ({minHeight, total, onCheckout}:CheckoutComponentProps
                         />
                     ))}
                 </ScrollView>
-            </Box>
+            </Box> */}
             <Box marginTop="m">
                 <Text
                     color="white"
@@ -105,18 +109,18 @@ const CheckoutComponent = ({minHeight, total, onCheckout}:CheckoutComponentProps
                 <Box flexDirection="row" opacity={0.8}>
                     <Box flex={1} padding="s">
                         <Text color="white"> 
-                            Unit 15 Apt Mediteratnia 8 70B
-                        </Text>
-                        <Text color="white"> 
-                            Jakarta Timur Barat
+                            {(user && user.address) ?
+                                (user.address ):
+                                "Address not inputed yet"
+                            }
                         </Text>
                     </Box>
                     <Box padding="s"
                         justifyContent="center" alignItems="center"
                     >
-                        <Text color="white"> 
-                            Change
-                        </Text>
+                        <BorderlessButton onPress={() => onChangeAddress()}>
+                            <Text color="white">Change</Text>
+                        </BorderlessButton>
                     </Box>
                 </Box>
                 <LineItem 
@@ -138,11 +142,15 @@ const CheckoutComponent = ({minHeight, total, onCheckout}:CheckoutComponentProps
                 flex={1}
                 justifyContent="flex-end"
             >
-                <Button 
-                    variant='primary'
-                    label='Transact'
-                    onPress={onCheckout}
-                />
+                {(user && user.address) ?
+                    (<Button 
+                        variant='primary'
+                        label='Transact'
+                        onPress={onCheckout}
+                    /> ):
+                    <Text>Please Input Your Address First</Text>
+                }
+                
             </Box>
         </Box>
         

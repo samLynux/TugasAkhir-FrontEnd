@@ -36,8 +36,9 @@ const ForgotPassword = ({ navigation }: AuthNavigationProps<'ForgotPassword'>) =
 
 //@ts-ignore
   const onSubmit = (data) => {
-    console.log(data);
-    navigation.navigate("PasswordChange")
+    // console.log(data);
+    //@ts-ignore
+    navigation.navigate("PasswordChange",{email:data.email})
     
   }
 

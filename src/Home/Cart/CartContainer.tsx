@@ -19,11 +19,12 @@ interface CartContainerProps{
     children: React.ReactNode;
     total: number;
     onCheckout: () => void;
+    onChangeAddress : () => void;
     // checkoutComponent: FC<{minHeight: number}>;
 }
 
 
-const CartContainer = ({children, total, onCheckout}: CartContainerProps) => {
+const CartContainer = ({children, total, onCheckout, onChangeAddress}: CartContainerProps) => {
    
    
     const translateY = useSharedValue(0) //@ts-ignore
@@ -52,7 +53,7 @@ const CartContainer = ({children, total, onCheckout}: CartContainerProps) => {
     <>
     <Box flex={1}
         backgroundColor="secondary">
-    <CheckoutComponent total={total} minHeight={minHeight} onCheckout={onCheckout}/>
+    <CheckoutComponent total={total} minHeight={minHeight} onCheckout={onCheckout} onChangeAddress={onChangeAddress}/>
     <PanGestureHandler //@ts-ignore
         onGestureEvent={onGestureEvent}
     >

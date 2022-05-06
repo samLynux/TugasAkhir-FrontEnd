@@ -8,6 +8,7 @@ import { Box,  Header,  theme , Text} from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import { aspectRatio, width } from '../../components/Theme';
 import { CartContext } from '../services/cart.context';
+import { UserContext } from '../services/user.context';
 import CartContainer from './CartContainer';
 import Item from './Item';
 
@@ -46,11 +47,19 @@ const d = "M 0 0 A 50 50 0 0 0 50 50 H 325 A 50 50 0 0 1 375 100 V 0 0 Z"
 const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     const [cart, setCart] = useContext(CartContext)
     const [total, setTotal] = useState(0)
+
+    // @ts-ignore
+    const [[user]] = useContext(UserContext);
    
     const checkout = async () => {
         if(cart.length <= 0){
             alert("Nothing is in the cart");
             navigation.navigate("Catalog")
+            return
+        }
+        if(!user.address){
+            alert("Please Input Your Address");
+            navigation.navigate("EditProfile")
             return
         }
         const order_items = cart.map(order => ({
@@ -59,14 +68,19 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
             price: order.price,
             quantity: order.quantity
         }))
+        
 
         axios.post("orders",{
-            total: total,
+            total: total + 12,
             order_items: order_items
         })
             .then(() => {
-                alert("Transaction Complete")
+                alert("Transaction Complete") 
                 setCart([])
+                navigation.navigate("TransactionHistory")
+            }).catch((err) => {
+                console.log(err);
+                
             })
         
     }
@@ -105,9 +119,15 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
         });
         setTotal(newTotal)
     }, [cart]);
+
+
   return (
     <>
-        <CartContainer total={total} onCheckout={checkout}>
+        <CartContainer total={total} onCheckout={checkout} 
+            onChangeAddress={()=>{
+                navigation.navigate("EditProfile")
+            }}
+        >
             <Box backgroundColor="primary"paddingTop="m">
 
             
@@ -135,7 +155,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
                     {cart.map((item, index) => (
                         <Item 
                             Product={item} 
-                            key={item.id } 
+                            key={item.label } 
                             onDelete={() => {
                                 cart.splice(index, 1);
                                 setCart(cart.concat());

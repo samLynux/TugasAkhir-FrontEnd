@@ -5,11 +5,10 @@ import  React, { useEffect, useRef, useState }  from 'react';
 import { Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Transition, Transitioning } from 'react-native-reanimated';
-import { Box, Header, Text } from '../../components';
+import { Box, Button, Header, Text } from '../../components';
 
 import { HomeNavigationProps } from '../../components/Navigation';
-import Outfit from '../Catalog/Outfit';
-import TopCurve from './TopCurve';
+import Outfit from '../../components/Outfit';
 
 const {width: wWidth} = Dimensions.get("window")
 
@@ -46,7 +45,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
         
         axios.get("users/fav")
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
                 setOutfits(response.data)
             })
         
@@ -82,7 +81,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                 >
                 
                 <Box>
-                    {outfits ? (
+                    {outfits.length > 0 ? (
                         <Box flexDirection="row"
                             alignItems="center"
                             justifyContent="center"
@@ -98,12 +97,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                                         }}
                                         onPress={()=>{
                                             //@ts-ignore
-                                            navigation.navigate("ProductDetails",{outfit:{
-                                                ...outfit,//@ts-ignore
-                                                primaryColor:outfit.primaryColor.value,//@ts-ignore
-                                                sizes: outfit.sizes.map(s => s.value)
-    
-                                            }})
+                                            navigation.navigate("ProductDetails",{outfit})
                                         }}
                                         width={width}
                                     />
@@ -119,12 +113,7 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                                     }}
                                     onPress={()=>{
                                         //@ts-ignore
-                                        navigation.navigate("ProductDetails",{outfit:{
-                                            ...outfit,//@ts-ignore
-                                            primaryColor:outfit.primaryColor.value,//@ts-ignore
-                                            sizes: outfit.sizes.map(s => s.value)
-
-                                        }})
+                                        navigation.navigate("ProductDetails",{outfit})
                                     }}
                                     width={width}
                                 />
@@ -133,14 +122,22 @@ const FavouriteOutfits = ({ navigation}: HomeNavigationProps<"FavouriteOutfits">
                         </Box>
                         </Box>  
                     ):(
-                        <Text>No Favourites Have been Added Yet</Text>
+                        <Box flex={1} justifyContent="center" alignItems="center">
+                            <Text textAlign="center" padding="xl">
+                                No Favourites Have been Added Yet
+                            </Text>
+                            <Button 
+                                label='Go To Catalog'
+                                onPress={() => navigation.navigate("Catalog")}
+                            />
+                        </Box>
                     )
                     }
                     
                 </Box>
                 </Transitioning.View>
             </ScrollView>
-            <TopCurve footerHeight={footerHeight}/>
+            
 
             <Box position="absolute" 
                 bottom={0} left={0} right={0}

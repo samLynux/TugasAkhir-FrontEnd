@@ -2,7 +2,7 @@ import  React  from 'react';
 import { Image } from 'react-native';
 
 import { BorderlessButton } from 'react-native-gesture-handler';
-import { Box, Text } from '../../components';
+import { Box, Text } from '.';
 
 
 
@@ -31,29 +31,41 @@ const Outfit = ({outfit, width, onPress}: OutfitProps) => {
         onPress={() => onPress()}
     >
         
+
     <Box //@ts-ignore
         borderRadius="m"
         marginBottom="m"
         justifyContent="space-evenly"
         alignItems="center" 
         padding="m"
+        borderWidth={1}
+        borderColor="black"
+        backgroundColor={outfit.primaryColor}
         style={{
-            backgroundColor: outfit.primaryColor,
             width, height: (width )
         }}   
     >
+        
         <Image style={{
                 width: width/1.5,
                 height: (width / 1.5 )
             }}
             source={{uri:outfit.image}}/>
-      
-        <Text textAlign="center" 
-            color={outfit.primaryColor === "white" ? "black" : "white"}
+        
+        <Box
+            style={{
+                backgroundColor: "black",
+                width,
+            }}   
+            
+            
         >
-            {outfit.title}
-        </Text>
-      
+            <Text textAlign="center" 
+                color= "white"
+            >
+                {outfit.title}
+            </Text>
+        </Box>
     </Box>
 
     </BorderlessButton> 

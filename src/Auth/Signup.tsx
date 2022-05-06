@@ -44,20 +44,18 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
     
     
     // console.log(data);
-     await axios.post("register", {
-      firstname:"samuel",
-
-      lastname:"putra",
-
+    await axios.post("register", {
       email:data.email,
-
       password:data.password,
-
-      passwordconfirm: data.passwordConfirm,
+    }).then(() => {
+      alert("User Registered, Please Log in")
+      navigation.navigate("Login")
+    }).catch(() => {
+      alert("Email has already been registered, please enter a new email or login")
     })
 
 
-    navigation.navigate("Login")
+    
     
   }
 

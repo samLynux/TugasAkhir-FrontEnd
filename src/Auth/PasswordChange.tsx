@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
 import { Linking } from 'react-native';
 import { AuthNavigationProps } from '../components/Navigation';
+import axios from 'axios';
 // import { TextInput } from 'react-native';
 
 
@@ -25,7 +26,7 @@ const PasswordChangeSchema = Yup.object().shape({
   
 
 //@ts-ignore
-const PasswordChange = ({ navigation }: AuthNavigationProps<'PasswordChange'>) => {
+const PasswordChange = ({ navigation, route }: AuthNavigationProps<'PasswordChange'>) => {
   const footer = <Footer 
       title="Don't work?" 
       action='Try another way'
@@ -38,10 +39,24 @@ const PasswordChange = ({ navigation }: AuthNavigationProps<'PasswordChange'>) =
     resolver: yupResolver(PasswordChangeSchema)
   });
 
+  //@ts-ignore
+  const {email} = route.params
+  
 //@ts-ignore
-  const onSubmit = (data) => {
-    console.log(data);
-    navigation.navigate("PasswordChanged")
+  const onSubmit = async (data) => {
+   
+    await axios.put("password", {
+      email:email,
+      password:data.password,
+    }).then(() => {
+      navigation.navigate("PasswordChanged")
+    }).catch(() => {
+      alert("Something wrong has occured")
+      // console.log(err);
+      
+      navigation.navigate("ForgotPassword")
+    })
+    
     
   }
 

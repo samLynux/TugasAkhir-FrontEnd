@@ -15,15 +15,15 @@ import axios from 'axios';
 
 const outfitType = [
     {
-        value: "men",
+        value: "m",
         label: "For Men"
     },
     {
-        value: "women",
+        value: "f",
         label: "For Women"
     },
     {
-        value: "both",
+        value: "n",
         label: "For both"
     },
 ]
@@ -31,11 +31,8 @@ const outfitType = [
 const prefferedBrands = [
     {value: "adidas",   label: "Adidas"},
     {value: "nike",   label: "Nike"},
-    {value: "converse",   label: "Converse"},
-    {value: "tommy-hilfiger",   label: "Tommy Hilfiger"},
-    {value: "billionaire-boys-club",   label: "Billionaire Boys Club"},
-    {value: "jordan",   label: "Jordan"},
-    {value: "le-coq-sportif",   label: "Le Coq Sportif"},
+    {value: "pull&bear",   label: "Pull & Bear"},
+    {value: "h&m",   label: "H & M"},
 ]
 
 const sizes = [
@@ -48,32 +45,41 @@ const sizes = [
 
 const colorOptions = [
     "black",
-    "orange",
-    "blue",
+    "white",
     "red",
-    "purple",
+    "blue",
+    "green",
 ]
 
 const Configuration = () => {
 
-    const [gender, setGender] = useState<string>("")
+    const [gender, setGender] = useState<string>("n")
     const [size, setSize] = useState<string>("")
     const [colors, setColors] = useState<string[]>([])
     const [brands, setBrands] = useState<string[]>([])
 
     useEffect(() => {
         
+        // axios.get("users/me")
+        //     .then((result) => {
+        //         console.log(result.data);
+        //         setGender(result.data.gender);
+        //         setSize(result.data.size);
+        //         setColors(result.data.colors);
+        //         setBrands(result.data.brands);
+                
+        //     })
+        
+    },[gender, size, brands, colors])
+
+    const setPref = () => {
         axios.post("users/updatepref",{
+            gender,
             brands,
             colors,
             size
         })
-        .then((response) => {
-            console.log(response.data);
-        })
-        
-    },[gender, size, brands, colors])
-
+    }
   return (
     <>
     <ScrollView>

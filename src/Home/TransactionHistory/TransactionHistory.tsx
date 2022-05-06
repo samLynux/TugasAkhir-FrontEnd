@@ -2,7 +2,7 @@ import { useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useEffect, useState } from 'react';
 import {     ScrollView } from 'react-native';
-import { Box, ScrollableContent, Header, Text } from '../../components';
+import { Box, ScrollableContent, Header, Text, Button } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import Graph from './Graph/Graph';
 import Transaction from './Transaction';
@@ -45,16 +45,10 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
     useEffect(() => {
         axios.get("orders")
             .then((e) => {
-                // console.log(e.data.data);
-                setTransactions(e.data.data)
-                
+                setTransactions(e.data)
             })
         
-        
-        
-
-
-        axios.get("chart")
+        axios.get("orders/chart")
             .then((response) => {
                 const testArr = response.data.map((res: any) => ({
                     total: res.sum,
@@ -64,14 +58,10 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 
                 setTransactionsChart(testArr);
             })
-
-
-        
-
-        
     }, [isFocused])
 
     useEffect(() => {
+        if(!transactions) return
         let newTotal = 0
         transactions.forEach((item) => { //@ts-ignore
             newTotal += item.total 
@@ -92,11 +82,6 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 left={{
                 icon:"menu",
                     onPress: () => navigation.openDrawer()
-                }}
-                right={{
-                icon:"share",
-                    onPress: () => console.log(transactions)
-                    
                 }}
             />
             <Box padding="m" flex={1}>
@@ -124,21 +109,38 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 </Box> */}
 
             </Box>
-            <Graph data={transactionsChart} maxDate={maxDate}/>
-            <ScrollView
-                style={{
-                    marginBottom:30,
-                }}
-                showsVerticalScrollIndicator={false}
-                
-            >
-                {transactions.map((transaction) => ( //@ts-ignore
-                    <Transaction key={transaction.id} transaction={transaction} 
-                        onPress={() => { //@ts-ignore
-                            navigation.navigate("TransactionDetails",{id: transaction.id})
-                        }}/>
-                ))}
-            </ScrollView>
+            {transactions ?
+            (
+                <>
+                <Graph data={transactionsChart} maxDate={maxDate}/>
+                <ScrollView
+                    style={{
+                        marginBottom:30,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    
+                >
+                    {transactions.map((transaction) => ( //@ts-ignore
+                        <Transaction key={transaction.id} transaction={transaction} 
+                            onPress={() => { //@ts-ignore
+                                navigation.navigate("TransactionDetails",{id: transaction.id})
+                            }}/>
+                    ))}
+                </ScrollView>
+                </>
+            ):(
+                <Box flex={1} justifyContent="center" alignItems="center">
+                    <Text textAlign="center" padding="xl">
+                        No Transactions
+                    </Text>
+                    <Button 
+                        label='Go To Catalog'
+                        onPress={() => navigation.navigate("Catalog")}
+                    />
+                </Box>
+            )
+            }
+            
             </Box>
             
         </Box>

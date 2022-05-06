@@ -16,7 +16,7 @@ interface RoundedCheckboxGroupProps{
 
 
 const RoundedCheckboxGroup = ({ options, valueIsColor, radio, onPress }: RoundedCheckboxGroupProps) => {
-    const [selectedValues, setSelectedValues]= useState<string[]>([])
+    const [selectedValues, setSelectedValues]= useState<string[]>(["blue"])
       
   return (
     <>
@@ -48,7 +48,7 @@ const RoundedCheckboxGroup = ({ options, valueIsColor, radio, onPress }: Rounded
                 style={{
                   width:50,
                   height:50,
-                  borderRadius:25,
+                  // borderRadius:25,
                   justifyContent:"center",
                   alignItems:"center",
                   borderWidth: isSelected ? 1: 0,
@@ -60,7 +60,7 @@ const RoundedCheckboxGroup = ({ options, valueIsColor, radio, onPress }: Rounded
               <View style={{
                 width: 40,
                 height:40,
-                borderRadius:30,
+                // borderRadius:30,
                 justifyContent:"center",
                 alignItems:"center",
                 backgroundColor: valueIsColor ? option : backgroundColor
