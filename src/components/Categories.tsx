@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import Category from './Category';
 import CategoryGroup from './CategoryGroup';
+import theme from './Theme';
 
 const categories = [
     
@@ -11,55 +12,55 @@ const categories = [
         id: "Year-Round",
         title: "Year-Round",
         type: "category",
-        color: "#FFE8E9"
+        color: theme.colors.light_blue
     },
     {
         id: "summer",
         type: "category",
         title: "Summer",
-        color: "#F1E0FF"
+        color: theme.colors.orange
     },
     {
         id: "Spring",
         title: "Spring",
         type: "category",
-        color: "#BFEAF5"
+        color: theme.colors.yellow
     },
     {
         id: "Autumn",
         title: "Autumn",
         type: "category",
-        color: "#F1E0FF"
+        color: theme.colors.leaf_green
     },
     {
         id: "Winter",
         title: "Winter",
         type: "category",
-        color: "#FFE8E9"
+        color: theme.colors.ice_blue
     },
     {
         id: "Nike",
         title: "Nike",
         type: "brand",
-        color: "#FFE8E9"
+        color: theme.colors.pink_orange
     },
     {
         id: "Adidas",
         title: "Adidas",
         type: "brand",
-        color: "#FFE8E9"
+        color: theme.colors.grey
     },
     {
         id: "Pull&Bear",
         title: "Pull&Bear",
         type: "brand",
-        color: "#FFE8E9"
+        color: theme.colors.purple
     },
     {
         id: "H&M",
         title: "H&M",
         type: "brand",
-        color: "#FFE8E9"
+        color: theme.colors.light_green
     },
 ]
 
@@ -68,19 +69,19 @@ const outfitType = [
         id: "n",
         title: "All",
         type: "Gender",
-        color: "#FFE8E9"
+        color: theme.colors.grey
     },
     {
         id: "f",
         title: "Women",
         type: "Gender",
-        color: "#FFE8E9"
+        color: theme.colors.pink
     },
     {
         id: "m",
         title: "Men",
         type: "Gender",
-        color: "#FFE8E9"
+        color: theme.colors.dark_blue
     },
     
 ]
@@ -113,7 +114,7 @@ const Categories = ({onPress, onRecommend, recommend = false}: CategoryProps) =>
                         <Category 
                             category={{
                                 id: "Recommend",
-                                color: "#FFE8E9",
+                                color: theme.colors.pink_orange,
                                 title: "For You",
                             }}
                             onAdd={ () => {

@@ -44,7 +44,7 @@ const Category = ({category, optionsCount, onPress}: CategoryProps) => {
                 width: 60, height: 60,
                 borderRadius: 30,
                 
-                backgroundColor: category[0].color
+                backgroundColor: category[selected].color
             }}>
                 
             {selected > 0 && (

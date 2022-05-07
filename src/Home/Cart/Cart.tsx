@@ -18,32 +18,7 @@ const height = width * aspectRatio;
 const d = "M 0 0 A 50 50 0 0 0 50 50 H 325 A 50 50 0 0 1 375 100 V 0 0 Z"
 
 
-// const defaultItems = [
-//     {
-//         id: 0,
-//         size: "s",
-//         name: "Short Sleeves Top",
-//         price: "29.20"
-//     },
-//     {
-//         id: 1,
-//         size: "s",
-//         name: "Short Sleeves Bottom",
-//         price: "20.20"
-//     },
-//     {
-//         id: 2,
-//         size: "s",
-//         name: "No Sleeves Top",
-//         price: "9.20"
-//     },
-//     {
-//         id: 3,
-//         size: "s",
-//         name: "No Sleeves Bottom",
-//         price: "0"
-//     },
-// ]
+
 
 const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     const [cart, setCart] = useContext(CartContext)
@@ -80,6 +55,7 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
                 setCart([])
                 navigation.navigate("TransactionHistory")
             }).catch(err => {
+                console.log(err);
                 if(err.response.data.statusCode === 403){
                     alert("You are not logged in/ Your Login has Timed Out")
                     navigation.dispatch(CommonActions.reset({

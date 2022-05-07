@@ -62,7 +62,7 @@ const TextInput = ({ icon, control, name,placeholder, secureTextEntry }: TextInp
                   <>
                   <Box padding="s">
                   <RoundedIcon
-                    name={!error ? "check" : "x"}
+                    name={!error ? "check" : "close"}
                     backgroundColor={ !error ? "title" : "pink"}
                     color="black"
                     size={20}

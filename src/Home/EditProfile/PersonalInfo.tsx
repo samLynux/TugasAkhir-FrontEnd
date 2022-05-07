@@ -43,6 +43,7 @@ const PersonalInfo = ({ changed, timedOut}: PersonalInfoProps) => {
 
     }).then(() => changed())
     .catch(err => {
+      console.log(err);
       if(err.response.data.statusCode === 403){
           timedOut();
       }

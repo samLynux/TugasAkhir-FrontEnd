@@ -47,7 +47,9 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
             .then((e) => {
                 setTransactions(e.data)
             }).catch((err) => {
+                console.log(err);
                 if(err.response.data.statusCode === 403){
+                    
                     alert("You are not logged in/ Your Login has Timed Out")
                     navigation.dispatch(CommonActions.reset({
                         index: 0,
@@ -68,7 +70,9 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 
                 setTransactionsChart(testArr);
             }).catch((err) => {
+                console.log(err);
                 if(err.response.data.statusCode === 403){
+                    
                     alert("You are not logged in/ Your Login has Timed Out")
                     navigation.dispatch(CommonActions.reset({
                         index: 0,
@@ -104,7 +108,7 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                     onPress: () => navigation.openDrawer()
                 }}
             />
-            <Box padding="m" flex={1}>
+            <Box padding="m" flex={1} >
             <Box
                 flexDirection="row"
                 justifyContent="space-between"
@@ -135,9 +139,9 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 <Graph data={transactionsChart} maxDate={maxDate}/>
                 <ScrollView
                     style={{
-                        marginBottom:30,
+                        marginBottom:30, 
                     }}
-                    showsVerticalScrollIndicator={false}
+                    showsVerticalScrollIndicator={true}
                     
                 >
                     {transactions.map((transaction) => ( //@ts-ignore

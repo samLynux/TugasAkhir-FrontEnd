@@ -16,7 +16,7 @@ interface CategoryProps {
 }
 
 
-const Category = ({category: {color: backgroundColor,title}, onAdd, onRemove}: CategoryProps) => {
+const Category = ({category: {color,title}, onAdd, onRemove}: CategoryProps) => {
     const [selected, setSelected] = useState(false)
     return (
         <>
@@ -42,7 +42,7 @@ const Category = ({category: {color: backgroundColor,title}, onAdd, onRemove}: C
                 width: 60, height: 60,
                 borderRadius: 30,
                 
-                backgroundColor
+                backgroundColor: color
             }}>
                 
             {selected && (

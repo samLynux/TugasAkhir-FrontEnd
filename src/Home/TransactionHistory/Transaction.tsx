@@ -7,7 +7,7 @@ import { Box, Text } from '../../components';
 
 interface TransactionProps {
     transaction: {
-      created_at: number,
+      createdAt: number,
       total:number,
       id: number;
     };
@@ -24,7 +24,7 @@ const Transaction = ({transaction, onPress}: TransactionProps) => {
       marginTop="l"
       flexDirection="row" 
       justifyContent="space-between"
-      alignItems="center"
+      alignItems="center" 
     >
       <Box>
         <Box 
@@ -48,14 +48,14 @@ const Transaction = ({transaction, onPress}: TransactionProps) => {
         <Box>
           <Text>
             {`$${transaction.total} - ${moment(
-                transaction.created_at
+                transaction.createdAt
               ).format("DD MMM, YYYY") 
             }`}
           </Text>
         </Box>
       </Box>
-      <Box>
-        <BorderlessButton onPress={onPress}>
+      <Box marginRight="m">
+        <BorderlessButton onPress={onPress} >
           <Text>See More</Text>
         </BorderlessButton>
       </Box>

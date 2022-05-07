@@ -6,6 +6,7 @@ import  React, { useContext, useState, useEffect } from 'react';
 import { Alert, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {  Box, Header, Text } from '../../components';
+import LineItem from '../../components/LineItem';
 import { HomeNavigationProps } from '../../components/Navigation';
 import RoundedCheckboxGroup from '../../components/RoundedCheckboxGroup';
 import { aspectRatio, width } from '../../components/Theme';
@@ -37,23 +38,6 @@ interface outfit {
         value: string
     };
 }
-interface LineItemProps{
-    label: string;
-    value: string;
-}
-
-const LineItem = ({value, label} : LineItemProps) => {
-    return(
-        <Box flexDirection="row" paddingVertical="s" paddingRight="s">
-            <Box flex={1}>
-                <Text color="white" >{label}</Text>
-            </Box>
-            <Box>
-                <Text color="white">{value}</Text>
-            </Box>
-        </Box>
-    )
-}
 
 
 
@@ -74,6 +58,7 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
             
             setIsFav(res.data)
         }).catch((err) => {
+            console.log(err);
             if(err.response.data.statusCode === 403){
                 alert("You are not logged in/ Your Login has Timed Out")
                 navigation.dispatch(CommonActions.reset({
@@ -135,6 +120,7 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
             
             
         }).catch((err) => {
+            console.log(err);
             if(err.response.data.statusCode === 403){
                 alert("You are not logged in/ Your Login has Timed Out")
                 navigation.dispatch(CommonActions.reset({

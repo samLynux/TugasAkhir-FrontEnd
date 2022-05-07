@@ -72,11 +72,12 @@ const Configuration = ({timedOut}: ConfigurationProps ) => {
             axios.get("users/me")
             .then((result) => {
                 setGender(result.data.gender);
-                setSize(result.data.size.value);
+                setSize(result.data.size ? result.data.size.value : null);
                 setColors(result.data.colors.map((i: any) => i.value));
                 setBrands(result.data.brands.map((i: any) => i.value));
                 
             }).catch(err => {
+                console.log(err);
                 if(err.response.data.statusCode === 403){
                     timedOut();
                 }
@@ -94,6 +95,7 @@ const Configuration = ({timedOut}: ConfigurationProps ) => {
             colors,
             size
         }).catch(err => {
+            console.log(err);
             if(err.response.data.statusCode === 403){
                 timedOut();
             }
