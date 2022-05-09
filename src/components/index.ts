@@ -6,4 +6,3 @@ export { default as ClosedButton } from './ClosedButton';
 export { default as RoundedIcon } from './RoundedIcon';
 export { default as Header } from './Header';
 export { default as Content } from './Content';
-export { default as ScrollableContent } from './ScrollableContent';

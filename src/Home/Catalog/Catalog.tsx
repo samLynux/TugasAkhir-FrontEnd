@@ -132,7 +132,6 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                     setShowAll(false);
                     
             }).catch(err => {
-                console.log(err);
                 
                 if(err.response.data.statusCode === 403){
                     alert("You are not logged in/ Your Login has Timed Out")
@@ -180,7 +179,7 @@ const Catalog = ({ navigation}: HomeNavigationProps<"Catalog">) => {
                 }
                 else setRecommend(false)
             }).catch(err => {
-                console.log(err);
+                // console.log(err);
                 if(err.response.data.statusCode === 403){
                     
                     alert("You are not logged in/ Your Login has Timed Out")

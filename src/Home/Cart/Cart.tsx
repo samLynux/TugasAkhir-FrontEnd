@@ -1,7 +1,7 @@
 import { CommonActions } from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Svg, { Path } from 'react-native-svg';
 import { Box,  Header,  theme , Text} from '../../components';
@@ -29,13 +29,26 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
    
     const checkout = async () => {
         if(cart.length <= 0){
-            alert("Nothing is in the cart");
+            Alert.alert("There is Nothing in the Cart!",
+                "Please select something from the store before going to cart",
+                [
+                {text: 'OK'},
+                ],
+                {cancelable: false}
+            )
             navigation.navigate("Catalog")
             return
         }
         if(!user.address){
-            alert("Please Input Your Address");
-            navigation.navigate("EditProfile")
+            Alert.alert("Please Input Your Address!",
+                "Please change your address by going to the edit profile page",
+                [
+                {text: 'Edit Profile', onPress: () => navigation.navigate("EditProfile")},
+                {text: 'Back'},
+                ],
+                {cancelable: false}
+            )
+            
             return
         }
         const order_items = cart.map(order => ({
@@ -51,11 +64,21 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
             order_items: order_items
         })
             .then(() => {
-                alert("Transaction Complete") 
+                Alert.alert("Transaction Complete!",
+                    "Your transaction was a success",
+                    [
+                    {text: 'See Transaction History', 
+                        onPress: () => navigation.navigate("TransactionHistory")
+                    },
+                    {text: 'Continue Shopping', 
+                        onPress: () => navigation.navigate("Catalog")
+                    },
+                    ],
+                    {cancelable: false}
+                )
                 setCart([])
-                navigation.navigate("TransactionHistory")
             }).catch(err => {
-                console.log(err);
+                // console.log(err);
                 if(err.response.data.statusCode === 403){
                     alert("You are not logged in/ Your Login has Timed Out")
                     navigation.dispatch(CommonActions.reset({
@@ -73,7 +96,13 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     //@ts-ignore
    const addItem = (item, index)  => {
         if(item.quantity >= 9){
-            alert("Reached Maximum Quantity")
+            Alert.alert("Reached Maximum Quantity!",
+                "The Maximum Number of Purchase is 9/product",
+                [
+                {text: 'OK'},
+                ],
+                {cancelable: false}
+            )
             return
         }
         setCart(
@@ -86,7 +115,13 @@ const Cart = ({ navigation}: HomeNavigationProps<"Cart">) => {
     //@ts-ignore
     const decreaseItem = (item, index)  => {
         if(item.quantity <= 1){
-            alert("Swipe Left to remove product")
+            Alert.alert("Do you want to remove this product?",
+                "Swipe Left to remove product",
+                [
+                {text: 'OK'},
+                ],
+                {cancelable: false}
+            )
             return
         }
         setCart(

@@ -43,7 +43,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
     
     // const maxX = Math.max(...dates);
     const minY = 0;
-    const maxY = Math.ceil(Math.max(...values) /1000) * 1000;
+    const maxY = Math.ceil(Math.max(...values) /100) * 100;
   return (
     <>
     <Box 
@@ -51,6 +51,7 @@ const Graph = ({data, maxDate}: GraphProps) => {
         paddingBottom="xl"
         paddingLeft="l"
         flexDirection="row"
+        backgroundColor="light_blue"
     >
         <Underlay 
             minY={minY} 

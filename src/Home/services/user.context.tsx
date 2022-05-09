@@ -30,7 +30,7 @@ export const UserContextProvider = ({children}: {children: React.ReactNode}) => 
 
     useEffect(() => {
         
-        axios.get("user")
+        axios.get("users")
         .then((result) => {
             setUser(result.data)
             

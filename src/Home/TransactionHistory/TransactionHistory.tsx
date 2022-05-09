@@ -2,43 +2,24 @@ import { CommonActions, useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import  React, { useEffect, useState } from 'react';
 import {     ScrollView } from 'react-native';
-import { Box, ScrollableContent, Header, Text, Button } from '../../components';
+import { Box,  Header, Text, Button } from '../../components';
 import { HomeNavigationProps } from '../../components/Navigation';
 import Graph from './Graph/Graph';
 import Transaction from './Transaction';
 
 
-// const footerHeight = Dimensions.get("window").width/3.5 ;
 
-// const styles = StyleSheet.create({
-//     footer: {
-//         ...StyleSheet.absoluteFillObject,
-//         width:undefined,
-//         height: undefined,
-//         borderTopLeftRadius: 75,
-
-//     }
-// })
-// const aspectRatio = 3;
 const maxDate = new Date().getTime();
 
-// const defaultData = [
-//     {
-//         date: new Date("2022-04-01").getTime(),
-//         total:105,
-        
-//     },
-//     {
-//         date: new Date("2022-05-01").getTime(),
-//         total:1485,
-        
-//     },
-// ]
-
+export interface TransactionData {
+    createdAt: number,
+    total:number,
+    id: number;
+ }
 
 const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHistory">) => {
    const isFocused = useIsFocused()
-    const [transactions, setTransactions] = useState([])
+    const [transactions, setTransactions] = useState<TransactionData[]>([])
     const [transactionsChart, setTransactionsChart] = useState([])
     const [total, setTotal] = useState(0)
 
@@ -47,7 +28,7 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
             .then((e) => {
                 setTransactions(e.data)
             }).catch((err) => {
-                console.log(err);
+                // console.log(err);
                 if(err.response.data.statusCode === 403){
                     
                     alert("You are not logged in/ Your Login has Timed Out")
@@ -70,7 +51,7 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 
                 setTransactionsChart(testArr);
             }).catch((err) => {
-                console.log(err);
+                // console.log(err);
                 if(err.response.data.statusCode === 403){
                     
                     alert("You are not logged in/ Your Login has Timed Out")
@@ -95,7 +76,7 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
 
 
   return (
-    <ScrollableContent>
+    <>
         <Box 
             flex={1}
             backgroundColor="white"
@@ -133,20 +114,22 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
                 </Box> */}
 
             </Box>
-            {transactions ?
+            {transactions.length > 0 ?
             (
                 <>
                 <Graph data={transactionsChart} maxDate={maxDate}/>
                 <ScrollView
-                    style={{
-                        marginBottom:30, 
+                    contentContainerStyle={{
+                        paddingBottom:60
                     }}
                     showsVerticalScrollIndicator={true}
                     
                 >
-                    {transactions.map((transaction) => ( //@ts-ignore
+                    {transactions.map((transaction) => ( 
                         <Transaction key={transaction.id} transaction={transaction} 
-                            onPress={() => { //@ts-ignore
+                            onPress={() => { 
+                                
+                                //@ts-ignore
                                 navigation.navigate("TransactionDetails",{id: transaction.id})
                             }}/>
                     ))}
@@ -168,7 +151,7 @@ const TransactionHistory = ({ navigation}: HomeNavigationProps<"TransactionHisto
             </Box>
             
         </Box>
-    </ScrollableContent>
+    </>
   );
 }
 

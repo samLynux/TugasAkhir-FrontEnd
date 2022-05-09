@@ -7,6 +7,7 @@ import { Box, Button, Text } from '../../components';
 import TextInput from '../../components/Form/TextInput';
 import * as Yup from "yup"
 import axios from 'axios';
+import { Alert } from 'react-native';
 
 // const {width} = Dimensions.get("window")
 const AdditionalInfo = Yup.object().shape({
@@ -43,13 +44,19 @@ const PersonalInfo = ({ changed, timedOut}: PersonalInfoProps) => {
 
     }).then(() => changed())
     .catch(err => {
-      console.log(err);
+      // console.log(err);
       if(err.response.data.statusCode === 403){
           timedOut();
       }
     })
 
-    alert("Personal Data Updated")
+    Alert.alert("Info Updated",
+        "Your Personal Data has been Updated",
+        [
+        {text: 'OK'},
+        ],
+        {cancelable: false}
+    )
     
   }
       

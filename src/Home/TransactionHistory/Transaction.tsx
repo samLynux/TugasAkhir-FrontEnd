@@ -2,15 +2,12 @@ import moment from 'moment';
 import  React from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Box, Text } from '../../components';
+import { TransactionData } from './TransactionHistory';
 
 
 
 interface TransactionProps {
-    transaction: {
-      createdAt: number,
-      total:number,
-      id: number;
-    };
+    transaction: TransactionData
     onPress:  () => void;
  }
  
@@ -55,7 +52,7 @@ const Transaction = ({transaction, onPress}: TransactionProps) => {
         </Box>
       </Box>
       <Box marginRight="m">
-        <BorderlessButton onPress={onPress} >
+        <BorderlessButton onPress={() => onPress()} >
           <Text>See More</Text>
         </BorderlessButton>
       </Box>

@@ -9,6 +9,7 @@ import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Footer from '../components/Footer';
 import axios from "axios"
+import { Alert } from 'react-native';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
@@ -47,10 +48,22 @@ const Signup = ({ navigation }:AuthNavigationProps<'Signup'>) => {
       email:data.email,
       password:data.password,
     }).then(() => {
-      alert("User Registered, Please Log in")
+      Alert.alert("User Registered!",
+        "Please Log in with your new registered account",
+        [
+        {text: 'OK'},
+        ],
+        {cancelable: false}
+      )
       navigation.navigate("Login")
     }).catch(() => {
-      alert("Email has already been registered, please enter a new email or login")
+      Alert.alert("Unvalid Email!",
+        "This email has already been registered, please enter a new email or login",
+        [
+        {text: 'OK'},
+        ],
+        {cancelable: false}
+      )
     })
 
 

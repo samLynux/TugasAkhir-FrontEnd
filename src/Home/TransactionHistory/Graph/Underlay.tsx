@@ -40,13 +40,13 @@ const Underlay = ({ minY, maxY, step, minX, numberOfMonths}: UnderlayProps) => {
                                      t === 1 ? -8 : 0
                             }}
                         >
-                            <Box width={theme.spacing.l}
+                            <Box width={theme.spacing.xl}
                                 paddingRight="s"
                             >
                             <Text textAlign="right"
-                            
+                                fontSize={10}
                             >
-                                {Math.round(lerp(minY, maxY, t))}
+                                {Math.round(lerp(minY, maxY , t) ) }
                             </Text>
                             </Box>
                             <Box flex={1} height={1} backgroundColor="black"/>

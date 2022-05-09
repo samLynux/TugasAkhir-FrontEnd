@@ -50,15 +50,18 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
     const [cart, setCart] = useContext(CartContext)
     const [size, setSize] = useState<string>('')
     const [isFav, setIsFav] = useState(false)
-
+    const  sizes = outfit.sizes //@ts-ignore
+        .sort((a, b)=> a.id > b.id ? 1 : -1) 
+        .map((s: { value:string})  => s.value)
 
     useEffect(() => {
+        setSize('');
         axios.get(`users/favCheck?id=${outfit.id}`)
         .then((res) => {
             
             setIsFav(res.data)
         }).catch((err) => {
-            console.log(err);
+            // console.log(err);
             if(err.response.data.statusCode === 403){
                 alert("You are not logged in/ Your Login has Timed Out")
                 navigation.dispatch(CommonActions.reset({
@@ -72,13 +75,17 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
         
     }, [outfit])
 
-    const sizes = outfit.sizes //@ts-ignore
-        .sort((a, b)=> a.id > b.id ? 1 : -1) 
-        .map((s: { value:string})  => s.value);
+    
 
     const addToCart = () => {
         if(size === ''){
-            alert("Please Choose a Size")
+            Alert.alert("Pick a Size!",
+                "Please select a size from the available options or go back to catalog",
+                [
+                {text: 'Back'},
+                ],
+                {cancelable: false}
+            )
             return false;
         }
         let checker = false;
@@ -87,7 +94,7 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
                 setCart(
                     cart.map((it, i) => 
                         i === index 
-                        ? {...it, quantity :( it.quantity + 1)} 
+                        ? {...it, quantity :( it.quantity < 9 ? it.quantity + 1 : it.quantity)} 
                         : it 
                 ))
                 checker = true;
@@ -111,16 +118,16 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
         .then((res) => {
             const favourited = res.data
             setIsFav(favourited)
-            if(favourited){
-                // alert("Added to Favourites")
-                Alert.alert("Favourites", "Added To Favourites")
-            }else{
-                Alert.alert("Favourites", "Removed From Favourites")
-            }
+            // if(favourited){
+            //     // alert("Added to Favourites")
+            //     Alert.alert("Favourites", "Added To Favourites")
+            // }else{
+            //     Alert.alert("Favourites", "Removed From Favourites")
+            // }
             
             
         }).catch((err) => {
-            console.log(err);
+            // console.log(err);
             if(err.response.data.statusCode === 403){
                 alert("You are not logged in/ Your Login has Timed Out")
                 navigation.dispatch(CommonActions.reset({
@@ -189,18 +196,22 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
                 Sizes
             </Text>
             <Box alignItems="center">
-                <RoundedCheckboxGroup
-                    options={sizes} 
-                    radio    
-                    onPress={(s) => {
-                        setSize(s)
-                        
-                    }}
-                />
+                {sizes.length > 0 && (
+                    <RoundedCheckboxGroup
+                        defaults={[size]}
+                        options={sizes} 
+                        radio    
+                        onPress={(s) => {
+                            setSize(s)
+                            
+                        }}
+                    />
+                )}
+                
             </Box>
             <LineItem 
                 label='Brand:'
-                value={outfit.brand.value}
+                value={outfit.brand.value.toUpperCase()}
             />
             <LineItem 
                 label='Released At:'
@@ -220,7 +231,16 @@ const ProductDetails = ({ navigation, route}: HomeNavigationProps<"ProductDetail
                 if(addToCart()) navigation.navigate("Cart")
             }}
             onCart={() => { 
-                if(addToCart()) alert("added");
+                if(addToCart()) {
+                    Alert.alert("Item Added!",
+                    "This Product has been Added to Cart",
+                    [
+                    {text: 'Go To Cart', onPress: () => navigation.navigate("Cart")},
+                    {text: 'Back'},
+                    ],
+                    {cancelable: false}
+            )
+                }
             }}
             onFav={() => { 
                 addToFav();

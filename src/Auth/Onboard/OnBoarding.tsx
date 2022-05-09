@@ -1,11 +1,8 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet,  Image } from 'react-native';
-
 import Animated, { Extrapolate, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import { interpolateColor } from 'react-native-redash';
 import { theme } from '../../components';
-
-
 import { AuthNavigationProps } from '../../components/Navigation';
 import { aspectRatio, width } from '../../components/Theme';
 import Dot from './Dot';

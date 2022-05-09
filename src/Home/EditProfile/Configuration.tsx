@@ -77,7 +77,7 @@ const Configuration = ({timedOut}: ConfigurationProps ) => {
                 setBrands(result.data.brands.map((i: any) => i.value));
                 
             }).catch(err => {
-                console.log(err);
+                // console.log(err);
                 if(err.response.data.statusCode === 403){
                     timedOut();
                 }
@@ -95,7 +95,7 @@ const Configuration = ({timedOut}: ConfigurationProps ) => {
             colors,
             size
         }).catch(err => {
-            console.log(err);
+            // console.log(err);
             if(err.response.data.statusCode === 403){
                 timedOut();
             }

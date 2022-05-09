@@ -31,21 +31,23 @@ const TransactionDetails = ({ navigation, route}: HomeNavigationProps<"Transacti
     const [transaction, setTransaction] = useState<TransactionDetail>()
     const [transactionItems, setTransactionItems] = useState<TransactionItemsDetail[]>([])
     
-    //@ts-ignore
-    const {id} = route ? route.params : 3
+    
+    const {id}: any = route.params
 
     
     
     
 
     useEffect(() => {
+       
+        
         axios.get(`orders/${id}`)
         .then((res) => {
             setTransaction(res.data);
             setTransactionItems(res.data.order_items);
             
         }).catch((err) => {
-            console.log(err);
+            
             if(err.response.data.statusCode === 403){
                 alert("You are not logged in/ Your Login has Timed Out")
                 navigation.dispatch(CommonActions.reset({

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Button, Container, Text } from '../components';
-import Checkbox from '../components/Form/Checkbox';
 import TextInput from '../components/Form/TextInput';
 import {  AuthNavigationProps } from '../components/Navigation';
 import * as Yup from "yup"
@@ -62,11 +61,6 @@ const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
   
   }
 
-  const checked = () => {
-    // console.log("xxxx");
-    
-  }
-  
 
   return (
     <Container {...{ footer }} pattern={0}>
@@ -104,12 +98,9 @@ const Login = ({ navigation }: AuthNavigationProps<"Login"> ) => {
           
         
           <Box flexDirection="row" 
-            justifyContent="space-between"
+            justifyContent="flex-end"
           >
-            <Checkbox label="remember me"
-              value={false}
-              onChange={checked}
-            />
+            
 
             <TouchableWithoutFeedback  onPress={() => navigation.navigate("ForgotPassword")}
                 //@ts-ignore
